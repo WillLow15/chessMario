@@ -1374,6 +1374,498 @@
     }
   }
 
+
+  /* =========================================================
+     iPHONE / iOS SAFARI OPTIMISATIONS — v36
+     ========================================================= */
+
+  :root{
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-right: env(safe-area-inset-right, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-left: env(safe-area-inset-left, 0px);
+  }
+
+  @supports (-webkit-touch-callout:none){
+    html,
+    body{
+      min-height:-webkit-fill-available;
+      overscroll-behavior-y:none;
+    }
+
+    body{
+      min-height:100svh;
+      padding-top:var(--safe-top);
+      padding-right:var(--safe-right);
+      padding-bottom:var(--safe-bottom);
+      padding-left:var(--safe-left);
+    }
+
+    button,
+    input,
+    .sq{
+      -webkit-touch-callout:none;
+    }
+
+    .sq,
+    button{
+      -webkit-user-select:none;
+      user-select:none;
+    }
+  }
+
+  /* iPhone modernes en portrait */
+  @media (max-width:430px) and (orientation:portrait){
+    body{
+      background-attachment:scroll !important;
+    }
+
+    .world-bg{
+      position:fixed !important;
+      inset:0 !important;
+      width:100vw !important;
+      height:100svh !important;
+      overflow:hidden !important;
+    }
+
+    .titlebar{
+      padding-top:max(5px,calc(var(--safe-top) * .18)) !important;
+      padding-left:5px !important;
+      padding-right:5px !important;
+    }
+
+    .logo{
+      max-width:calc(100vw - 18px) !important;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .hud{
+      width:100% !important;
+      padding-left:5px !important;
+      padding-right:5px !important;
+    }
+
+    .chess-clocks{
+      position:relative;
+      z-index:10;
+      width:calc(100% - 10px) !important;
+      gap:5px !important;
+    }
+
+    .chess-clock{
+      min-width:0 !important;
+      padding:6px 7px !important;
+    }
+
+    .chess-clock span{
+      min-width:0;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+
+    .chess-clock strong{
+      min-width:54px !important;
+      font-size:1.1rem !important;
+    }
+
+    .advantage-wrap{
+      width:calc(100% - 10px) !important;
+      margin-bottom:5px !important;
+    }
+
+    .wrap{
+      width:100% !important;
+      max-width:100% !important;
+      padding-left:2px !important;
+      padding-right:2px !important;
+      padding-bottom:calc(14px + var(--safe-bottom)) !important;
+      margin-top:3px !important;
+    }
+
+    .board-shell{
+      width:100% !important;
+      max-width:100% !important;
+      padding-left:2px !important;
+      padding-right:2px !important;
+      border-left-width:3px !important;
+      border-right-width:3px !important;
+    }
+
+    .board-area{
+      width:100% !important;
+      max-width:100% !important;
+      min-width:0 !important;
+    }
+
+    .board{
+      width:100% !important;
+      max-width:100% !important;
+      aspect-ratio:1 / 1 !important;
+      height:auto !important;
+      margin:0 auto !important;
+    }
+
+    .sq{
+      min-width:0 !important;
+      min-height:0 !important;
+      overflow:hidden !important;
+    }
+
+    .piece{
+      width:97% !important;
+      height:97% !important;
+      max-width:97% !important;
+      max-height:97% !important;
+    }
+
+    .piece-img{
+      width:100% !important;
+      height:100% !important;
+      object-fit:contain !important;
+    }
+
+    .board-topbar{
+      max-width:100% !important;
+      overflow:hidden !important;
+    }
+
+    .turn-badge{
+      max-width:calc(100vw - 28px) !important;
+      white-space:nowrap !important;
+      overflow:hidden !important;
+      text-overflow:ellipsis !important;
+    }
+
+    /* Panneaux plus courts sur iPhone */
+    .panel .section{
+      padding-top:7px !important;
+      padding-bottom:7px !important;
+    }
+
+    .player-card{
+      min-height:56px !important;
+    }
+
+    .captured{
+      min-height:35px !important;
+      max-height:68px !important;
+      overflow-y:auto !important;
+      -webkit-overflow-scrolling:touch;
+    }
+
+    .buttons{
+      position:relative;
+      z-index:5;
+    }
+
+    .buttons button{
+      min-height:48px !important;
+      border-radius:12px !important;
+    }
+
+    /* Overlays : utilisent la vraie hauteur visible de Safari */
+    .mode-overlay,
+    .camp-overlay,
+    .mate-overlay{
+      min-height:100svh !important;
+      height:100svh !important;
+      padding-top:max(8px,var(--safe-top)) !important;
+      padding-right:max(8px,var(--safe-right)) !important;
+      padding-bottom:max(8px,var(--safe-bottom)) !important;
+      padding-left:max(8px,var(--safe-left)) !important;
+      align-items:center !important;
+    }
+
+    .mode-card,
+    .camp-card,
+    .mate-panel{
+      max-height:calc(100svh - var(--safe-top) - var(--safe-bottom) - 16px) !important;
+      overflow:auto !important;
+      -webkit-overflow-scrolling:touch;
+    }
+
+    .mode-card{
+      width:100% !important;
+      border-radius:18px !important;
+    }
+
+    .mode-grid,
+    .ai-levels{
+      gap:7px !important;
+    }
+
+    .mode-choice,
+    .level-btn{
+      min-height:64px !important;
+    }
+
+    .mode-choice strong,
+    .level-btn strong{
+      font-size:.98rem !important;
+    }
+
+    .mode-choice span,
+    .level-btn span{
+      font-size:.7rem !important;
+    }
+
+    .camp-actions{
+      gap:7px !important;
+    }
+
+    .camp-btn{
+      min-height:50px !important;
+    }
+
+    .join-box{
+      gap:7px !important;
+    }
+
+    #roomCodeInput{
+      min-height:48px !important;
+      font-size:16px !important;
+    }
+
+    .access-code-box{
+      grid-template-columns:1fr !important;
+      text-align:center !important;
+    }
+
+    .access-code-box button{
+      width:100% !important;
+      min-height:44px !important;
+    }
+
+    /* écran victoire */
+    .mate-panel{
+      justify-content:center !important;
+    }
+
+    .mate-character img{
+      max-width:138px !important;
+      max-height:145px !important;
+    }
+
+    .mate-sign{
+      width:calc(100vw - var(--safe-left) - var(--safe-right) - 26px) !important;
+      max-width:390px !important;
+    }
+
+    .mate-close{
+      top:2px !important;
+      right:2px !important;
+    }
+
+    /* VFX plus raisonnables sur petit écran */
+    .shell-shot{
+      width:56px !important;
+      height:56px !important;
+    }
+
+    .capture-overlay{
+      transform:scale(.88);
+      transform-origin:center center;
+    }
+  }
+
+  /* iPhone SE / écrans étroits */
+  @media (max-width:375px) and (orientation:portrait){
+    .logo{
+      font-size:1rem !important;
+      padding:6px 10px !important;
+    }
+
+    .hud{
+      gap:4px !important;
+    }
+
+    .hud-card{
+      padding:6px 6px !important;
+    }
+
+    .chess-clock{
+      padding:5px 6px !important;
+    }
+
+    .chess-clock span{
+      font-size:.58rem !important;
+    }
+
+    .chess-clock strong{
+      min-width:49px !important;
+      font-size:1rem !important;
+    }
+
+    .sf-bars{
+      grid-template-columns:minmax(0,1fr) 36px minmax(0,1fr) !important;
+    }
+
+    .vs-badge{
+      width:28px !important;
+      height:28px !important;
+    }
+
+    .turn-badge{
+      font-size:.68rem !important;
+    }
+
+    .coord{
+      font-size:6px !important;
+    }
+
+    .mode-title,
+    .camp-title{
+      font-size:1.35rem !important;
+    }
+
+    .mate-character img{
+      max-width:120px !important;
+      max-height:126px !important;
+    }
+
+    .mate-sign-top{
+      font-size:1.25rem !important;
+    }
+
+    .mate-sign-name{
+      font-size:1.35rem !important;
+    }
+  }
+
+  /* iPhone Pro Max et grands iPhone */
+  @media (min-width:414px) and (max-width:480px) and (orientation:portrait){
+    .board-shell{
+      padding-left:5px !important;
+      padding-right:5px !important;
+    }
+
+    .board{
+      max-width:430px !important;
+      margin-left:auto !important;
+      margin-right:auto !important;
+    }
+
+    .mate-character img{
+      max-width:155px !important;
+      max-height:165px !important;
+    }
+  }
+
+  /* iPhone paysage */
+  @media (max-width:932px) and (max-height:460px) and (orientation:landscape){
+    body{
+      padding-left:max(2px,var(--safe-left)) !important;
+      padding-right:max(2px,var(--safe-right)) !important;
+      padding-bottom:max(2px,var(--safe-bottom)) !important;
+    }
+
+    .chess-clocks{
+      position:fixed !important;
+      top:max(2px,var(--safe-top)) !important;
+      left:50% !important;
+      transform:translateX(-50%) !important;
+      width:min(430px,56vw) !important;
+      z-index:100 !important;
+      margin:0 !important;
+    }
+
+    .wrap{
+      width:100% !important;
+      max-width:100% !important;
+      grid-template-columns:minmax(0,1fr) !important;
+      padding-left:max(2px,var(--safe-left)) !important;
+      padding-right:max(2px,var(--safe-right)) !important;
+      padding-bottom:max(2px,var(--safe-bottom)) !important;
+      margin-top:46px !important;
+    }
+
+    .board-shell{
+      width:100% !important;
+      max-width:100% !important;
+      padding:3px !important;
+    }
+
+    .board-area{
+      width:min(calc(100svh - 58px),72vw) !important;
+      max-width:100% !important;
+    }
+
+    .panel{
+      display:none !important;
+    }
+
+    .turn-badge{
+      font-size:.65rem !important;
+      padding:3px 7px !important;
+    }
+
+    .board-topbar{
+      margin-bottom:2px !important;
+    }
+
+    .mode-overlay,
+    .camp-overlay,
+    .mate-overlay{
+      align-items:flex-start !important;
+      padding-top:max(4px,var(--safe-top)) !important;
+    }
+
+    .mode-card,
+    .camp-card,
+    .mate-panel{
+      max-height:calc(100svh - var(--safe-top) - var(--safe-bottom) - 8px) !important;
+    }
+
+    .mode-card{
+      width:min(94vw,760px) !important;
+    }
+
+    .mode-title{
+      font-size:1.18rem !important;
+    }
+
+    .mode-sub{
+      font-size:.72rem !important;
+      margin-bottom:5px !important;
+    }
+
+    .mode-choice,
+    .level-btn{
+      min-height:58px !important;
+      padding:6px 7px !important;
+    }
+
+    .camp-title{
+      font-size:1.2rem !important;
+    }
+
+    .camp-sub{
+      margin-bottom:5px !important;
+    }
+
+    .camp-btn{
+      min-height:42px !important;
+    }
+  }
+
+  /* clavier iOS ouvert : évite que les formulaires de code soient cachés */
+  @supports (-webkit-touch-callout:none){
+    @media (max-width:600px){
+      .remotePanel:focus-within,
+      #remotePanel:focus-within{
+        scroll-margin-top:12px;
+      }
+
+      #roomCodeInput:focus{
+        position:relative;
+        z-index:2;
+      }
+    }
+  }
+
 </style>
 </head>
 <body>
