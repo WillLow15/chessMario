@@ -1,0 +1,18 @@
+ÉTAPES NETLIFY
+
+1. Utilise ce dossier comme racine de ton projet Netlify.
+2. Il faut un déploiement avec build/functions (Git ou Netlify CLI).
+   Un simple hébergement statique de index.html ne suffit pas pour la BDD.
+3. Dans Netlify :
+   Database > Create database
+   OU en ligne de commande :
+   netlify database init
+4. Redéploie le projet.
+5. Vérifie :
+   https://TON-SITE.netlify.app/api/health
+
+Résultat attendu :
+   {"ok":true,"database":"netlify-postgres"}
+
+Le schéma SQL se trouve dans :
+   netlify/database/migrations/0001_create_players.sql

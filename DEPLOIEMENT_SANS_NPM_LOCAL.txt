@@ -1,0 +1,80 @@
+MARIO CHESS - NETLIFY SANS "npm install" LOCAL
+
+OPTION LA PLUS SIMPLE
+=====================
+
+1. Mets CE DOSSIER COMPLET dans ton dépôt GitHub/GitLab.
+   Important : package.json, netlify.toml, public/ et netlify/ doivent
+   tous être à la racine du dépôt (ou définir ce dossier comme Base directory).
+
+2. Dans Netlify :
+   Site configuration > Build & deploy
+
+   Base directory :
+     laisse vide si ce dossier est la racine du dépôt.
+
+   Publish directory :
+     public
+
+   Functions directory :
+     netlify/functions
+
+3. Dans Netlify > Database :
+   crée/active Netlify Database.
+
+4. Lance "Trigger deploy" > "Deploy site".
+
+TU N'AS PAS BESOIN DE FAIRE "npm install" SUR TON PC.
+Netlify lit package.json et installe @netlify/database pendant le build.
+
+Vérification après déploiement :
+  https://TON-SITE.netlify.app/api/health
+
+Résultat attendu :
+  {"ok":true,"database":"netlify-postgres"}
+
+
+SI TU VEUX QUAND MÊME TESTER EN LOCAL
+=====================================
+
+Vérifie d'abord :
+  node -v
+
+Il faut Node 22.13.0 ou plus récent.
+
+Avec nvm :
+  nvm install 22.13.0
+  nvm use 22.13.0
+
+Puis seulement :
+  npm install
+
+Pour le CLI Netlify :
+  npm install -g netlify-cli
+  netlify login
+  netlify link
+  netlify database init
+  netlify dev
+
+
+ERREURS COURANTES
+=================
+
+npm: command not found
+  -> Node.js/npm n'est pas installé.
+
+EBADENGINE / Unsupported engine
+  -> Node est trop ancien. Passe à Node 22.13+.
+
+EACCES / permission denied
+  -> n'utilise pas sudo npm install. Installe Node avec nvm.
+
+ENOTFOUND / ETIMEDOUT / ECONNRESET
+  -> problème réseau, proxy, DNS ou accès à registry.npmjs.org.
+
+database feature not available
+  -> Netlify Database n'est pas disponible sur ton plan Netlify.
+
+IMPORTANT :
+Un simple "Deploy manually / drag & drop" de fichiers statiques ne suffit
+pas pour ce projet : il faut que Netlify construise les Functions.

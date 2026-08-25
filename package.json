@@ -1,0 +1,12 @@
+{
+  "name": "mario-chess-netlify",
+  "private": true,
+  "version": "50.0.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "dependencies": {
+    "@netlify/database": "2.0.0"
+  }
+}

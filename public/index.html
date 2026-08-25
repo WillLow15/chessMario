@@ -2673,6 +2673,7 @@
   <meta name="apple-mobile-web-app-title" content="Mario Chess">
   <meta name="mobile-web-app-capable" content="yes">
 
+  <meta name="mario-chess-build" content="netlify-db-v49">
 </head>
 <body>
 
@@ -2840,7 +2841,7 @@
 
     <button class="profile-save" id="saveProfileBtn" type="button">CONTINUER</button>
     <div class="profile-status" id="profileStatus">
-      Le profil sera enregistré dans la base de données.
+      Le profil sera enregistré dans la base de données en ligne.
     </div>
   </div>
 </div>
@@ -3135,7 +3136,7 @@ function showProfileOverlay(message=''){
   const status=$('profileStatus');
   if(input)input.value=playerName||loadStoredPlayerName();
   if(status){
-    status.textContent=message||'Le profil sera enregistré dans la base de données.';
+    status.textContent=message||'Le profil sera enregistré dans la base de données en ligne.';
     status.className='profile-status';
   }
   if(overlay){
@@ -3178,7 +3179,7 @@ async function submitPlayerProfile(){
   }catch(err){
     databaseAvailable=false;
     if(status){
-      status.textContent='BDD indisponible. Lance la version localhost avec server.py.';
+      status.textContent='BDD Netlify indisponible. Vérifie que Netlify Database est activée puis redéploie.';
       status.className='profile-status error';
     }
   }finally{
@@ -3199,7 +3200,7 @@ async function bootstrapPlayerProfile(){
     hideProfileOverlay();
   }catch(err){
     databaseAvailable=false;
-    showProfileOverlay('Impossible de joindre la BDD. Lance le serveur localhost.');
+    showProfileOverlay('Impossible de joindre la BDD Netlify. Vérifie Database et les Functions.');
   }
 }
 
