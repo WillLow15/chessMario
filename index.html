@@ -1866,6 +1866,198 @@
     }
   }
 
+
+  /* =========================================================
+     FIX BARRES DE VIE iPHONE — v37
+     ========================================================= */
+  @media (max-width:430px) and (orientation:portrait){
+    .advantage-wrap{
+      width:calc(100% - 10px) !important;
+      margin:5px auto 7px !important;
+      padding:8px 9px 9px !important;
+      overflow:visible !important;
+      border-radius:14px !important;
+    }
+
+    .sf-topline{
+      display:flex !important;
+      justify-content:center !important;
+      align-items:center !important;
+      min-height:22px !important;
+      margin:0 0 7px !important;
+    }
+
+    .sf-topline > span:first-child{
+      display:none !important;
+    }
+
+    #advantageText{
+      margin:0 !important;
+      max-width:100% !important;
+      padding:3px 9px !important;
+      font-size:.68rem !important;
+      line-height:1.1 !important;
+      white-space:nowrap !important;
+      overflow:hidden !important;
+      text-overflow:ellipsis !important;
+    }
+
+    .sf-bars{
+      display:grid !important;
+      grid-template-columns:minmax(0,1fr) !important;
+      grid-template-areas:
+        'white'
+        'center'
+        'black' !important;
+      gap:6px !important;
+      width:100% !important;
+      min-width:0 !important;
+    }
+
+    .sf-side{
+      width:100% !important;
+      min-width:0 !important;
+      gap:4px !important;
+    }
+
+    .white-side{grid-area:white !important}
+    .black-side{grid-area:black !important}
+
+    .sf-player-label,
+    .sf-player-label.right{
+      width:100% !important;
+      min-width:0 !important;
+      display:flex !important;
+      align-items:center !important;
+      font-size:.72rem !important;
+      line-height:1 !important;
+      gap:5px !important;
+      padding:0 3px !important;
+    }
+
+    .sf-player-label{justify-content:flex-start !important}
+    .sf-player-label.right{justify-content:flex-end !important}
+
+    .sf-player-label strong{
+      font-size:.78rem !important;
+    }
+
+    .dot-team{
+      flex:0 0 11px !important;
+      width:11px !important;
+      height:11px !important;
+    }
+
+    .sf-life{
+      position:relative !important;
+      display:block !important;
+      width:100% !important;
+      min-width:0 !important;
+      height:25px !important;
+      border-radius:999px !important;
+      overflow:hidden !important;
+      transform:translateZ(0);
+      -webkit-transform:translateZ(0);
+    }
+
+    .sf-life-frame{
+      position:absolute !important;
+      inset:0 !important;
+      border:2px solid #5d2710 !important;
+      border-radius:999px !important;
+      box-sizing:border-box !important;
+    }
+
+    .sf-life-bg{
+      position:absolute !important;
+      inset:3px !important;
+      border-radius:999px !important;
+      box-sizing:border-box !important;
+    }
+
+    .sf-life-fill{
+      position:absolute !important;
+      top:3px !important;
+      bottom:3px !important;
+      min-width:0 !important;
+      max-width:calc(100% - 6px) !important;
+      border-radius:999px !important;
+      box-sizing:border-box !important;
+      will-change:width !important;
+    }
+
+    .white-fill{
+      left:3px !important;
+      right:auto !important;
+    }
+
+    .black-fill{
+      right:3px !important;
+      left:auto !important;
+    }
+
+    .sf-life-gloss{
+      left:6px !important;
+      right:6px !important;
+      top:4px !important;
+      height:8px !important;
+      opacity:.75 !important;
+    }
+
+    .sf-center-badge{
+      grid-area:center !important;
+      min-width:0 !important;
+      width:100% !important;
+      display:flex !important;
+      flex-direction:row !important;
+      justify-content:center !important;
+      align-items:center !important;
+      gap:7px !important;
+      height:28px !important;
+    }
+
+    .vs-badge{
+      width:26px !important;
+      height:26px !important;
+      border-width:2px !important;
+      font-size:.52rem !important;
+      box-shadow:0 2px 0 rgba(97,38,12,.18) !important;
+    }
+
+    .adv-mini{
+      min-width:54px !important;
+      padding:2px 7px !important;
+      font-size:.64rem !important;
+      line-height:1.2 !important;
+      border-width:1px !important;
+    }
+  }
+
+  @media (max-width:375px) and (orientation:portrait){
+    .advantage-wrap{
+      padding-left:7px !important;
+      padding-right:7px !important;
+    }
+
+    .sf-life{
+      height:23px !important;
+    }
+
+    .sf-player-label,
+    .sf-player-label.right{
+      font-size:.66rem !important;
+    }
+
+    .sf-center-badge{
+      height:25px !important;
+    }
+
+    .vs-badge{
+      width:23px !important;
+      height:23px !important;
+    }
+  }
+
 </style>
 </head>
 <body>
