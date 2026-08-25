@@ -2058,6 +2058,53 @@
     }
   }
 
+
+  /* =========================================================
+     AUCUNE SÉLECTION / SURBRILLANCE — v39
+     ========================================================= */
+  html,
+  body,
+  body *,
+  body *::before,
+  body *::after{
+    -webkit-user-select:none !important;
+    -moz-user-select:none !important;
+    -ms-user-select:none !important;
+    user-select:none !important;
+    -webkit-touch-callout:none !important;
+  }
+
+  img,
+  svg,
+  canvas,
+  video{
+    -webkit-user-drag:none !important;
+    user-drag:none !important;
+    pointer-events:none;
+  }
+
+  button,
+  .sq,
+  .piece,
+  .piece-img,
+  .avatar,
+  .mode-choice,
+  .level-btn,
+  .camp-btn,
+  .mate-replay{
+    -webkit-tap-highlight-color:transparent !important;
+  }
+
+  ::selection{
+    background:transparent !important;
+    color:inherit !important;
+  }
+
+  ::-moz-selection{
+    background:transparent !important;
+    color:inherit !important;
+  }
+
 </style>
 
   <link rel="icon" type="image/png" sizes="512x512" href="favicon-mario-chess.png">
@@ -3030,6 +3077,14 @@ async function boot(){
     console.error(err);
   }
 }
+
+document.addEventListener('selectstart',e=>e.preventDefault(),{capture:true});
+document.addEventListener('dragstart',e=>e.preventDefault(),{capture:true});
+document.addEventListener('contextmenu',e=>{
+  const tag=(e.target&&e.target.tagName||'').toLowerCase();
+  if(tag==='img')e.preventDefault();
+},{capture:true});
+
 boot();
 </script>
 </body>
