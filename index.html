@@ -2311,6 +2311,198 @@
     .game-loader-progress{transition:none}
   }
 
+
+  /* =========================================================
+     SYSTÈME ELO — v43
+     ========================================================= */
+  .elo-hud{
+    width:min(760px,calc(100% - 18px));
+    margin:7px auto 5px;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 34px minmax(0,1fr);
+    align-items:center;
+    gap:7px;
+    padding:7px 9px;
+    border:3px solid #7a3215;
+    border-radius:16px;
+    background:linear-gradient(180deg,rgba(255,250,219,.97),rgba(255,222,139,.96));
+    box-shadow:0 5px 0 rgba(93,38,13,.14);
+    position:relative;
+    z-index:5;
+  }
+  .elo-player,.elo-opponent{
+    min-width:0;
+    display:grid;
+    grid-template-columns:auto auto 1fr;
+    align-items:center;
+    gap:7px;
+  }
+  .elo-opponent{text-align:right}
+  .elo-opponent .elo-label{order:3}
+  .elo-opponent strong{order:2}
+  .elo-opponent .elo-rank{order:1;justify-self:start}
+  .elo-label{
+    font-size:.66rem;
+    font-weight:1000;
+    color:#743315;
+    letter-spacing:.07em;
+    white-space:nowrap;
+  }
+  .elo-hud strong{
+    color:#b71c1c;
+    font-size:1.14rem;
+    font-weight:1000;
+    white-space:nowrap;
+    font-variant-numeric:tabular-nums;
+  }
+  .elo-rank{
+    justify-self:end;
+    max-width:100%;
+    padding:3px 7px;
+    border:2px solid rgba(94,46,15,.34);
+    border-radius:999px;
+    background:#fff7d2;
+    color:#613113;
+    font-size:.61rem;
+    line-height:1;
+    font-weight:1000;
+    letter-spacing:.04em;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .elo-versus{
+    width:30px;
+    height:30px;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    background:linear-gradient(#ef443d,#bd1717);
+    color:#fff2a6;
+    border:3px solid #76140f;
+    font-size:.8rem;
+    box-shadow:0 3px 0 rgba(90,16,10,.18);
+  }
+  .mode-elo-badge,.remote-elo-line{
+    width:max-content;
+    max-width:100%;
+    margin:0 auto 14px;
+    padding:6px 11px;
+    border:2px solid rgba(113,54,17,.32);
+    border-radius:999px;
+    background:rgba(255,255,255,.45);
+    color:#713611;
+    font-size:.76rem;
+    font-weight:850;
+    text-align:center;
+  }
+  .mode-elo-badge strong,.remote-elo-line strong{
+    color:#b71c1c;
+    font-weight:1000;
+  }
+  #remoteOpponentElo{
+    margin-left:5px;
+    color:#315eae;
+    font-weight:900;
+  }
+  .elo-result{
+    margin-top:11px;
+    padding:8px 13px;
+    display:grid;
+    grid-template-columns:auto auto;
+    gap:1px 8px;
+    align-items:center;
+    border:3px solid #77300f;
+    border-radius:14px;
+    background:linear-gradient(180deg,#fff9d5,#ffdf70);
+    color:#66300e;
+    box-shadow:0 4px 0 rgba(110,48,12,.13);
+  }
+  .elo-result.hidden{display:none}
+  .elo-result span{
+    font-size:.72rem;
+    font-weight:1000;
+    letter-spacing:.07em;
+  }
+  .elo-result strong{
+    font-size:1.28rem;
+    font-weight:1000;
+    color:#176b2e;
+  }
+  .elo-result.negative strong{color:#c3231c}
+  .elo-result.neutral strong{color:#6a4a24}
+  .elo-result small{
+    grid-column:1/-1;
+    font-size:.68rem;
+    font-weight:850;
+  }
+  .elo-toast{
+    position:fixed;
+    left:50%;
+    bottom:max(18px,calc(env(safe-area-inset-bottom) + 10px));
+    z-index:45000;
+    transform:translate(-50%,22px);
+    opacity:0;
+    pointer-events:none;
+    padding:10px 15px;
+    border:3px solid #6b2810;
+    border-radius:999px;
+    background:#fff6ce;
+    color:#632b10;
+    font-size:.82rem;
+    font-weight:1000;
+    box-shadow:0 8px 22px rgba(0,0,0,.22);
+    transition:opacity .2s ease,transform .2s ease;
+    white-space:nowrap;
+    max-width:calc(100vw - 20px);
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .elo-toast.show{
+    opacity:1;
+    transform:translate(-50%,0);
+  }
+
+  @media(max-width:600px){
+    .elo-hud{
+      width:calc(100% - 10px);
+      margin:5px auto 4px;
+      grid-template-columns:minmax(0,1fr) 27px minmax(0,1fr);
+      padding:6px 7px;
+      gap:4px;
+      border-width:2px;
+      border-radius:13px;
+    }
+    .elo-player,.elo-opponent{
+      grid-template-columns:1fr;
+      gap:1px;
+      text-align:center;
+    }
+    .elo-opponent .elo-label,.elo-opponent strong,.elo-opponent .elo-rank{
+      order:initial;
+      justify-self:center;
+    }
+    .elo-player .elo-rank{justify-self:center}
+    .elo-label{font-size:.54rem}
+    .elo-hud strong{font-size:.93rem}
+    .elo-rank{font-size:.5rem;padding:2px 5px;border-width:1px}
+    .elo-versus{width:25px;height:25px;border-width:2px;font-size:.64rem}
+    .mode-elo-badge,.remote-elo-line{
+      margin-bottom:9px;
+      padding:5px 8px;
+      font-size:.68rem;
+    }
+    .elo-result{
+      margin-top:8px;
+      padding:6px 10px;
+    }
+    .elo-result strong{font-size:1.08rem}
+  }
+
+  @media(max-width:1000px) and (max-height:520px) and (orientation:landscape){
+    .elo-hud{display:none !important}
+  }
+
 </style>
 
   <link rel="icon" type="image/png" sizes="512x512" href="favicon-mario-chess.png">
@@ -2388,6 +2580,19 @@
     <div class="hud-card"><h3>Pièces prises par les Blancs</h3><div class="big" id="whiteScore">0</div></div>
     <div class="hud-card"><h3>Pièces prises par les Noirs</h3><div class="big" id="blackScore">0</div></div>
   </div>
+  <div class="elo-hud" id="eloHud" aria-label="Classement ELO">
+    <div class="elo-player">
+      <span class="elo-label">TON ELO</span>
+      <strong id="playerEloValue">1200</strong>
+      <span class="elo-rank" id="playerEloRank">OR</span>
+    </div>
+    <div class="elo-versus">⚡</div>
+    <div class="elo-opponent">
+      <span class="elo-label" id="opponentEloLabel">MODE</span>
+      <strong id="opponentEloValue">NON CLASSÉ</strong>
+      <span class="elo-rank" id="opponentEloRank">LOCAL</span>
+    </div>
+  </div>
   <div class="chess-clocks" aria-label="Chronos de la partie">
     <div class="chess-clock white-clock" id="clockCardWhite">
       <span>BLANCS</span>
@@ -2458,6 +2663,11 @@
       <div class="mate-sign-top">ECHEC ET MAT</div>
       <div class="mate-sign-winner">WINNER :</div>
       <div class="mate-sign-name" id="mateWinnerName">BLANCS</div>
+      <div class="elo-result hidden" id="eloResult">
+        <span id="eloResultLabel">ELO</span>
+        <strong id="eloResultDelta">+0</strong>
+        <small id="eloResultDetail">1200 → 1200</small>
+      </div>
       <button class="mate-replay" id="mateReplayBtn" type="button">REJOUER</button>
     </div>
   </div>
@@ -2470,6 +2680,7 @@
     <div class="mode-panel" id="modeMainPanel">
       <div class="mode-title">Mode de jeu</div>
       <div class="mode-sub">Comment veux-tu jouer ?</div>
+      <div class="mode-elo-badge">Classement actuel : <strong id="modeEloValue">1200 ELO</strong> · <span id="modeEloRank">OR</span></div>
       <div class="mode-grid">
         <button class="mode-choice local" id="modeLocalBtn" type="button">
           <strong>2 joueurs</strong><span>Sur le même écran</span>
@@ -2488,9 +2699,9 @@
       <div class="mode-title">Niveau de l'IA</div>
       <div class="mode-sub">Choisis la difficulté.</div>
       <div class="ai-levels">
-        <button class="level-btn easy" data-ai-level="easy" type="button"><strong>Facile</strong><span>Coups plus aléatoires</span></button>
-        <button class="level-btn medium" data-ai-level="medium" type="button"><strong>Normal</strong><span>Privilégie les bons échanges</span></button>
-        <button class="level-btn hard" data-ai-level="hard" type="button"><strong>Difficile</strong><span>Anticipe plusieurs coups</span></button>
+        <button class="level-btn easy" data-ai-level="easy" type="button"><strong>Facile</strong><span>IA · ELO 800</span></button>
+        <button class="level-btn medium" data-ai-level="medium" type="button"><strong>Normal</strong><span>IA · ELO 1200</span></button>
+        <button class="level-btn hard" data-ai-level="hard" type="button"><strong>Difficile</strong><span>IA · ELO 1600</span></button>
       </div>
     </div>
 
@@ -2498,6 +2709,7 @@
       <button class="mode-back" id="remoteBackBtn" type="button">‹ Retour</button>
       <div class="mode-title">Jouer avec un ami</div>
       <div class="mode-sub">Le créateur joue les Blancs, l'ami qui rejoint joue les Noirs.</div>
+      <div class="remote-elo-line">Ton classement : <strong id="remoteOwnElo">1200 ELO</strong> <span id="remoteOpponentElo"></span></div>
 
       <div class="remote-box">
         <button class="remote-main-btn" id="createRoomBtn" type="button">Créer une partie</button>
@@ -2672,6 +2884,140 @@ let remoteReady=false;
 let remoteIsHost=false;
 let remoteRoomCode='';
 
+const ELO_STORAGE_KEY='marioChessPlayerEloV1';
+const ELO_START=1200;
+const ELO_K=32;
+const AI_ELO={easy:800,medium:1200,hard:1600};
+
+function loadPlayerElo(){
+  try{
+    const value=parseInt(localStorage.getItem(ELO_STORAGE_KEY),10);
+    if(Number.isFinite(value)&&value>=100&&value<=4000)return value;
+  }catch(e){}
+  return ELO_START;
+}
+function savePlayerElo(){
+  try{localStorage.setItem(ELO_STORAGE_KEY,String(playerElo));}catch(e){}
+}
+function eloRankName(value){
+  value=Number(value)||0;
+  if(value<800)return 'BRONZE';
+  if(value<1000)return 'ARGENT';
+  if(value<1200)return 'OR';
+  if(value<1400)return 'PLATINE';
+  if(value<1600)return 'DIAMANT';
+  if(value<1800)return 'MASTER';
+  if(value<2000)return 'GRAND MASTER';
+  return 'LÉGENDE';
+}
+let playerElo=loadPlayerElo();
+let opponentElo=null;
+let eloSettled=false;
+let eloLastChange=null;
+let eloToastTimer=null;
+
+function currentOpponentElo(){
+  if(gameMode==='ai')return AI_ELO[aiLevel]||ELO_START;
+  if(gameMode==='remote')return Number(opponentElo)||ELO_START;
+  return null;
+}
+function renderElo(){
+  const playerValue=$('playerEloValue');
+  const playerRank=$('playerEloRank');
+  const modeValue=$('modeEloValue');
+  const modeRank=$('modeEloRank');
+  const remoteOwn=$('remoteOwnElo');
+  if(playerValue)playerValue.textContent=playerElo;
+  if(playerRank)playerRank.textContent=eloRankName(playerElo);
+  if(modeValue)modeValue.textContent=playerElo+' ELO';
+  if(modeRank)modeRank.textContent=eloRankName(playerElo);
+  if(remoteOwn)remoteOwn.textContent=playerElo+' ELO';
+
+  const label=$('opponentEloLabel');
+  const value=$('opponentEloValue');
+  const rank=$('opponentEloRank');
+  const remoteOpp=$('remoteOpponentElo');
+
+  if(gameMode==='ai'){
+    const opp=currentOpponentElo();
+    if(label)label.textContent='IA '+aiLevel.toUpperCase();
+    if(value)value.textContent=opp;
+    if(rank)rank.textContent=eloRankName(opp);
+    if(remoteOpp)remoteOpp.textContent='';
+  }else if(gameMode==='remote'){
+    const known=Number(opponentElo);
+    if(label)label.textContent='ADVERSAIRE';
+    if(value)value.textContent=known?known:'…';
+    if(rank)rank.textContent=known?eloRankName(known):'EN ATTENTE';
+    if(remoteOpp)remoteOpp.textContent=known?'· Adversaire : '+known+' ELO':'· ELO adverse en attente';
+  }else{
+    if(label)label.textContent='MODE';
+    if(value)value.textContent='NON CLASSÉ';
+    if(rank)rank.textContent='LOCAL';
+    if(remoteOpp)remoteOpp.textContent='';
+  }
+}
+function showEloToast(text){
+  const toast=$('eloToast');
+  const label=$('eloToastText');
+  if(!toast||!label)return;
+  label.textContent=text;
+  toast.classList.add('show');
+  if(eloToastTimer)clearTimeout(eloToastTimer);
+  eloToastTimer=setTimeout(()=>toast.classList.remove('show'),3200);
+}
+function clearEloResult(){
+  const box=$('eloResult');
+  if(box){
+    box.classList.add('hidden');
+    box.classList.remove('negative','neutral');
+  }
+}
+function showEloResult(change,oldRating,newRating){
+  const box=$('eloResult');
+  const delta=$('eloResultDelta');
+  const detail=$('eloResultDetail');
+  if(!box||!delta||!detail)return;
+  box.classList.remove('hidden','negative','neutral');
+  if(change<0)box.classList.add('negative');
+  if(change===0)box.classList.add('neutral');
+  delta.textContent=(change>0?'+':'')+change;
+  detail.textContent=oldRating+' → '+newRating+' · '+eloRankName(newRating);
+}
+function settleElo(score,reason=''){
+  if(eloSettled)return null;
+  eloSettled=true;
+
+  if(gameMode!=='ai'&&gameMode!=='remote'){
+    eloLastChange=null;
+    renderElo();
+    return null;
+  }
+
+  const opponent=Number(currentOpponentElo())||ELO_START;
+  const oldRating=playerElo;
+  const expected=1/(1+Math.pow(10,(opponent-oldRating)/400));
+  const raw=ELO_K*(score-expected);
+  const change=Math.round(raw);
+  playerElo=Math.max(100,Math.min(4000,oldRating+change));
+  savePlayerElo();
+
+  eloLastChange={change,oldRating,newRating:playerElo,opponent,score,reason};
+  renderElo();
+  showEloResult(change,oldRating,playerElo);
+
+  const sign=change>0?'+':'';
+  const resultText=score===1?'Victoire':score===0?'Défaite':'Nulle';
+  showEloToast(resultText+' · ELO '+sign+change+' · '+playerElo);
+  return eloLastChange;
+}
+function settleEloFromWinner(winnerName,reason=''){
+  if(gameMode!=='ai'&&gameMode!=='remote')return null;
+  const winnerColor=String(winnerName).toLowerCase().startsWith('blanc')?'w':'b';
+  return settleElo(winnerColor===playerCamp?1:0,reason);
+}
+
+
 function showModeOverlay(panel='main'){
   const overlay=$('modeOverlay');
   if(!overlay)return;
@@ -2698,8 +3044,12 @@ function prepareModeChoice(){
   stopClock();
   hideCampOverlay();
   hideMateOverlay();
+  clearEloResult();
   playerCamp=null;
   gameMode=null;
+  opponentElo=null;
+  eloSettled=false;
+  eloLastChange=null;
   aiThinking=false;
   if(aiTimer){clearTimeout(aiTimer);aiTimer=null;}
   clockState={w:INITIAL_CLOCK_MS,b:INITIAL_CLOCK_MS};
@@ -2707,16 +3057,25 @@ function prepareModeChoice(){
   clockLastTick=0;
   clockRunning=false;
   renderClocks();
+  renderElo();
   showModeOverlay('main');
 }
 function startLocalMode(){
   gameMode='local';
+  opponentElo=null;
+  eloSettled=false;
+  clearEloResult();
+  renderElo();
   hideModeOverlay();
   prepareCampChoice();
 }
 function startAIMode(level){
   gameMode='ai';
   aiLevel=level;
+  opponentElo=AI_ELO[level]||ELO_START;
+  eloSettled=false;
+  clearEloResult();
+  renderElo();
   hideModeOverlay();
   prepareCampChoice();
 }
@@ -2748,6 +3107,10 @@ function loadPeerJS(){
 function resetBoardForRemote(){
   hideMateOverlay();
   hideCampOverlay();
+  clearEloResult();
+  opponentElo=null;
+  eloSettled=false;
+  eloLastChange=null;
   chess.reset();
   selected=null;
   targets=[];
@@ -2758,6 +3121,7 @@ function resetBoardForRemote(){
   timeoutWinner=null;
   clockLastTick=0;
   clockRunning=false;
+  renderElo();
   renderAll();
 }
 function attachPeerErrors(p){
@@ -2786,7 +3150,8 @@ function setupRemoteConnection(conn,isHost){
         fen:chess.fen(),
         hostCamp:'w',
         guestCamp:'b',
-        clocks:{w:clockState.w,b:clockState.b}
+        clocks:{w:clockState.w,b:clockState.b},
+        elo:playerElo
       });
       hideModeOverlay();
       resetClock();
@@ -2800,6 +3165,9 @@ function setupRemoteConnection(conn,isHost){
       chess.load(data.fen);
       playerCamp=data.guestCamp||'b';
       flipped=playerCamp==='b';
+      opponentElo=Number(data.elo)||ELO_START;
+      if(conn.open)conn.send({type:'elo',elo:playerElo});
+      renderElo();
       clockState={
         w:Number(data.clocks&&data.clocks.w)||INITIAL_CLOCK_MS,
         b:Number(data.clocks&&data.clocks.b)||INITIAL_CLOCK_MS
@@ -2813,6 +3181,11 @@ function setupRemoteConnection(conn,isHost){
       renderAll();
       return;
     }
+    if(data.type==='elo'){
+      opponentElo=Number(data.elo)||ELO_START;
+      renderElo();
+      return;
+    }
     if(data.type==='move'){
       if(data.clocks){
         clockState.w=Number(data.clocks.w);
@@ -2823,14 +3196,12 @@ function setupRemoteConnection(conn,isHost){
       playMove(data.from,data.to,'remote');
       return;
     }
-    if(data.type==='timeout'){
+        if(data.type==='timeout'){
       timeoutWinner=data.winner;
       clockRunning=false;
       renderAll();
       showTimeWinner(timeoutWinner);
-    if(gameMode==='remote'&&peerConn&&peerConn.open){
-      peerConn.send({type:'timeout',winner:timeoutWinner});
-    }
+      return;
     }
   });
 
@@ -3025,6 +3396,10 @@ function prepareCampChoice(){playerCamp=null;timeoutWinner=null;clockState={w:IN
 function chooseCamp(camp){
   playerCamp=camp==='random'?(Math.random()<0.5?'w':'b'):camp;
   flipped=playerCamp==='b';
+  eloSettled=false;
+  eloLastChange=null;
+  clearEloResult();
+  if(gameMode==='ai')opponentElo=AI_ELO[aiLevel]||ELO_START;
   hideCampOverlay();
   resetClock();
   renderAll();
@@ -3033,8 +3408,44 @@ function chooseCamp(camp){
 function squareOrder(){const files=flipped?['h','g','f','e','d','c','b','a']:['a','b','c','d','e','f','g','h'];const ranks=flipped?['1','2','3','4','5','6','7','8']:['8','7','6','5','4','3','2','1'];const arr=[];for(const r of ranks){for(const f of files)arr.push(f+r);}return arr;}
 function coordLabels(){return {files:flipped?['h','g','f','e','d','c','b','a']:['a','b','c','d','e','f','g','h'],ranks:flipped?['1','2','3','4','5','6','7','8']:['8','7','6','5','4','3','2','1']};}
 function renderBoard(){const board=$('board');board.innerHTML='';const order=squareOrder();const labels=coordLabels();order.forEach((sq,index)=>{const fileIndex=sq.charCodeAt(0)-97;const rank=Number(sq[1]);const isLight=(fileIndex+rank)%2===1;const btn=document.createElement('div');btn.className='sq '+(isLight?'light':'dark');btn.dataset.sq=sq;if(selected===sq)btn.classList.add('selected');if(lastMove&&(lastMove.from===sq||lastMove.to===sq))btn.classList.add('last');const piece=chess.get(sq);if(piece&&piece.type==='k'&&piece.color===chess.turn()&&chess.in_check())btn.classList.add('check');const possible=targets.find(m=>m.to===sq);if(possible){const hint=document.createElement('span');hint.className=piece?'ring':'dot';btn.appendChild(hint);}if(piece){btn.appendChild(makePieceEl(piece.color,piece.type));}const c=index%8;const r=Math.floor(index/8);if(r===7){const x=document.createElement('span');x.className='coord file';x.textContent=labels.files[c];btn.appendChild(x);}if(c===0){const x=document.createElement('span');x.className='coord rank';x.textContent=labels.ranks[r];btn.appendChild(x);}btn.addEventListener('click',()=>onSquareClick(sq));board.appendChild(btn);});}
-function showMateOverlay(winner){const overlay=$('mateOverlay');const name=$('mateWinnerName');const img=$('mateCharacter');if(name)name.textContent=winner.toUpperCase();if(img)img.src=MATE_CHARACTER_SRC;if(overlay){overlay.classList.add('show');overlay.setAttribute('aria-hidden','false');}}
+function showMateOverlay(winner){
+  const overlay=$('mateOverlay');
+  const name=$('mateWinnerName');
+  const img=$('mateCharacter');
+  const title=document.querySelector('.mate-sign-top');
+  const winnerLabel=document.querySelector('.mate-sign-winner');
+  if(title)title.textContent='ECHEC ET MAT';
+  if(winnerLabel)winnerLabel.textContent='WINNER :';
+  if(name)name.textContent=winner.toUpperCase();
+  if(img)img.src=MATE_CHARACTER_SRC;
+  settleEloFromWinner(winner,'checkmate');
+  if(overlay){
+    overlay.classList.add('show');
+    overlay.setAttribute('aria-hidden','false');
+  }
+}
 function hideMateOverlay(){const overlay=$('mateOverlay');if(overlay){overlay.classList.remove('show');overlay.setAttribute('aria-hidden','true');}}
+
+function showDrawOverlay(){
+  const overlay=$('mateOverlay');
+  const name=$('mateWinnerName');
+  const img=$('mateCharacter');
+  const title=document.querySelector('.mate-sign-top');
+  const winnerLabel=document.querySelector('.mate-sign-winner');
+
+  if(title)title.textContent='PARTIE NULLE';
+  if(winnerLabel)winnerLabel.textContent='RÉSULTAT :';
+  if(name)name.textContent='ÉGALITÉ';
+  if(img)img.src=MATE_CHARACTER_SRC;
+
+  settleElo(.5,'draw');
+
+  if(overlay){
+    overlay.classList.add('show');
+    overlay.setAttribute('aria-hidden','false');
+  }
+}
+
 
 const INITIAL_CLOCK_MS=10*60*1000;
 let clockState={w:INITIAL_CLOCK_MS,b:INITIAL_CLOCK_MS};
@@ -3072,9 +3483,12 @@ function showTimeWinner(winner){
   const name=$('mateWinnerName');
   const img=$('mateCharacter');
   const title=document.querySelector('.mate-sign-top');
+  const winnerLabel=document.querySelector('.mate-sign-winner');
+  if(winnerLabel)winnerLabel.textContent='WINNER :';
   if(title)title.textContent='TEMPS ÉCOULÉ';
   if(name)name.textContent=winner.toUpperCase();
   if(img)img.src=MATE_CHARACTER_SRC;
+  settleEloFromWinner(winner,'timeout');
   if(overlay){
     overlay.classList.add('show');
     overlay.setAttribute('aria-hidden','false');
@@ -3101,6 +3515,9 @@ function commitClock(){
     timeoutWinner=active==='w'?'Noirs':'Blancs';
     clockRunning=false;
     renderClocks();
+    if(gameMode==='remote'&&peerConn&&peerConn.open){
+      peerConn.send({type:'timeout',winner:timeoutWinner,clocks:{w:clockState.w,b:clockState.b}});
+    }
     showTimeWinner(timeoutWinner);
   }
 }
@@ -3148,7 +3565,7 @@ function renderStatus(){
     badge='Partie nulle';
     status='Partie nulle.';
     stopClock();
-    hideMateOverlay();
+    showDrawOverlay();
   }else{
     hideMateOverlay();
     if(chess.in_check()){
@@ -3171,7 +3588,7 @@ function renderCaptured(){const whiteBox=$('capturedByWhite');const blackBox=$('
 function renderAdvantage(whiteMat,blackMat){const totalMat=39;const whiteRemaining=Math.max(0,totalMat-blackMat);const blackRemaining=Math.max(0,totalMat-whiteMat);const whitePct=Math.max(0,Math.min(100,(whiteRemaining/totalMat)*100));const blackPct=Math.max(0,Math.min(100,(blackRemaining/totalMat)*100));const w=$('advWhite'), b=$('advBlack');w.style.width=whitePct+'%';b.style.width=blackPct+'%';w.classList.toggle('hot', whiteRemaining>=blackRemaining && (whiteRemaining!==blackRemaining || whiteRemaining===totalMat));b.classList.toggle('hot', blackRemaining>=whiteRemaining && (blackRemaining!==whiteRemaining || blackRemaining===totalMat));w.classList.toggle('strong', whiteRemaining>=28);b.classList.toggle('strong', blackRemaining>=28);w.classList.toggle('danger', whiteRemaining<=14);b.classList.toggle('danger', blackRemaining<=14);$('whiteAdvNum').textContent=whiteRemaining;$('blackAdvNum').textContent=blackRemaining;let text='Début de partie';if(whiteRemaining===blackRemaining){text = whiteRemaining===totalMat ? 'Début de partie' : 'Équilibre';}else if(whiteRemaining>blackRemaining){text='Blancs résistent mieux';}else{text='Noirs résistent mieux';}$('advantageText').textContent=text;$('advantageValue').textContent=whiteRemaining+' - '+blackRemaining;}
 function renderMoves(){const box=$('movesBox');box.innerHTML='';const hist=chess.history();if(!hist.length){const e=document.createElement('div');e.className='sub';e.textContent='Aucun coup pour le moment.';box.appendChild(e);return;}for(let i=0;i<hist.length;i+=2){const row=document.createElement('div');row.className='move-row';row.innerHTML=`<div><strong>${Math.floor(i/2)+1}.</strong></div><div>${hist[i]||''}</div><div>${hist[i+1]||''}</div>`;box.appendChild(row);}box.scrollTop=box.scrollHeight;}
 function renderHints(){const box=$('hintWhite');box.innerHTML='';const list=chess.turn()==='w'?chess.moves():[];const chosen=list.slice(0,8);if(!chosen.length){const e=document.createElement('span');e.className='hint-chip';e.textContent='Attends le tour des Blancs';box.appendChild(e);return;}chosen.forEach(m=>{const el=document.createElement('span');el.className='hint-chip';el.textContent=m;box.appendChild(el);});}
-function renderAll(){renderBoard();renderStatus();renderCaptured();renderMoves();renderHints();}
+function renderAll(){renderBoard();renderStatus();renderCaptured();renderMoves();renderHints();renderElo();}
 function onSquareClick(sq){
   if(chess.game_over())return;
   if($('modeOverlay')&&$('modeOverlay').classList.contains('show'))return;
@@ -3403,6 +3820,7 @@ async function boot(){
 
     prepareModeChoice();
     renderAll();
+    renderElo();
 
     setLoaderProgress(84,'Finalisation des images…');
     await waitForRenderedImages((done,total)=>{
@@ -3435,5 +3853,10 @@ document.addEventListener('contextmenu',e=>{
 
 boot();
 </script>
+
+<div class="elo-toast" id="eloToast" aria-live="polite">
+  <span id="eloToastText">ELO mis à jour</span>
+</div>
+
 </body>
 </html>
