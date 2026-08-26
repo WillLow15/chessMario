@@ -20,7 +20,7 @@
   <meta name="apple-mobile-web-app-title" content="Mario Chess">
   <meta name="mobile-web-app-capable" content="yes">
 
-  <meta name="mario-chess-build" content="netlify-supabase-v70">
+  <meta name="mario-chess-build" content="netlify-supabase-v70-no-hud">
 
   <link rel="preload" href="/fonts/nunito-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/outfit-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -79,12 +79,6 @@
 
   <div class="titlebar">
     <div class="logo"><span class="red">Mario</span> <span class="green">Bros</span> <span class="yellow">Chess</span></div>
-  </div>
-  <div class="hud">
-    <div class="hud-card"><h3>Tour</h3><div class="big" id="turnText">Blancs</div></div>
-    <div class="hud-card"><h3>État</h3><div class="big" id="stateText">Partie en cours</div></div>
-    <div class="hud-card"><h3>Pièces prises par les Blancs</h3><div class="big" id="whiteScore">0</div></div>
-    <div class="hud-card"><h3>Pièces prises par les Noirs</h3><div class="big" id="blackScore">0</div></div>
   </div>
   <div class="chess-clocks" aria-label="Chronos de la partie">
     <div class="chess-clock white-clock" id="clockCardWhite">
@@ -2397,14 +2391,16 @@ function renderStatus(){
     }
   }
 
-  $('turnText').textContent=turn;
+  const turnTextEl=$('turnText');
+  if(turnTextEl)turnTextEl.textContent=turn;
   $('turnBadge').textContent=badge;
-  $('stateText').textContent=state;
+  const stateTextEl=$('stateText');
+  if(stateTextEl)stateTextEl.textContent=state;
   const statusEl=$('status');
   if(statusEl)statusEl.textContent=status;
   renderClocks();
 }
-function renderCaptured(){const whiteBox=$('capturedByWhite');const blackBox=$('capturedByBlack');whiteBox.innerHTML='';blackBox.innerHTML='';if(!capturedByWhite.length){const e=document.createElement('div');e.className='sub';e.textContent='Aucune';whiteBox.appendChild(e);}else{for(const p of capturedByWhite){const el=document.createElement('div');el.className='cap';el.appendChild(makePieceEl('b',p));whiteBox.appendChild(el);}}if(!capturedByBlack.length){const e=document.createElement('div');e.className='sub';e.textContent='Aucune';blackBox.appendChild(e);}else{for(const p of capturedByBlack){const el=document.createElement('div');el.className='cap';el.appendChild(makePieceEl('w',p));blackBox.appendChild(el);}}const whiteMat=capturedByWhite.reduce((s,p)=>s+(PIECE_VALUE[p]||0),0);const blackMat=capturedByBlack.reduce((s,p)=>s+(PIECE_VALUE[p]||0),0);$('whiteScore').textContent=whiteMat;$('blackScore').textContent=blackMat;renderAdvantage(whiteMat,blackMat);} 
+function renderCaptured(){const whiteBox=$('capturedByWhite');const blackBox=$('capturedByBlack');whiteBox.innerHTML='';blackBox.innerHTML='';if(!capturedByWhite.length){const e=document.createElement('div');e.className='sub';e.textContent='Aucune';whiteBox.appendChild(e);}else{for(const p of capturedByWhite){const el=document.createElement('div');el.className='cap';el.appendChild(makePieceEl('b',p));whiteBox.appendChild(el);}}if(!capturedByBlack.length){const e=document.createElement('div');e.className='sub';e.textContent='Aucune';blackBox.appendChild(e);}else{for(const p of capturedByBlack){const el=document.createElement('div');el.className='cap';el.appendChild(makePieceEl('w',p));blackBox.appendChild(el);}}const whiteMat=capturedByWhite.reduce((s,p)=>s+(PIECE_VALUE[p]||0),0);const blackMat=capturedByBlack.reduce((s,p)=>s+(PIECE_VALUE[p]||0),0);const whiteScoreEl=$('whiteScore');if(whiteScoreEl)whiteScoreEl.textContent=whiteMat;const blackScoreEl=$('blackScore');if(blackScoreEl)blackScoreEl.textContent=blackMat;renderAdvantage(whiteMat,blackMat);} 
 function renderAdvantage(whiteMat,blackMat){const totalMat=39;const whiteRemaining=Math.max(0,totalMat-blackMat);const blackRemaining=Math.max(0,totalMat-whiteMat);const whitePct=Math.max(0,Math.min(100,(whiteRemaining/totalMat)*100));const blackPct=Math.max(0,Math.min(100,(blackRemaining/totalMat)*100));const w=$('advWhite'), b=$('advBlack');w.style.width=whitePct+'%';b.style.width=blackPct+'%';w.classList.toggle('hot', whiteRemaining>=blackRemaining && (whiteRemaining!==blackRemaining || whiteRemaining===totalMat));b.classList.toggle('hot', blackRemaining>=whiteRemaining && (blackRemaining!==whiteRemaining || blackRemaining===totalMat));w.classList.toggle('strong', whiteRemaining>=28);b.classList.toggle('strong', blackRemaining>=28);w.classList.toggle('danger', whiteRemaining<=14);b.classList.toggle('danger', blackRemaining<=14);$('whiteAdvNum').textContent=whiteRemaining;$('blackAdvNum').textContent=blackRemaining;let text='Début de partie';if(whiteRemaining===blackRemaining){text = whiteRemaining===totalMat ? 'Début de partie' : 'Équilibre';}else if(whiteRemaining>blackRemaining){text='Blancs résistent mieux';}else{text='Noirs résistent mieux';}$('advantageText').textContent=text;$('advantageValue').textContent=whiteRemaining+' - '+blackRemaining;}
 function renderMoves(){const box=$('movesBox');box.innerHTML='';const hist=chess.history();if(!hist.length){const e=document.createElement('div');e.className='sub';e.textContent='Aucun coup pour le moment.';box.appendChild(e);return;}for(let i=0;i<hist.length;i+=2){const row=document.createElement('div');row.className='move-row';row.innerHTML=`<div><strong>${Math.floor(i/2)+1}.</strong></div><div>${hist[i]||''}</div><div>${hist[i+1]||''}</div>`;box.appendChild(row);}box.scrollTop=box.scrollHeight;}
 function renderHints(){const box=$('hintWhite');box.innerHTML='';const list=chess.turn()==='w'?chess.moves():[];const chosen=list.slice(0,8);if(!chosen.length){const e=document.createElement('span');e.className='hint-chip';e.textContent='Attends le tour des Blancs';box.appendChild(e);return;}chosen.forEach(m=>{const el=document.createElement('span');el.className='hint-chip';el.textContent=m;box.appendChild(el);});}
