@@ -4579,3 +4579,35 @@ body {
   .correspondence-join-row { grid-template-columns:1fr; }
   .correspondence-join-row button { width:100%; }
 }
+
+/* =========================================================
+   TITRE PRINCIPAL — FORMAT PLUS COMPACT
+   ========================================================= */
+.logo {
+  padding: 8px 18px !important;
+  border-width: 3px !important;
+  border-radius: 15px !important;
+  font-size: clamp(.95rem, 2.2vw, 1.65rem) !important;
+}
+
+@media (max-width: 600px) {
+  .titlebar {
+    padding-top: 6px !important;
+    padding-bottom: 2px !important;
+  }
+
+  .logo {
+    padding: 5px 10px !important;
+    border-width: 2px !important;
+    border-radius: 12px !important;
+    font-size: clamp(.82rem, 4.2vw, 1.05rem) !important;
+  }
+}
+
+@media (max-width: 375px) and (orientation: portrait) {
+  .logo {
+    padding: 4px 9px !important;
+    font-size: .82rem !important;
+  }
+}
+
