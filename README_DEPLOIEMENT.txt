@@ -117,3 +117,12 @@ V64 - BARRES DE VIE : ESPACEMENT + FINESSE
 - Jauges légèrement plus fines.
 - Petit margin-top ajouté.
 - Petit margin-bottom ajouté.
+
+
+V65 - BARRES DE VIE FORCÉES
+----------------------------
+- Largeur forcée à ~78-82% sur desktop.
+- Épaisseur forcée à 6 px.
+- Bordure réduite à 1 px.
+- Alignement blanc à gauche / noir à droite.
+- Overrides avec sélecteurs plus spécifiques + !important.

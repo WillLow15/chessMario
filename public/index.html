@@ -3442,6 +3442,88 @@
     }
   }
 
+
+  /* =========================================================
+     V65 — FORCE BARRES DE VIE PLUS COURTES ET PLUS FINES
+     ========================================================= */
+
+  /* Réduit réellement la place horizontale disponible */
+  .sf-side{
+    display:flex !important;
+    flex-direction:column !important;
+  }
+
+  .sf-side.white-side{
+    align-items:flex-start !important;
+  }
+
+  .sf-side.black-side{
+    align-items:flex-end !important;
+  }
+
+  /* Force la longueur et l'épaisseur des jauges */
+  .advantage-wrap.sf-wrap .sf-bars .sf-side .sf-bar{
+    width:82% !important;
+    max-width:82% !important;
+    min-width:0 !important;
+
+    height:6px !important;
+    min-height:6px !important;
+    max-height:6px !important;
+
+    margin-top:4px !important;
+    margin-bottom:4px !important;
+
+    padding:0 !important;
+    border-width:1px !important;
+    border-radius:999px !important;
+
+    flex:none !important;
+    box-sizing:border-box !important;
+  }
+
+  /* La couleur intérieure doit suivre la nouvelle épaisseur */
+  .advantage-wrap.sf-wrap .sf-bars .sf-side .sf-bar .sf-fill{
+    top:1px !important;
+    bottom:1px !important;
+    height:auto !important;
+    border-radius:999px !important;
+  }
+
+  /* Sur desktop large : encore un peu moins longues */
+  @media(min-width:1000px){
+    .advantage-wrap.sf-wrap .sf-bars .sf-side .sf-bar{
+      width:78% !important;
+      max-width:78% !important;
+    }
+  }
+
+  /* Mobile : reste compacte mais suffisamment visible */
+  @media(max-width:700px){
+    .advantage-wrap.sf-wrap .sf-bars .sf-side .sf-bar{
+      width:84% !important;
+      max-width:84% !important;
+
+      height:5px !important;
+      min-height:5px !important;
+      max-height:5px !important;
+
+      margin-top:3px !important;
+      margin-bottom:3px !important;
+      border-width:1px !important;
+    }
+  }
+
+  @media(max-width:430px){
+    .advantage-wrap.sf-wrap .sf-bars .sf-side .sf-bar{
+      width:86% !important;
+      max-width:86% !important;
+      height:5px !important;
+      min-height:5px !important;
+      max-height:5px !important;
+    }
+  }
+
 </style>
 
   <link rel="icon" type="image/png" sizes="512x512" href="favicon-mario-chess.png">
@@ -3458,7 +3540,7 @@
   <meta name="apple-mobile-web-app-title" content="Mario Chess">
   <meta name="mobile-web-app-capable" content="yes">
 
-  <meta name="mario-chess-build" content="netlify-supabase-v64">
+  <meta name="mario-chess-build" content="netlify-supabase-v65">
 
   <link rel="preload" href="/fonts/nunito-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/outfit-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
