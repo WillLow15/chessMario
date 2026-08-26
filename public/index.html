@@ -2673,7 +2673,7 @@
   <meta name="apple-mobile-web-app-title" content="Mario Chess">
   <meta name="mobile-web-app-capable" content="yes">
 
-  <meta name="mario-chess-build" content="netlify-db-v49">
+  <meta name="mario-chess-build" content="netlify-supabase-v51">
 </head>
 <body>
 
@@ -3179,7 +3179,7 @@ async function submitPlayerProfile(){
   }catch(err){
     databaseAvailable=false;
     if(status){
-      status.textContent='BDD Netlify indisponible. Vérifie que Netlify Database est activée puis redéploie.';
+      status.textContent='BDD en ligne indisponible. Vérifie Supabase et les variables Netlify.';
       status.className='profile-status error';
     }
   }finally{
@@ -3200,7 +3200,7 @@ async function bootstrapPlayerProfile(){
     hideProfileOverlay();
   }catch(err){
     databaseAvailable=false;
-    showProfileOverlay('Impossible de joindre la BDD Netlify. Vérifie Database et les Functions.');
+    showProfileOverlay('Impossible de joindre la BDD en ligne. Vérifie Supabase et les Functions.');
   }
 }
 

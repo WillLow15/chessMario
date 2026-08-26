@@ -1,27 +1,14 @@
-import { db, json, serializePlayer } from "../lib/db.mjs";
+import { json, supabase, serializePlayer } from "../lib/supabase.mjs";
 
 export default async function handler(req) {
-  if (req.method !== "GET") {
-    return json({ error: "Méthode non autorisée." }, 405);
-  }
-
+  if (req.method !== "GET") return json({ error: "Méthode non autorisée." }, 405);
   try {
-    const rows = await db.sql`
-      SELECT id, name, elo, created_at, updated_at
-      FROM players
-      ORDER BY elo DESC, updated_at ASC
-      LIMIT 100
-    `;
-
-    return json({
-      players: rows.map(serializePlayer),
-    });
+    const rows = await supabase(
+      "players?select=id,name,elo,created_at,updated_at&order=elo.desc,updated_at.asc&limit=100"
+    );
+    return json({ players: (rows || []).map(serializePlayer) });
   } catch (error) {
-    console.error("leaderboard:", error);
-    return json({ error: "Erreur de base de données." }, 500);
+    return json({ error: "Erreur BDD Supabase : " + error.message }, 500);
   }
 }
-
-export const config = {
-  path: "/api/leaderboard",
-};
+export const config = { path: "/api/leaderboard" };
