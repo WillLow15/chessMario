@@ -1,0 +1,12 @@
+V58 - CORRECTION NETLIFY.TOML
+
+La v57 contenait une ligne de build invalide dans netlify.toml :
+deux commandes avaient été concaténées sur la même ligne.
+
+La v58 utilise uniquement :
+  command = "node scripts/prepare-fonts.mjs"
+
+Les polices Outfit + Nunito restent auto-hébergées.
+Les fichiers /fonts/*.woff2 ont aussi un cache long côté Netlify.
+
+Déploie normalement cette v58.
