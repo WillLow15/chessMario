@@ -57,3 +57,10 @@ Le système protège l'accès au profil et empêche la modification de l'ELO
 d'un autre joueur via son pseudo. Cependant, le calcul ELO est encore initié
 par le client du jeu. Pour un classement anti-triche strict, il faudra ensuite
 faire valider les résultats des parties côté serveur.
+
+
+V54 - NOMS DANS LES ÉQUIPES
+----------------------------
+- Le pseudo connecté apparaît dans l'équipe correspondant à sa couleur.
+- Contre l'IA, un nom rigolo aléatoire est généré et suivi de ' - IA'.
+- En multijoueur à distance, les deux pseudos sont échangés entre navigateurs.
