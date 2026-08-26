@@ -158,3 +158,15 @@ V69 - MENU STICKY + PROFIL / STATS
 - Nouvelle table Supabase public.games.
 - IMPORTANT : exécuter à nouveau SUPABASE_SETUP.sql dans Supabase.
 - L'historique démarre à partir de la v69.
+
+
+V70 - 30 MIN + PARTIES DIFFÉRÉES 3 JOURS
+------------------------------------------
+- Nouvelle cadence 30 min (30+0).
+- Nouveau mode 3 jours par coup, persistant dans Supabase.
+- Création/rejoindre par code 6 caractères.
+- Les parties différées peuvent être fermées puis reprises plus tard depuis Jouer > 3 jours.
+- Le délai de 3 jours est réinitialisé après chaque coup.
+- Expiration serveur : si le délai est dépassé, le joueur au trait perd au temps.
+- Les parties différées sont non classées mais apparaissent dans l’historique du profil.
+- IMPORTANT : exécuter à nouveau SUPABASE_SETUP.sql une fois après le déploiement v70.

@@ -1,13 +1,14 @@
 {
   "name": "mario-chess-netlify-supabase",
   "private": true,
-  "version": "69.0.0",
+  "version": "70.0.0",
   "type": "module",
   "engines": {
     "node": ">=22.13.0"
   },
   "dependencies": {
     "@fontsource/nunito": "5.3.0",
-    "@fontsource/outfit": "5.3.0"
+    "@fontsource/outfit": "5.3.0",
+    "chess.js": "1.4.0"
   }
 }

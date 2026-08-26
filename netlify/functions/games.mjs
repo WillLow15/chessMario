@@ -2,7 +2,7 @@ import {
   json, supabase, parseJSON, authenticatedPlayer
 } from "../lib/supabase.mjs";
 
-const MODES = new Set(["local", "ai", "remote"]);
+const MODES = new Set(["local", "ai", "remote", "correspondence"]);
 const RESULTS = new Set(["win", "loss", "draw"]);
 const COLORS = new Set(["w", "b"]);
 
