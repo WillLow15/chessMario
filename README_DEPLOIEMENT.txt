@@ -86,3 +86,20 @@ En invité :
 - l'ELO est affiché NON CLASSÉ ;
 - une partie distante avec au moins un invité est non classée pour les deux joueurs ;
 - le mode invité disparaît au rechargement de la page.
+
+
+V61 - BARRES DE VIE COMPACTES
+-----------------------------
+- Réduction du padding vertical.
+- VS central plus petit.
+- Labels et score plus rapprochés des barres.
+- Hauteur des barres réduite tout en restant lisibles.
+- Optimisation spécifique mobile/iPhone.
+
+
+V62 - BARRES DE VIE ULTRA FINES
+--------------------------------
+- Réduction supplémentaire de la hauteur globale.
+- Barres plus fines.
+- VS et score central plus petits.
+- Padding vertical encore réduit.
