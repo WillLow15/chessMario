@@ -103,3 +103,10 @@ V62 - BARRES DE VIE ULTRA FINES
 - Barres plus fines.
 - VS et score central plus petits.
 - Padding vertical encore réduit.
+
+
+V63 - BARRES DE VIE PLUS FINES
+--------------------------------
+- Jauges desktop : 9 px.
+- Jauges mobile : 8 px.
+- Jauges petits iPhone : 7 px.

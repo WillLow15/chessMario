@@ -3380,6 +3380,36 @@
     }
   }
 
+
+  /* =========================================================
+     BARRES DE VIE ENCORE PLUS FINES — v63
+     ========================================================= */
+  .sf-bar{
+    height:9px !important;
+    border-width:2px !important;
+  }
+
+  .sf-fill{
+    top:1px !important;
+    bottom:1px !important;
+  }
+
+  @media(max-width:700px){
+    .sf-bar{
+      height:8px !important;
+    }
+    .sf-fill{
+      top:1px !important;
+      bottom:1px !important;
+    }
+  }
+
+  @media(max-width:430px){
+    .sf-bar{
+      height:7px !important;
+    }
+  }
+
 </style>
 
   <link rel="icon" type="image/png" sizes="512x512" href="favicon-mario-chess.png">
@@ -3396,7 +3426,7 @@
   <meta name="apple-mobile-web-app-title" content="Mario Chess">
   <meta name="mobile-web-app-capable" content="yes">
 
-  <meta name="mario-chess-build" content="netlify-supabase-v62">
+  <meta name="mario-chess-build" content="netlify-supabase-v63">
 
   <link rel="preload" href="/fonts/nunito-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/outfit-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
