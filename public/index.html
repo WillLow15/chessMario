@@ -2970,6 +2970,39 @@
     letter-spacing:.015em;
   }
 
+
+  /* =========================================================
+     HUD SUPÉRIEUR PLUS COMPACT — v59
+     ========================================================= */
+  @media(min-width:701px){
+    .hud{
+      max-width:1240px !important;
+      gap:10px !important;
+      margin-top:8px !important;
+    }
+
+    .hud-card{
+      padding:9px 12px !important;
+      border-width:3px !important;
+      border-radius:16px !important;
+      box-shadow:
+        0 6px 0 rgba(92,47,19,.14),
+        0 12px 26px rgba(35,73,99,.13) !important;
+    }
+
+    .hud-card h3{
+      margin:0 0 4px !important;
+      font-size:.78rem !important;
+      line-height:1.12 !important;
+      letter-spacing:.065em !important;
+    }
+
+    .hud-card .big{
+      font-size:1.15rem !important;
+      line-height:1.12 !important;
+    }
+  }
+
 </style>
 
   <link rel="icon" type="image/png" sizes="512x512" href="favicon-mario-chess.png">
@@ -2986,7 +3019,7 @@
   <meta name="apple-mobile-web-app-title" content="Mario Chess">
   <meta name="mobile-web-app-capable" content="yes">
 
-  <meta name="mario-chess-build" content="netlify-supabase-v58">
+  <meta name="mario-chess-build" content="netlify-supabase-v59">
 
   <link rel="preload" href="/fonts/nunito-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/outfit-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
