@@ -64,3 +64,11 @@ V54 - NOMS DANS LES ÉQUIPES
 - Le pseudo connecté apparaît dans l'équipe correspondant à sa couleur.
 - Contre l'IA, un nom rigolo aléatoire est généré et suivi de ' - IA'.
 - En multijoueur à distance, les deux pseudos sont échangés entre navigateurs.
+
+
+V55 - INDICATION DES CAPTURES
+-----------------------------
+- Une pièce adverse capturable est entourée en rouge uniquement après sélection de la pièce preneuse.
+- Aucun adversaire n'est marqué si aucune pièce n'est sélectionnée.
+- Les déplacements sans capture conservent le point vert.
+- En passant : le pion réellement capturé est marqué en rouge et la case d'arrivée en rouge discret.

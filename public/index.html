@@ -2781,6 +2781,94 @@
     }
   }
 
+
+  /* =========================================================
+     PIÈCES CAPTURABLES APRÈS SÉLECTION — v55
+     ========================================================= */
+  .sq.capture-target{
+    box-shadow:
+      inset 0 0 0 4px rgba(255,55,48,.96),
+      inset 0 0 20px rgba(255,55,48,.32) !important;
+  }
+
+  .sq.capture-target::after{
+    content:"";
+    position:absolute;
+    inset:7%;
+    z-index:5;
+    pointer-events:none;
+    border:4px solid #ff3b30;
+    border-radius:50%;
+    box-shadow:
+      0 0 0 2px rgba(255,255,255,.75),
+      0 0 15px rgba(255,59,48,.85);
+    animation:captureTargetPulse .8s ease-in-out infinite;
+  }
+
+  .sq.capture-target::before{
+    content:"×";
+    position:absolute;
+    top:3px;
+    right:3px;
+    z-index:7;
+    width:19px;
+    height:19px;
+    display:grid;
+    place-items:center;
+    pointer-events:none;
+    border:2px solid #fff;
+    border-radius:50%;
+    background:#e62d28;
+    color:#fff;
+    font-size:14px;
+    line-height:1;
+    font-weight:1000;
+    box-shadow:0 2px 5px rgba(73,0,0,.28);
+  }
+
+  .piece.capture-threat{
+    animation:captureThreatPulse .8s ease-in-out infinite;
+    filter:
+      drop-shadow(0 0 5px rgba(255,255,255,.95))
+      drop-shadow(0 0 8px rgba(255,48,40,.95)) !important;
+  }
+
+  .dot.capture-landing{
+    background:#ef3f36 !important;
+    border-color:rgba(255,255,255,.92) !important;
+    box-shadow:0 0 14px rgba(239,63,54,.72) !important;
+  }
+
+  @keyframes captureTargetPulse{
+    0%,100%{transform:scale(.94);opacity:.72}
+    50%{transform:scale(1.03);opacity:1}
+  }
+
+  @keyframes captureThreatPulse{
+    0%,100%{transform:scale(1)}
+    50%{transform:scale(.91)}
+  }
+
+  @media(max-width:600px){
+    .sq.capture-target{
+      box-shadow:
+        inset 0 0 0 3px rgba(255,55,48,.97),
+        inset 0 0 12px rgba(255,55,48,.30) !important;
+    }
+    .sq.capture-target::after{
+      inset:6%;
+      border-width:3px;
+    }
+    .sq.capture-target::before{
+      top:2px;
+      right:2px;
+      width:15px;
+      height:15px;
+      border-width:1px;
+      font-size:11px;
+    }
+  }
+
 </style>
 
   <link rel="icon" type="image/png" sizes="512x512" href="favicon-mario-chess.png">
@@ -2797,7 +2885,7 @@
   <meta name="apple-mobile-web-app-title" content="Mario Chess">
   <meta name="mobile-web-app-capable" content="yes">
 
-  <meta name="mario-chess-build" content="netlify-supabase-v54">
+  <meta name="mario-chess-build" content="netlify-supabase-v55">
 </head>
 <body>
 
@@ -4109,7 +4197,104 @@ function chooseCamp(camp){
 }
 function squareOrder(){const files=flipped?['h','g','f','e','d','c','b','a']:['a','b','c','d','e','f','g','h'];const ranks=flipped?['1','2','3','4','5','6','7','8']:['8','7','6','5','4','3','2','1'];const arr=[];for(const r of ranks){for(const f of files)arr.push(f+r);}return arr;}
 function coordLabels(){return {files:flipped?['h','g','f','e','d','c','b','a']:['a','b','c','d','e','f','g','h'],ranks:flipped?['1','2','3','4','5','6','7','8']:['8','7','6','5','4','3','2','1']};}
-function renderBoard(){const board=$('board');board.innerHTML='';const order=squareOrder();const labels=coordLabels();order.forEach((sq,index)=>{const fileIndex=sq.charCodeAt(0)-97;const rank=Number(sq[1]);const isLight=(fileIndex+rank)%2===1;const btn=document.createElement('div');btn.className='sq '+(isLight?'light':'dark');btn.dataset.sq=sq;if(selected===sq)btn.classList.add('selected');if(lastMove&&(lastMove.from===sq||lastMove.to===sq))btn.classList.add('last');const piece=chess.get(sq);if(piece&&piece.type==='k'&&piece.color===chess.turn()&&chess.in_check())btn.classList.add('check');const possible=targets.find(m=>m.to===sq);if(possible){const hint=document.createElement('span');hint.className=piece?'ring':'dot';btn.appendChild(hint);}if(piece){btn.appendChild(makePieceEl(piece.color,piece.type));}const c=index%8;const r=Math.floor(index/8);if(r===7){const x=document.createElement('span');x.className='coord file';x.textContent=labels.files[c];btn.appendChild(x);}if(c===0){const x=document.createElement('span');x.className='coord rank';x.textContent=labels.ranks[r];btn.appendChild(x);}btn.addEventListener('click',()=>onSquareClick(sq));board.appendChild(btn);});}
+function captureSquareForMove(move){
+  // A capture is only highlighted when a human has explicitly selected
+  // the attacking piece. "targets" alone is never used globally.
+  if(!selected||!move||!move.captured)return null;
+
+  // Normal capture / promotion capture: victim is on destination square.
+  if(chess.get(move.to))return move.to;
+
+  // En passant: victim remains beside the selected pawn until the move is made.
+  if(move.flags&&move.flags.includes('e')){
+    return move.to[0]+move.from[1];
+  }
+
+  return move.to;
+}
+
+function renderBoard(){
+  const board=$('board');
+  board.innerHTML='';
+  const order=squareOrder();
+  const labels=coordLabels();
+
+  // Build capture targets strictly from the currently selected piece.
+  const captureSquares=new Set();
+  if(selected){
+    targets.forEach(move=>{
+      const victimSquare=captureSquareForMove(move);
+      if(victimSquare)captureSquares.add(victimSquare);
+    });
+  }
+
+  order.forEach((sq,index)=>{
+    const fileIndex=sq.charCodeAt(0)-97;
+    const rank=Number(sq[1]);
+    const isLight=(fileIndex+rank)%2===1;
+
+    const btn=document.createElement('div');
+    btn.className='sq '+(isLight?'light':'dark');
+    btn.dataset.sq=sq;
+
+    if(selected===sq)btn.classList.add('selected');
+    if(lastMove&&(lastMove.from===sq||lastMove.to===sq))btn.classList.add('last');
+
+    const piece=chess.get(sq);
+
+    if(piece&&piece.type==='k'&&piece.color===chess.turn()&&chess.in_check()){
+      btn.classList.add('check');
+    }
+
+    const possible=targets.find(m=>m.to===sq);
+    const isVictim=!!selected&&captureSquares.has(sq);
+
+    // Empty legal destination = normal green dot.
+    // A capture destination is not shown as a generic green ring anymore:
+    // the victim itself receives the red "capturable" treatment.
+    if(possible&&!possible.captured){
+      const hint=document.createElement('span');
+      hint.className='dot';
+      btn.appendChild(hint);
+    }else if(possible&&possible.captured&&!piece){
+      // En-passant landing square: small red landing marker while the actual
+      // pawn that will be captured is highlighted on its current square.
+      const hint=document.createElement('span');
+      hint.className='dot capture-landing';
+      btn.appendChild(hint);
+    }
+
+    if(isVictim){
+      btn.classList.add('capture-target');
+      btn.setAttribute('aria-label','Pièce capturable');
+    }
+
+    if(piece){
+      const pieceEl=makePieceEl(piece.color,piece.type);
+      if(isVictim)pieceEl.classList.add('capture-threat');
+      btn.appendChild(pieceEl);
+    }
+
+    const c=index%8;
+    const r=Math.floor(index/8);
+
+    if(r===7){
+      const x=document.createElement('span');
+      x.className='coord file';
+      x.textContent=labels.files[c];
+      btn.appendChild(x);
+    }
+    if(c===0){
+      const x=document.createElement('span');
+      x.className='coord rank';
+      x.textContent=labels.ranks[r];
+      btn.appendChild(x);
+    }
+
+    btn.addEventListener('click',()=>onSquareClick(sq));
+    board.appendChild(btn);
+  });
+}
 function showMateOverlay(winner){
   const overlay=$('mateOverlay');
   const name=$('mateWinnerName');
