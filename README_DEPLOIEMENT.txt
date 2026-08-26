@@ -22,3 +22,13 @@ Résultat attendu :
 IMPORTANT :
 La Secret key reste uniquement dans les variables Netlify.
 Ne la mets jamais dans public/index.html.
+
+
+CORRECTIF PERMISSIONS
+---------------------
+Si /api/health renvoie :
+  permission denied for table players
+
+retourne dans Supabase > SQL Editor et exécute à nouveau
+SUPABASE_SETUP.sql. Les trois GRANT à la fin donnent les droits
+nécessaires uniquement au rôle service_role utilisé par le backend.

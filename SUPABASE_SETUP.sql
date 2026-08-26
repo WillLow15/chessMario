@@ -11,3 +11,11 @@ create index if not exists players_elo_ranking_idx
   on public.players (elo desc, updated_at asc);
 
 alter table public.players enable row level security;
+
+
+-- Autorise uniquement le backend Netlify utilisant la Secret key.
+-- Le rôle service_role contourne le RLS, mais il doit quand même
+-- disposer des privilèges SQL sur les objets exposés par la Data API.
+grant usage on schema public to service_role;
+grant select, insert, update, delete on table public.players to service_role;
+grant usage, select on sequence public.players_id_seq to service_role;
