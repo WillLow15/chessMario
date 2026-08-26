@@ -72,3 +72,17 @@ V55 - INDICATION DES CAPTURES
 - Aucun adversaire n'est marqué si aucune pièce n'est sélectionnée.
 - Les déplacements sans capture conservent le point vert.
 - En passant : le pion réellement capturé est marqué en rouge et la case d'arrivée en rouge discret.
+
+
+V60 - MODE INVITÉ
+-----------------
+L'écran de connexion propose maintenant "JOUER EN INVITÉ".
+
+En invité :
+- aucune création de profil Supabase ;
+- aucun mot de passe ;
+- aucun ELO sauvegardé ;
+- aucune session en base ;
+- l'ELO est affiché NON CLASSÉ ;
+- une partie distante avec au moins un invité est non classée pour les deux joueurs ;
+- le mode invité disparaît au rechargement de la page.

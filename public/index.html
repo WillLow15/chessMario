@@ -3003,6 +3003,58 @@
     }
   }
 
+
+  /* =========================================================
+     MODE INVITÉ — v60
+     ========================================================= */
+  .auth-or{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    margin:10px 0 8px;
+    color:#77502a;
+    font-size:.67rem;
+    font-weight:1000;
+  }
+  .auth-or::before,
+  .auth-or::after{
+    content:"";
+    flex:1;
+    height:2px;
+    background:rgba(113,54,17,.22);
+  }
+  .guest-login-btn{
+    width:100%;
+    min-height:46px;
+    border:3px solid #235b31;
+    border-radius:14px;
+    cursor:pointer;
+    background:linear-gradient(180deg,#5ed86f,#2eac4b);
+    color:#fff;
+    font-size:.84rem;
+    font-weight:1000;
+    box-shadow:0 4px 0 rgba(31,93,45,.18);
+  }
+  .guest-login-btn:active{
+    transform:translateY(1px);
+    box-shadow:0 2px 0 rgba(31,93,45,.16);
+  }
+  .guest-login-note{
+    margin-top:6px;
+    color:#73522e;
+    font-size:.64rem;
+    font-weight:800;
+  }
+  .db-profile-badge.guest{
+    border-color:rgba(35,91,49,.32);
+    background:rgba(225,255,229,.68);
+  }
+  .db-profile-badge.guest strong{
+    color:#24703a;
+  }
+
 </style>
 
   <link rel="icon" type="image/png" sizes="512x512" href="favicon-mario-chess.png">
@@ -3019,7 +3071,7 @@
   <meta name="apple-mobile-web-app-title" content="Mario Chess">
   <meta name="mobile-web-app-capable" content="yes">
 
-  <meta name="mario-chess-build" content="netlify-supabase-v59">
+  <meta name="mario-chess-build" content="netlify-supabase-v60">
 
   <link rel="preload" href="/fonts/nunito-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/outfit-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -3203,6 +3255,9 @@
       </label>
 
       <button class="profile-save" id="loginProfileBtn" type="button">SE CONNECTER</button>
+      <div class="auth-or"><span>OU</span></div>
+      <button class="guest-login-btn" id="guestLoginBtn" type="button">JOUER EN INVITÉ</button>
+      <div class="guest-login-note">Aucune donnée ne sera enregistrée dans la base.</div>
       <button class="auth-refresh" id="refreshProfilesBtn" type="button">Actualiser la liste</button>
     </div>
 
@@ -3457,6 +3512,8 @@ let authToken='';
 let databaseAvailable=false;
 let profileLoaded=false;
 let availableProfiles=[];
+let isGuest=false;
+let remoteOpponentGuest=false;
 
 function cleanPlayerName(value){
   return String(value||'')
@@ -3504,6 +3561,8 @@ async function apiJSON(url,options={}){
   return payload;
 }
 function applyAuthenticatedPlayer(player,token=''){
+  isGuest=false;
+  remoteOpponentGuest=false;
   if(token)saveAuthToken(token);
   playerName=cleanPlayerName(player&&player.name);
   if(Number.isFinite(Number(player&&player.elo)))playerElo=Number(player.elo);
@@ -3518,8 +3577,15 @@ function applyAuthenticatedPlayer(player,token=''){
 function renderProfile(){
   const nameEl=$('profileNameDisplay');
   const eloEl=$('profileEloDisplay');
-  if(nameEl)nameEl.textContent=playerName||'Joueur';
-  if(eloEl)eloEl.textContent=playerElo+' ELO';
+  const badge=$('dbProfileBadge');
+
+  if(nameEl)nameEl.textContent=isGuest?'Invité':(playerName||'Joueur');
+  if(eloEl)eloEl.textContent=isGuest?'NON CLASSÉ':(playerElo+' ELO');
+
+  if(badge)badge.classList.toggle('guest',isGuest);
+
+  const changeBtn=$('changeProfileBtn');
+  if(changeBtn)changeBtn.textContent=isGuest?'Se connecter':'Changer';
 }
 function setAuthStatus(message,kind=''){
   const status=$('profileStatus');
@@ -3675,14 +3741,43 @@ async function loginPlayerProfile(){
     if(btn)btn.disabled=false;
   }
 }
-async function logoutPlayerProfile(){
-  const oldToken=authToken;
+
+function startGuestSession(){
+  // Guest data exists only in memory for the current page session.
+  saveAuthToken('');
+  isGuest=true;
+  remoteOpponentGuest=false;
+  databaseAvailable=false;
+  profileLoaded=true;
+  playerName='Invité';
+  playerElo=ELO_START;
+
   try{
-    if(oldToken)await apiJSON('/api/logout',{method:'POST'});
+    localStorage.removeItem(ELO_STORAGE_KEY);
+    localStorage.removeItem(LAST_PROFILE_STORAGE_KEY);
   }catch(e){}
 
+  renderProfile();
+  renderElo();
+  renderTeamNames();
+  hideProfileOverlay();
+  showEloToast('Mode invité · partie non classée');
+}
+
+async function logoutPlayerProfile(){
+  const oldToken=authToken;
+
+  if(!isGuest){
+    try{
+      if(oldToken)await apiJSON('/api/logout',{method:'POST'});
+    }catch(e){}
+  }
+
   saveAuthToken('');
+  isGuest=false;
+  remoteOpponentGuest=false;
   playerName='';
+  playerElo=ELO_START;
   databaseAvailable=false;
   profileLoaded=false;
   renderProfile();
@@ -3690,7 +3785,7 @@ async function logoutPlayerProfile(){
   showProfileOverlay('Sélectionne un autre profil ou crée-en un.','login');
 }
 async function syncPlayerEloToDatabase(){
-  if(!databaseAvailable||!authToken||!playerName)return;
+  if(isGuest||!databaseAvailable||!authToken||!playerName)return;
   try{
     const data=await apiJSON('/api/elo',{
       method:'POST',
@@ -3709,6 +3804,8 @@ async function syncPlayerEloToDatabase(){
   }
 }
 async function bootstrapPlayerProfile(){
+  isGuest=false;
+  remoteOpponentGuest=false;
   authToken=loadAuthToken();
   renderProfile();
 
@@ -3742,6 +3839,11 @@ function loadPlayerElo(){
   return ELO_START;
 }
 function savePlayerElo(){
+  if(isGuest){
+    renderProfile();
+    return;
+  }
+
   try{localStorage.setItem(ELO_STORAGE_KEY,String(playerElo));}catch(e){}
   syncPlayerEloToDatabase();
   renderProfile();
@@ -3796,7 +3898,7 @@ function renderTeamNames(){
 
   if(gameMode==='ai'&&playerCamp){
     const aiName=ensureAIName();
-    const me=playerName||'Joueur';
+    const me=isGuest?'Invité':(playerName||'Joueur');
     if(playerCamp==='w'){
       whiteName=me;
       blackName=aiName;
@@ -3805,7 +3907,7 @@ function renderTeamNames(){
       blackName=me;
     }
   }else if(gameMode==='remote'&&playerCamp){
-    const me=playerName||'Joueur';
+    const me=isGuest?'Invité':(playerName||'Joueur');
     const other=remoteOpponentName||'Adversaire';
     if(playerCamp==='w'){
       whiteName=me;
@@ -3841,6 +3943,12 @@ function renderElo(){
     el.textContent=text;
     el.classList.remove('player','opponent','unranked');
     if(kind)el.classList.add(kind);
+  }
+
+  if(isGuest||(gameMode==='remote'&&remoteOpponentGuest)){
+    setTeamElo(whiteEl,'NON CLASSÉ','unranked');
+    setTeamElo(blackEl,'NON CLASSÉ','unranked');
+    return;
   }
 
   if(gameMode!=='ai'&&gameMode!=='remote'){
@@ -3898,6 +4006,15 @@ function showEloResult(change,oldRating,newRating){
 function settleElo(score,reason=''){
   if(eloSettled)return null;
   eloSettled=true;
+
+  // Guest games are always unranked. Remote games are also unranked
+  // for both sides if either participant is a guest.
+  if(isGuest||(gameMode==='remote'&&remoteOpponentGuest)){
+    eloLastChange=null;
+    renderElo();
+    clearEloResult();
+    return null;
+  }
 
   if(gameMode!=='ai'&&gameMode!=='remote'){
     eloLastChange=null;
@@ -3960,6 +4077,7 @@ function prepareModeChoice(){
   gameMode=null;
   opponentElo=null;
   remoteOpponentName='';
+  remoteOpponentGuest=false;
   aiDisplayName='';
   eloSettled=false;
   eloLastChange=null;
@@ -3977,6 +4095,7 @@ function startLocalMode(){
   gameMode='local';
   aiDisplayName='';
   remoteOpponentName='';
+  remoteOpponentGuest=false;
   opponentElo=null;
   eloSettled=false;
   clearEloResult();
@@ -3989,6 +4108,7 @@ function startAIMode(level){
   aiLevel=level;
   aiDisplayName=randomAIName();
   remoteOpponentName='';
+  remoteOpponentGuest=false;
   opponentElo=AI_ELO[level]||ELO_START;
   eloSettled=false;
   clearEloResult();
@@ -4071,7 +4191,8 @@ function setupRemoteConnection(conn,isHost){
         clocks:{w:clockState.w,b:clockState.b},
         clockStarted:clockStarted,
         elo:playerElo,
-        playerName:playerName||'Joueur'
+        playerName:isGuest?'Invité':(playerName||'Joueur'),
+        isGuest:isGuest
       });
       hideModeOverlay();
       resetClock();
@@ -4087,7 +4208,13 @@ function setupRemoteConnection(conn,isHost){
       flipped=playerCamp==='b';
       opponentElo=Number(data.elo)||ELO_START;
       remoteOpponentName=cleanPlayerName(data.playerName)||'Adversaire';
-      if(conn.open)conn.send({type:'elo',elo:playerElo,playerName:playerName||'Joueur'});
+      remoteOpponentGuest=!!data.isGuest;
+      if(conn.open)conn.send({
+        type:'elo',
+        elo:playerElo,
+        playerName:isGuest?'Invité':(playerName||'Joueur'),
+        isGuest:isGuest
+      });
       renderElo();
       renderTeamNames();
       clockState={
@@ -4107,6 +4234,7 @@ function setupRemoteConnection(conn,isHost){
     if(data.type==='elo'){
       opponentElo=Number(data.elo)||ELO_START;
       if(data.playerName)remoteOpponentName=cleanPlayerName(data.playerName)||'Adversaire';
+      remoteOpponentGuest=!!data.isGuest;
       renderElo();
       renderTeamNames();
       return;
@@ -4831,6 +4959,7 @@ async function boot(){
     $('authLoginTab').addEventListener('click',()=>switchAuthMode('login'));
     $('authRegisterTab').addEventListener('click',()=>switchAuthMode('register'));
     $('loginProfileBtn').addEventListener('click',loginPlayerProfile);
+    $('guestLoginBtn').addEventListener('click',startGuestSession);
     $('registerProfileBtn').addEventListener('click',registerPlayerProfile);
     $('refreshProfilesBtn').addEventListener('click',loadProfilesList);
     $('loginPasswordInput').addEventListener('keydown',e=>{
