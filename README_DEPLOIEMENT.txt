@@ -170,3 +170,15 @@ V70 - 30 MIN + PARTIES DIFFÉRÉES 3 JOURS
 - Expiration serveur : si le délai est dépassé, le joueur au trait perd au temps.
 - Les parties différées sont non classées mais apparaissent dans l’historique du profil.
 - IMPORTANT : exécuter à nouveau SUPABASE_SETUP.sql une fois après le déploiement v70.
+
+
+V71 - PARTIES EN COURS DANS LA COLONNE GAUCHE
+------------------------------------------------
+- Nouvelle section « Parties en cours » en haut du panneau gauche.
+- Aperçu miniature de chaque partie différée directement depuis son FEN.
+- Affichage des deux pseudos et de leurs classements ELO.
+- Indication claire du joueur dont c’est le tour et du délai restant.
+- Clic sur une partie active : ouverture directe de la partie.
+- Partie en attente : accès au code à partager.
+- Mise à jour automatique après connexion, création, rejoint, coup joué, retour sur l’onglet et toutes les 60 secondes.
+- Aucune migration Supabase supplémentaire n’est nécessaire pour la v71.

@@ -24,15 +24,21 @@ async function fetchPlayers(ids) {
   return new Map((rows || []).map(r => [Number(r.id), r]));
 }
 
-async function serializeGame(row, playerId) {
-  const people = await fetchPlayers([row.white_player_id, row.black_player_id]);
+async function serializeGame(row, playerId, prefetchedPeople = null) {
+  const people = prefetchedPeople || await fetchPlayers([row.white_player_id, row.black_player_id]);
   const mineWhite = Number(row.white_player_id) === Number(playerId);
   const opponentId = mineWhite ? row.black_player_id : row.white_player_id;
   const opponent = people.get(Number(opponentId));
+  const white = people.get(Number(row.white_player_id));
+  const black = people.get(Number(row.black_player_id));
   return {
     id: Number(row.id),
     room_code: row.room_code,
     player_color: mineWhite ? "w" : "b",
+    white_name: white?.name || "Blancs",
+    white_elo: white ? Number(white.elo) : null,
+    black_name: black?.name || (row.status === "waiting" ? "En attente" : "Noirs"),
+    black_elo: black ? Number(black.elo) : null,
     opponent_name: opponent?.name || (row.status === "waiting" ? "En attente" : "Adversaire"),
     opponent_elo: opponent ? Number(opponent.elo) : null,
     fen: row.fen,
@@ -207,8 +213,10 @@ export default async function handler(req) {
       const normalized = [];
       for (const raw of rows || []) normalized.push(await expireIfNeeded(raw));
       const active = normalized.filter(r => r && r.status !== "completed");
+      const participantIds = active.flatMap(row => [row.white_player_id, row.black_player_id]);
+      const people = await fetchPlayers(participantIds);
       const games = [];
-      for (const row of active) games.push(await serializeGame(row, player.id));
+      for (const row of active) games.push(await serializeGame(row, player.id, people));
       return json({ games });
     }
 
