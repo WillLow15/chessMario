@@ -20,7 +20,7 @@
   <meta name="apple-mobile-web-app-title" content="Mario Chess">
   <meta name="mobile-web-app-capable" content="yes">
 
-  <meta name="mario-chess-build" content="netlify-supabase-v68">
+  <meta name="mario-chess-build" content="netlify-supabase-v69">
 
   <link rel="preload" href="/fonts/nunito-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/outfit-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -91,7 +91,7 @@
       <span>BLANCS</span>
       <strong id="clockWhite">10:00</strong>
     </div>
-    <div class="clock-center">10 MIN</div>
+    <div class="clock-center" id="clockModeLabel">10 MIN</div>
     <div class="chess-clock black-clock" id="clockCardBlack">
       <span>NOIRS</span>
       <strong id="clockBlack">10:00</strong>
@@ -296,6 +296,87 @@
       </div>
       <div class="remote-status" id="remoteStatus">Connexion pair-à-pair sécurisée entre les deux navigateurs.</div>
     </div>
+  </div>
+</div>
+
+
+<!-- Menu application sticky — v69 -->
+<nav class="bottom-app-nav" id="bottomAppNav" aria-label="Navigation principale">
+  <button class="bottom-nav-btn play" id="bottomPlayBtn" type="button">
+    <span class="bottom-nav-icon" aria-hidden="true">♟</span>
+    <span class="bottom-nav-copy"><strong>Jouer</strong><small id="bottomTimeLabel">10 min</small></span>
+  </button>
+  <button class="bottom-nav-btn profile" id="bottomProfileBtn" type="button">
+    <span class="bottom-nav-icon" aria-hidden="true">●</span>
+    <span class="bottom-nav-copy"><strong>Profil</strong><small id="bottomProfileLabel">Mon compte</small></span>
+  </button>
+</nav>
+
+<div class="app-sheet-overlay" id="playMenuOverlay" aria-hidden="true">
+  <div class="app-sheet play-menu-sheet" role="dialog" aria-modal="true" aria-labelledby="playMenuTitle">
+    <div class="app-sheet-handle" aria-hidden="true"></div>
+    <button class="app-sheet-close" id="playMenuCloseBtn" type="button" aria-label="Fermer">×</button>
+    <div class="app-sheet-title" id="playMenuTitle">Nouvelle partie</div>
+    <div class="app-sheet-sub">Choisis la cadence, puis le mode de jeu.</div>
+    <div class="time-control-grid">
+      <button class="time-control-btn" data-time-control="bullet1" type="button"><strong>1 min</strong><span>Bullet · 1+0</span></button>
+      <button class="time-control-btn" data-time-control="blitz5" type="button"><strong>5 min</strong><span>Blitz · 5+0</span></button>
+      <button class="time-control-btn active" data-time-control="rapid10" type="button"><strong>10 min</strong><span>Rapide · 10+0</span></button>
+      <button class="time-control-btn" data-time-control="rapid15_10" type="button"><strong>15 | 10</strong><span>15 min + 10 s / coup</span></button>
+    </div>
+  </div>
+</div>
+
+<div class="profile-dashboard-overlay" id="profileDashboardOverlay" aria-hidden="true">
+  <div class="profile-dashboard" role="dialog" aria-modal="true" aria-labelledby="profileDashboardTitle">
+    <div class="profile-dashboard-head">
+      <div class="profile-dashboard-avatar" aria-hidden="true">♟</div>
+      <div class="profile-dashboard-identity">
+        <span>PROFIL</span>
+        <strong id="profileDashboardTitle">Joueur</strong>
+        <small id="profileDashboardMemberSince">—</small>
+      </div>
+      <div class="profile-dashboard-elo"><span>ELO</span><strong id="profileDashboardElo">—</strong></div>
+      <button class="profile-dashboard-close" id="profileDashboardCloseBtn" type="button" aria-label="Fermer">×</button>
+    </div>
+
+    <div class="profile-dashboard-status" id="profileDashboardStatus"></div>
+
+    <div class="profile-stats-grid" id="profileStatsGrid">
+      <div class="profile-stat"><span>Parties</span><strong id="profileStatGames">—</strong></div>
+      <div class="profile-stat win"><span>Victoires</span><strong id="profileStatWins">—</strong></div>
+      <div class="profile-stat draw"><span>Nulles</span><strong id="profileStatDraws">—</strong></div>
+      <div class="profile-stat loss"><span>Défaites</span><strong id="profileStatLosses">—</strong></div>
+      <div class="profile-stat rate"><span>Taux de victoire</span><strong id="profileStatWinRate">—</strong></div>
+    </div>
+
+    <section class="profile-history-section">
+      <div class="profile-section-title"><strong>Historique des parties</strong><span>50 dernières</span></div>
+      <div class="profile-history-list" id="profileHistoryList">
+        <div class="profile-history-empty">Chargement…</div>
+      </div>
+    </section>
+
+    <div class="profile-guest-action hidden" id="profileGuestAction">
+      <p>Connecte-toi pour retrouver ton ELO, tes statistiques et ton historique.</p>
+      <button id="profileDashboardLoginBtn" type="button">SE CONNECTER</button>
+    </div>
+
+    <section class="profile-danger-zone" id="profileDangerZone">
+      <button class="profile-delete-reveal" id="profileDeleteRevealBtn" type="button">Supprimer mon compte</button>
+      <div class="profile-delete-confirm hidden" id="profileDeleteConfirm">
+        <strong>Suppression définitive</strong>
+        <p>Ton profil, tes sessions et ton historique seront supprimés définitivement.</p>
+        <label>
+          <span>Mot de passe</span>
+          <input id="profileDeletePassword" type="password" maxlength="128" autocomplete="current-password" placeholder="Confirme avec ton mot de passe">
+        </label>
+        <div class="profile-delete-actions">
+          <button id="profileDeleteCancelBtn" type="button">Annuler</button>
+          <button class="danger" id="profileDeleteConfirmBtn" type="button">SUPPRIMER DÉFINITIVEMENT</button>
+        </div>
+      </div>
+    </section>
   </div>
 </div>
 
@@ -536,6 +617,8 @@ function renderProfile(){
 
   const changeBtn=$('changeProfileBtn');
   if(changeBtn)changeBtn.textContent=isGuest?'Se connecter':'Changer';
+  const bottomProfile=$('bottomProfileLabel');
+  if(bottomProfile)bottomProfile.textContent=isGuest?'Invité':(playerName||'Mon compte');
 }
 function setAuthStatus(message,kind=''){
   const status=$('profileStatus');
@@ -911,6 +994,7 @@ function renderTeamNames(){
 
 let eloSettled=false;
 let eloLastChange=null;
+let gameHistoryRecorded=false;
 let eloToastTimer=null;
 
 function currentOpponentElo(){
@@ -1030,6 +1114,215 @@ function settleEloFromWinner(winnerName,reason=''){
 }
 
 
+
+function openPlayMenu(){
+  const overlay=$('playMenuOverlay');
+  if(!overlay)return;
+  renderTimeControlUI();
+  overlay.classList.add('show');
+  overlay.setAttribute('aria-hidden','false');
+}
+function closePlayMenu(){
+  const overlay=$('playMenuOverlay');
+  if(!overlay)return;
+  overlay.classList.remove('show');
+  overlay.setAttribute('aria-hidden','true');
+}
+function selectTimeControl(key){
+  configureTimeControl(key);
+  closePlayMenu();
+  resetGame();
+}
+function closeProfileDashboard(){
+  const overlay=$('profileDashboardOverlay');
+  if(!overlay)return;
+  overlay.classList.remove('show');
+  overlay.setAttribute('aria-hidden','true');
+  $('profileDeleteConfirm')?.classList.add('hidden');
+  const pwd=$('profileDeletePassword');
+  if(pwd)pwd.value='';
+}
+function setProfileDashboardStatus(message='',kind=''){
+  const el=$('profileDashboardStatus');
+  if(!el)return;
+  el.textContent=message||'';
+  el.className='profile-dashboard-status'+(kind?' '+kind:'');
+}
+function formatProfileDate(value){
+  if(!value)return '—';
+  const d=new Date(value);
+  if(Number.isNaN(d.getTime()))return '—';
+  return new Intl.DateTimeFormat('fr-FR',{day:'2-digit',month:'short',year:'numeric'}).format(d);
+}
+function formatHistoryDate(value){
+  if(!value)return '';
+  const d=new Date(value);
+  if(Number.isNaN(d.getTime()))return '';
+  return new Intl.DateTimeFormat('fr-FR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}).format(d);
+}
+function historyModeLabel(game){
+  if(game.mode==='ai')return 'IA';
+  if(game.mode==='remote')return 'En ligne';
+  return 'Local';
+}
+function renderProfileHistory(games=[]){
+  const list=$('profileHistoryList');
+  if(!list)return;
+  list.innerHTML='';
+  if(!Array.isArray(games)||!games.length){
+    const empty=document.createElement('div');
+    empty.className='profile-history-empty';
+    empty.textContent='Aucune partie enregistrée pour le moment.';
+    list.appendChild(empty);
+    return;
+  }
+  games.forEach(game=>{
+    const item=document.createElement('div');
+    item.className='profile-history-item '+String(game.result||'');
+    const result=document.createElement('div');
+    result.className='profile-history-result';
+    result.textContent=game.result==='win'?'V':game.result==='loss'?'D':'N';
+    const main=document.createElement('div');
+    main.className='profile-history-main';
+    const top=document.createElement('div');
+    top.className='profile-history-top';
+    const opponent=document.createElement('strong');
+    opponent.textContent=game.opponent_name||'Adversaire';
+    const mode=document.createElement('span');
+    mode.textContent=historyModeLabel(game)+' · '+(game.time_control||'—');
+    top.append(opponent,mode);
+    const meta=document.createElement('div');
+    meta.className='profile-history-meta';
+    const resultText=game.result==='win'?'Victoire':game.result==='loss'?'Défaite':'Nulle';
+    const rated=game.rated?'Classée':'Non classée';
+    const eloDelta=Number(game.elo_delta)||0;
+    const deltaText=game.rated?' · ELO '+(eloDelta>0?'+':'')+eloDelta:'';
+    meta.textContent=resultText+' · '+rated+deltaText+' · '+formatHistoryDate(game.created_at);
+    main.append(top,meta);
+    item.append(result,main);
+    list.appendChild(item);
+  });
+}
+function renderProfileDashboardData(data){
+  const player=data&&data.player||{};
+  const stats=data&&data.stats||{};
+  const games=Array.isArray(data&&data.games)?data.games:[];
+  $('profileDashboardTitle').textContent=player.name||playerName||'Joueur';
+  $('profileDashboardElo').textContent=Number.isFinite(Number(player.elo))?String(player.elo):'—';
+  $('profileDashboardMemberSince').textContent=player.created_at?'Membre depuis '+formatProfileDate(player.created_at):'Compte joueur';
+  $('profileStatGames').textContent=String(Number(stats.games)||0);
+  $('profileStatWins').textContent=String(Number(stats.wins)||0);
+  $('profileStatDraws').textContent=String(Number(stats.draws)||0);
+  $('profileStatLosses').textContent=String(Number(stats.losses)||0);
+  $('profileStatWinRate').textContent=(Number(stats.win_rate)||0)+' %';
+  $('profileStatsGrid')?.classList.remove('hidden');
+  $('profileDangerZone')?.classList.remove('hidden');
+  $('profileGuestAction')?.classList.add('hidden');
+  renderProfileHistory(games);
+}
+async function openProfileDashboard(){
+  const overlay=$('profileDashboardOverlay');
+  if(!overlay)return;
+  overlay.classList.add('show');
+  overlay.setAttribute('aria-hidden','false');
+  $('profileDeleteConfirm')?.classList.add('hidden');
+  if(isGuest||!authToken){
+    $('profileDashboardTitle').textContent='Invité';
+    $('profileDashboardElo').textContent='—';
+    $('profileDashboardMemberSince').textContent='Mode non classé';
+    $('profileStatsGrid')?.classList.add('hidden');
+    $('profileDangerZone')?.classList.add('hidden');
+    $('profileGuestAction')?.classList.remove('hidden');
+    renderProfileHistory([]);
+    setProfileDashboardStatus('');
+    return;
+  }
+  setProfileDashboardStatus('Chargement du profil…');
+  try{
+    const data=await apiJSON('/api/profile-data',{method:'GET'});
+    renderProfileDashboardData(data);
+    setProfileDashboardStatus('');
+  }catch(err){
+    setProfileDashboardStatus(err.status===401?'Ta session a expiré. Reconnecte-toi.':(err.message||'Impossible de charger le profil.'),'error');
+  }
+}
+function revealDeleteAccount(){
+  $('profileDeleteConfirm')?.classList.remove('hidden');
+  setTimeout(()=>$('profileDeletePassword')?.focus(),80);
+}
+function cancelDeleteAccount(){
+  $('profileDeleteConfirm')?.classList.add('hidden');
+  const pwd=$('profileDeletePassword');
+  if(pwd)pwd.value='';
+  setProfileDashboardStatus('');
+}
+async function deleteCurrentAccount(){
+  if(isGuest||!authToken)return;
+  const password=String($('profileDeletePassword')?.value||'');
+  const btn=$('profileDeleteConfirmBtn');
+  if(!password){setProfileDashboardStatus('Entre ton mot de passe pour confirmer.','error');return;}
+  if(btn)btn.disabled=true;
+  setProfileDashboardStatus('Suppression du compte…');
+  try{
+    await apiJSON('/api/account',{method:'DELETE',body:JSON.stringify({password})});
+    saveAuthToken('');
+    try{
+      localStorage.removeItem(LAST_PROFILE_STORAGE_KEY);
+      localStorage.removeItem(ELO_STORAGE_KEY);
+    }catch(e){}
+    isGuest=false;
+    remoteOpponentGuest=false;
+    playerName='';
+    playerElo=ELO_START;
+    databaseAvailable=false;
+    profileLoaded=false;
+    closeProfileDashboard();
+    if(chess)resetGame();
+    renderProfile();
+    renderElo();
+    renderTeamNames();
+    showProfileOverlay('Compte supprimé définitivement. Tu peux créer un nouveau profil.','register');
+  }catch(err){
+    if(err.status===401||err.code==='BAD_PASSWORD')setProfileDashboardStatus('Mot de passe incorrect.','error');
+    else setProfileDashboardStatus(err.message||'Suppression impossible.','error');
+  }finally{
+    if(btn)btn.disabled=false;
+  }
+}
+function currentHistoryOpponent(){
+  if(gameMode==='ai')return ensureAIName();
+  if(gameMode==='remote')return remoteOpponentName||'Adversaire';
+  return 'Partie locale';
+}
+function currentGameIsRated(){
+  return !isGuest&&(gameMode==='ai'||gameMode==='remote')&&!(gameMode==='remote'&&remoteOpponentGuest);
+}
+async function recordGameHistory(score,reason=''){
+  if(gameHistoryRecorded||isGuest||!authToken||!playerCamp)return;
+  gameHistoryRecorded=true;
+  const result=score===1?'win':score===0?'loss':'draw';
+  const rated=currentGameIsRated();
+  const rating=eloLastChange;
+  const payload={
+    mode:gameMode||'local',
+    opponent_name:currentHistoryOpponent(),
+    opponent_elo:gameMode==='local'?null:(Number(currentOpponentElo())||null),
+    player_color:playerCamp,
+    result,
+    reason:String(reason||'').slice(0,20),
+    time_control:TIME_CONTROL_LABEL,
+    rated,
+    elo_before:rated&&rating?rating.oldRating:playerElo,
+    elo_after:rated&&rating?rating.newRating:playerElo,
+    elo_delta:rated&&rating?rating.change:0
+  };
+  try{
+    await apiJSON('/api/games',{method:'POST',body:JSON.stringify(payload)});
+  }catch(err){
+    console.warn('Historique de partie non enregistré:',err);
+  }
+}
+
 function showModeOverlay(panel='main'){
   const overlay=$('modeOverlay');
   if(!overlay)return;
@@ -1066,6 +1359,7 @@ function prepareModeChoice(){
   eloSettled=false;
   eloLastChange=null;
   aiThinking=false;
+  gameHistoryRecorded=false;
   if(aiTimer){clearTimeout(aiTimer);aiTimer=null;}
   clockState={w:INITIAL_CLOCK_MS,b:INITIAL_CLOCK_MS};
   timeoutWinner=null;
@@ -1132,6 +1426,7 @@ function resetBoardForRemote(){
   opponentElo=null;
   eloSettled=false;
   eloLastChange=null;
+  gameHistoryRecorded=false;
   chess.reset();
   selected=null;
   targets=[];
@@ -1174,6 +1469,10 @@ function setupRemoteConnection(conn,isHost){
         guestCamp:'b',
         clocks:{w:clockState.w,b:clockState.b},
         clockStarted:clockStarted,
+        timeControlKey:selectedTimeControlKey,
+        timeControlLabel:TIME_CONTROL_LABEL,
+        initialClockMs:INITIAL_CLOCK_MS,
+        incrementMs:CLOCK_INCREMENT_MS,
         elo:playerElo,
         playerName:isGuest?'Invité':(playerName||'Joueur'),
         isGuest:isGuest
@@ -1201,6 +1500,7 @@ function setupRemoteConnection(conn,isHost){
       });
       renderElo();
       renderTeamNames();
+      applyRemoteTimeControl(data);
       clockState={
         w:Number(data.clocks&&data.clocks.w)||INITIAL_CLOCK_MS,
         b:Number(data.clocks&&data.clocks.b)||INITIAL_CLOCK_MS
@@ -1556,6 +1856,8 @@ function showMateOverlay(winner){
   if(name)name.textContent=winner.toUpperCase();
   if(img)img.src=MATE_CHARACTER_SRC;
   settleEloFromWinner(winner,'checkmate');
+  const winnerColor=String(winner).toLowerCase().startsWith('blanc')?'w':'b';
+  if(playerCamp)recordGameHistory(winnerColor===playerCamp?1:0,'checkmate');
   if(overlay){
     overlay.classList.add('show');
     overlay.setAttribute('aria-hidden','false');
@@ -1576,6 +1878,7 @@ function showDrawOverlay(){
   if(img)img.src=MATE_CHARACTER_SRC;
 
   settleElo(.5,'draw');
+  recordGameHistory(.5,'draw');
 
   if(overlay){
     overlay.classList.add('show');
@@ -1584,7 +1887,52 @@ function showDrawOverlay(){
 }
 
 
-const INITIAL_CLOCK_MS=10*60*1000;
+const TIME_CONTROLS={
+  bullet1:{label:'1 min',clockLabel:'1 MIN',initialMs:1*60*1000,incrementMs:0},
+  blitz5:{label:'5 min',clockLabel:'5 MIN',initialMs:5*60*1000,incrementMs:0},
+  rapid10:{label:'10 min',clockLabel:'10 MIN',initialMs:10*60*1000,incrementMs:0},
+  rapid15_10:{label:'15 | 10',clockLabel:'15 | 10',initialMs:15*60*1000,incrementMs:10*1000}
+};
+let selectedTimeControlKey='rapid10';
+let INITIAL_CLOCK_MS=TIME_CONTROLS.rapid10.initialMs;
+let CLOCK_INCREMENT_MS=TIME_CONTROLS.rapid10.incrementMs;
+let TIME_CONTROL_LABEL=TIME_CONTROLS.rapid10.label;
+
+function renderTimeControlUI(){
+  const cfg=TIME_CONTROLS[selectedTimeControlKey]||TIME_CONTROLS.rapid10;
+  const bottom=$('bottomTimeLabel');
+  const clockLabel=$('clockModeLabel');
+  if(bottom)bottom.textContent=cfg.label;
+  if(clockLabel)clockLabel.textContent=cfg.clockLabel;
+  document.querySelectorAll('[data-time-control]').forEach(btn=>{
+    btn.classList.toggle('active',btn.dataset.timeControl===selectedTimeControlKey);
+  });
+}
+function configureTimeControl(key){
+  const valid=TIME_CONTROLS[key]?key:'rapid10';
+  const cfg=TIME_CONTROLS[valid];
+  selectedTimeControlKey=valid;
+  INITIAL_CLOCK_MS=cfg.initialMs;
+  CLOCK_INCREMENT_MS=cfg.incrementMs;
+  TIME_CONTROL_LABEL=cfg.label;
+  renderTimeControlUI();
+}
+function applyRemoteTimeControl(data){
+  const key=String(data&&data.timeControlKey||'');
+  if(TIME_CONTROLS[key]){configureTimeControl(key);return;}
+  const initial=Number(data&&data.initialClockMs);
+  const increment=Number(data&&data.incrementMs);
+  if(Number.isFinite(initial)&&initial>=30000&&initial<=60*60*1000){
+    INITIAL_CLOCK_MS=initial;
+    CLOCK_INCREMENT_MS=Number.isFinite(increment)&&increment>=0&&increment<=60000?increment:0;
+    TIME_CONTROL_LABEL=String(data&&data.timeControlLabel||'Partie').slice(0,20);
+    const bottom=$('bottomTimeLabel');
+    const clockLabel=$('clockModeLabel');
+    if(bottom)bottom.textContent=TIME_CONTROL_LABEL;
+    if(clockLabel)clockLabel.textContent=TIME_CONTROL_LABEL.toUpperCase();
+  }
+}
+
 let clockState={w:INITIAL_CLOCK_MS,b:INITIAL_CLOCK_MS};
 let clockLastTick=0;
 let clockRunning=false;
@@ -1627,6 +1975,8 @@ function showTimeWinner(winner){
   if(name)name.textContent=winner.toUpperCase();
   if(img)img.src=MATE_CHARACTER_SRC;
   settleEloFromWinner(winner,'timeout');
+  const winnerColor=String(winner).toLowerCase().startsWith('blanc')?'w':'b';
+  if(playerCamp)recordGameHistory(winnerColor===playerCamp?1:0,'timeout');
   if(overlay){
     overlay.classList.add('show');
     overlay.setAttribute('aria-hidden','false');
@@ -1856,6 +2206,10 @@ function playMove(from,to,source='local'){
     return;
   }
 
+  if(source!=='remote'&&CLOCK_INCREMENT_MS>0){
+    clockState[move.color]=Math.max(0,clockState[move.color]+CLOCK_INCREMENT_MS);
+  }
+
   const wasCapture=!!move.captured;
   const capturedType=move.captured;
   if(wasCapture){
@@ -1867,7 +2221,7 @@ function playMove(from,to,source='local'){
   selected=null;
   targets=[];
 
-  // The clocks stay frozen at 10:00 until the first legal move is completed.
+  // The clocks stay frozen at the selected initial time until the first legal move is completed.
   // Once that move is on the board, the side now to move starts losing time.
   if(!clockStarted){
     startClock();
@@ -1939,6 +2293,22 @@ async function boot(){
     $('modeLocalBtn').addEventListener('click',startLocalMode);
     $('modeAiBtn').addEventListener('click',()=>showModeOverlay('ai'));
     $('modeRemoteBtn').addEventListener('click',()=>showModeOverlay('remote'));
+
+    $('bottomPlayBtn').addEventListener('click',openPlayMenu);
+    $('bottomProfileBtn').addEventListener('click',openProfileDashboard);
+    $('playMenuCloseBtn').addEventListener('click',closePlayMenu);
+    $('profileDashboardCloseBtn').addEventListener('click',closeProfileDashboard);
+    $('profileDashboardLoginBtn').addEventListener('click',()=>{closeProfileDashboard();showProfileOverlay('', 'login');});
+    $('profileDeleteRevealBtn').addEventListener('click',revealDeleteAccount);
+    $('profileDeleteCancelBtn').addEventListener('click',cancelDeleteAccount);
+    $('profileDeleteConfirmBtn').addEventListener('click',deleteCurrentAccount);
+    $('profileDeletePassword').addEventListener('keydown',e=>{if(e.key==='Enter')deleteCurrentAccount();});
+    $('playMenuOverlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closePlayMenu();});
+    $('profileDashboardOverlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeProfileDashboard();});
+    document.querySelectorAll('[data-time-control]').forEach(btn=>{
+      btn.addEventListener('click',()=>selectTimeControl(btn.dataset.timeControl));
+    });
+    configureTimeControl(selectedTimeControlKey);
 
     $('authLoginTab').addEventListener('click',()=>switchAuthMode('login'));
     $('authRegisterTab').addEventListener('click',()=>switchAuthMode('register'));

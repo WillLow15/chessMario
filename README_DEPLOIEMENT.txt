@@ -145,3 +145,16 @@ V68 - CONNEXION PAR PSEUDO TEXTE
 - Le serveur refait la vérification avant le mot de passe.
 - Endpoint public /api/profiles supprimé.
 - Nouvel endpoint /api/profile-check.
+
+
+V69 - MENU STICKY + PROFIL / STATS
+-----------------------------------
+- Menu sticky en bas : Jouer / Profil.
+- Cadences : 1 min, 5 min, 10 min, 15 | 10.
+- 15 | 10 = 15 minutes + incrément Fischer de 10 secondes par coup.
+- La cadence est synchronisée par l'hôte en partie à distance.
+- Profil : ELO, date de création, stats et historique des 50 dernières parties.
+- Suppression de compte protégée par le mot de passe.
+- Nouvelle table Supabase public.games.
+- IMPORTANT : exécuter à nouveau SUPABASE_SETUP.sql dans Supabase.
+- L'historique démarre à partir de la v69.
