@@ -4611,3 +4611,29 @@ body {
   }
 }
 
+/* =========================================================
+   ÉCHIQUIER — SUPPRESSION DE L'HABILLAGE BOARD-SHELL
+   ========================================================= */
+.board-shell {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+.board-shell::before,
+.board-shell::after {
+  display: none !important;
+  content: none !important;
+}
+
+@media (max-width: 1000px) {
+  .board-shell {
+    padding: 0 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+}
+
