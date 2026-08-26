@@ -2869,6 +2869,21 @@
     }
   }
 
+
+  /* =========================================================
+     ESPACE SOUS LES LIBELLÉS DE SECTION — v56
+     ========================================================= */
+  .section-label-spaced{
+    display:block;
+    padding-bottom:7px !important;
+  }
+
+  @media(max-width:600px){
+    .section-label-spaced{
+      padding-bottom:8px !important;
+    }
+  }
+
 </style>
 
   <link rel="icon" type="image/png" sizes="512x512" href="favicon-mario-chess.png">
@@ -2885,7 +2900,7 @@
   <meta name="apple-mobile-web-app-title" content="Mario Chess">
   <meta name="mobile-web-app-capable" content="yes">
 
-  <meta name="mario-chess-build" content="netlify-supabase-v55">
+  <meta name="mario-chess-build" content="netlify-supabase-v56">
 </head>
 <body>
 
@@ -2993,8 +3008,8 @@
   <div class="sub">Pièces blanches</div>
   <div class="team-elo-line" id="whiteTeamElo">NON CLASSÉ</div>
 </div></div></div>
-      <div class="section"><strong>Pièces mangées</strong><div class="captured" id="capturedByWhite"></div></div>
-      <div class="section"><strong>Coups suggérés pour les Blancs</strong><div class="hint-list" id="hintWhite"></div></div>
+      <div class="section"><strong class="section-label-spaced">Pièces mangées</strong><div class="captured" id="capturedByWhite"></div></div>
+      <div class="section"><strong class="section-label-spaced">Coups suggérés pour les Blancs</strong><div class="hint-list" id="hintWhite"></div></div>
       <div class="section"><div class="buttons"><button class="btn-main" id="newGameBtn">Nouvelle partie</button><button class="btn-yellow" id="flipBtn">Retourner l'échiquier</button></div></div>
     </aside>
     <main class="board-shell">
@@ -3012,8 +3027,8 @@
   <div class="sub">Pièces noires</div>
   <div class="team-elo-line" id="blackTeamElo">NON CLASSÉ</div>
 </div></div></div>
-      <div class="section"><strong>Pièces mangées</strong><div class="captured" id="capturedByBlack"></div></div>
-      <div class="section"><strong>Historique des coups</strong><div class="moves" id="movesBox"></div></div>
+      <div class="section"><strong class="section-label-spaced">Pièces mangées</strong><div class="captured" id="capturedByBlack"></div></div>
+      <div class="section"><strong class="section-label-spaced">Historique des coups</strong><div class="moves" id="movesBox"></div></div>
     </aside>
   </div>
 
