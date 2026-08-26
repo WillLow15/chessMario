@@ -4922,3 +4922,31 @@ button.ongoing-games-empty,
     font-size: .56rem;
   }
 }
+
+
+/* =========================================================
+   ACTIONS DE PARTIE — ABANDON / NULLE — v72
+   ========================================================= */
+.game-actions{width:100%;box-sizing:border-box;display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px 0 0}
+.game-action-btn{min-height:42px;padding:8px 13px;border:2px solid rgba(92,47,19,.28);border-radius:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;font:inherit;font-family:"Outfit","Nunito",sans-serif;font-size:.72rem;font-weight:900}
+.game-action-btn.draw{color:#624017;background:linear-gradient(180deg,#fff5b8,#f7d868);border-color:#a77a28}
+.game-action-btn.resign{color:#fff;background:linear-gradient(180deg,#e45b47,#bb2d24);border-color:#8f241d}
+.game-action-btn:not(:disabled):active{transform:translateY(1px)}
+.game-action-btn:disabled{cursor:default;opacity:.58}
+.game-action-icon{width:22px;height:22px;flex:0 0 22px;display:grid;place-items:center;border-radius:7px;background:rgba(255,255,255,.28);font-size:.9rem;font-weight:1000}
+.game-action-status{grid-column:1/-1;min-height:0;margin:-1px 2px 0;text-align:center;color:#765338;font-size:.58rem;font-weight:850;line-height:1.2}
+.game-action-status.wait{color:#9a6618}.game-action-status.ok{color:#23763d}.game-action-status.error{color:#ad2d24}
+.game-action-overlay{position:fixed;inset:0;z-index:17000;display:none;align-items:center;justify-content:center;padding:18px;box-sizing:border-box;background:rgba(31,21,14,.52);backdrop-filter:blur(5px)}
+.game-action-overlay.show{display:flex;animation:mateFade .18s ease}
+.game-action-dialog{position:relative;width:min(420px,100%);padding:20px 18px 17px;box-sizing:border-box;border:4px solid #60331a;border-radius:22px;text-align:center;background:linear-gradient(180deg,#fff9df,#ffedbd);box-shadow:0 12px 0 rgba(92,47,19,.15),0 22px 44px rgba(0,0,0,.27)}
+.game-action-dialog-close{position:absolute;top:10px;right:10px;width:32px;height:32px;padding:0;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;color:#653114;background:rgba(255,255,255,.65);font-size:1.25rem;font-weight:900}
+.game-action-dialog-icon{width:52px;height:52px;margin:0 auto 8px;display:grid;place-items:center;border:3px solid #6c3a1d;border-radius:16px;color:#633116;background:linear-gradient(180deg,#fff4ae,#f4cf58);font-family:"Outfit","Nunito",sans-serif;font-size:1.45rem;font-weight:1000}
+.game-action-dialog-title{color:#5f2f16;font-family:"Outfit","Nunito",sans-serif;font-size:1.05rem;font-weight:950}
+.game-action-dialog-text{margin:7px auto 15px;max-width:340px;color:#7d5536;font-size:.67rem;font-weight:800;line-height:1.4}
+.game-action-dialog-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.game-action-dialog-actions button{min-height:42px;padding:8px 10px;border:2px solid rgba(94,49,25,.22);border-radius:12px;cursor:pointer;font:inherit;font-size:.64rem;font-weight:950}
+.game-action-dialog-actions .secondary{color:#64391f;background:rgba(255,255,255,.7)}
+.game-action-dialog-actions .primary{color:#fff;background:linear-gradient(180deg,#4fc866,#2ca94a);border-color:#26863f}
+.game-action-dialog-actions .primary.danger{background:linear-gradient(180deg,#e45b47,#bb2d24);border-color:#8f241d}
+@media(max-width:760px){.game-actions{gap:6px;padding-top:8px}.game-action-btn{min-height:40px;padding:7px 9px;border-radius:11px;font-size:.66rem}.game-action-overlay{padding:11px}.game-action-dialog{padding:18px 12px 14px;border-width:3px;border-radius:18px}}
+@media(max-width:360px){.game-action-icon{display:none}}

@@ -128,3 +128,14 @@ create unique index if not exists games_player_correspondence_unique
   on public.games (player_id, correspondence_game_id)
   where correspondence_game_id is not null;
 
+-- ==========================================================
+-- V72 : proposition de nulle persistante en partie différée
+-- ==========================================================
+alter table public.correspondence_games
+  add column if not exists draw_offer_player_id bigint
+  references public.players(id) on delete set null;
+
+create index if not exists correspondence_draw_offer_idx
+  on public.correspondence_games (draw_offer_player_id)
+  where draw_offer_player_id is not null;
+

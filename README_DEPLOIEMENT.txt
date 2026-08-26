@@ -182,3 +182,14 @@ V71 - PARTIES EN COURS DANS LA COLONNE GAUCHE
 - Partie en attente : accès au code à partager.
 - Mise à jour automatique après connexion, création, rejoint, coup joué, retour sur l’onglet et toutes les 60 secondes.
 - Aucune migration Supabase supplémentaire n’est nécessaire pour la v71.
+
+
+V72 - ABANDON / NULLE PAR ACCORD
+---------------------------------
+- Boutons Nulle et Abandonner sous l'échiquier.
+- Une nulle proposée doit être acceptée par l'autre joueur humain.
+- Nulle acceptée : ELO inchangé (0 point).
+- Abandon classé : -10 ELO exact pour le joueur qui abandonne, adversaire +0.
+- Parties différées : proposition de nulle persistante en BDD et pénalité d'abandon appliquée côté serveur.
+- La section Parties en cours est maintenant sous la section Joueur/Équipe Blancs.
+- IMPORTANT : exécuter SUPABASE_SETUP.sql une fois pour ajouter draw_offer_player_id.
