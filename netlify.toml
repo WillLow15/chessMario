@@ -1,7 +1,7 @@
 [build]
   publish = "public"
   functions = "netlify/functions"
-  command = "node -e \"console.log('Mario Chess + Supabase : build prêt')\""
+  command = "node scripts/prepare-fonts.mjs"console.log('Mario Chess + Supabase : build prêt')\""
 
 [build.environment]
   NODE_VERSION = "22.13.0"

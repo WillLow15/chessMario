@@ -1,0 +1,25 @@
+TYPOGRAPHIE v57
+================
+
+Titres / boutons :
+  Outfit 600 / 700 / 800
+
+Texte courant / interface :
+  Nunito 400 / 600 / 700 / 800
+
+Les deux familles viennent de Google Fonts et sont distribuées sous OFL.
+
+IMPORTANT
+---------
+Le navigateur ne contacte PAS Google Fonts.
+
+Pendant le build Netlify :
+  1. Netlify installe @fontsource/outfit et @fontsource/nunito.
+  2. scripts/prepare-fonts.mjs copie uniquement 7 fichiers WOFF2 dans public/fonts/.
+  3. Le site final charge les fontes depuis /fonts/ sur le même domaine Netlify.
+
+Les deux fichiers les plus critiques sont préchargés :
+  /fonts/nunito-latin-400-normal.woff2
+  /fonts/outfit-latin-700-normal.woff2
+
+Cela réduit les requêtes externes et évite de bloquer le loadscreen sur Google Fonts.

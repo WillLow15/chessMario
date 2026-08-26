@@ -18,7 +18,7 @@
   *{box-sizing:border-box}
   body{
     margin:0;
-    font-family:Arial, Helvetica, sans-serif;
+    font-family:"Nunito", Arial, Helvetica, sans-serif;
     color:#2f190a;
     background:linear-gradient(to bottom,#69cfff 0%,#bdeaff 48%,#e9fbff 67%,#7bd96b 67%,#63c451 100%);
     min-height:100vh;
@@ -2884,6 +2884,92 @@
     }
   }
 
+
+  /* =========================================================
+     TYPOGRAPHIE LOCALE — v57
+     Google Fonts self-hosted : Outfit + Nunito
+     ========================================================= */
+  @font-face{
+    font-family:"Nunito";
+    font-style:normal;
+    font-weight:400;
+    font-display:swap;
+    src:url("/fonts/nunito-latin-400-normal.woff2") format("woff2");
+  }
+  @font-face{
+    font-family:"Nunito";
+    font-style:normal;
+    font-weight:600;
+    font-display:swap;
+    src:url("/fonts/nunito-latin-600-normal.woff2") format("woff2");
+  }
+  @font-face{
+    font-family:"Nunito";
+    font-style:normal;
+    font-weight:700;
+    font-display:swap;
+    src:url("/fonts/nunito-latin-700-normal.woff2") format("woff2");
+  }
+  @font-face{
+    font-family:"Nunito";
+    font-style:normal;
+    font-weight:800;
+    font-display:swap;
+    src:url("/fonts/nunito-latin-800-normal.woff2") format("woff2");
+  }
+
+  @font-face{
+    font-family:"Outfit";
+    font-style:normal;
+    font-weight:600;
+    font-display:swap;
+    src:url("/fonts/outfit-latin-600-normal.woff2") format("woff2");
+  }
+  @font-face{
+    font-family:"Outfit";
+    font-style:normal;
+    font-weight:700;
+    font-display:swap;
+    src:url("/fonts/outfit-latin-700-normal.woff2") format("woff2");
+  }
+  @font-face{
+    font-family:"Outfit";
+    font-style:normal;
+    font-weight:800;
+    font-display:swap;
+    src:url("/fonts/outfit-latin-800-normal.woff2") format("woff2");
+  }
+
+  html,body,input,select,textarea{
+    font-family:"Nunito",Arial,Helvetica,sans-serif !important;
+  }
+
+  button,
+  .logo,
+  .panel-head,
+  .turn-badge,
+  .mode-title,
+  .camp-title,
+  .profile-title,
+  .game-loader-title,
+  .mate-sign-top,
+  .mate-sign-name,
+  .mode-choice strong,
+  .level-btn strong,
+  .clock-card strong,
+  .chess-clock strong,
+  .player-card strong,
+  .team-player-info > strong,
+  .section-label-spaced{
+    font-family:"Outfit","Nunito",Arial,sans-serif !important;
+  }
+
+  button,
+  .turn-badge,
+  .panel-head{
+    letter-spacing:.015em;
+  }
+
 </style>
 
   <link rel="icon" type="image/png" sizes="512x512" href="favicon-mario-chess.png">
@@ -2900,7 +2986,11 @@
   <meta name="apple-mobile-web-app-title" content="Mario Chess">
   <meta name="mobile-web-app-capable" content="yes">
 
-  <meta name="mario-chess-build" content="netlify-supabase-v56">
+  <meta name="mario-chess-build" content="netlify-supabase-v57">
+
+  <link rel="preload" href="/fonts/nunito-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/outfit-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+
 </head>
 <body>
 
