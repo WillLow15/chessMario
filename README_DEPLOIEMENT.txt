@@ -110,3 +110,10 @@ V63 - BARRES DE VIE PLUS FINES
 - Jauges desktop : 9 px.
 - Jauges mobile : 8 px.
 - Jauges petits iPhone : 7 px.
+
+
+V64 - BARRES DE VIE : ESPACEMENT + FINESSE
+-------------------------------------------
+- Jauges légèrement plus fines.
+- Petit margin-top ajouté.
+- Petit margin-bottom ajouté.
