@@ -117,3 +117,20 @@ V64 - BARRES DE VIE : ESPACEMENT + FINESSE
 - Jauges légèrement plus fines.
 - Petit margin-top ajouté.
 - Petit margin-bottom ajouté.
+
+
+V65 - BARRES DE VIE FORCÉES
+----------------------------
+- Largeur forcée à ~78-82% sur desktop.
+- Épaisseur forcée à 6 px.
+- Bordure réduite à 1 px.
+- Alignement blanc à gauche / noir à droite.
+- Overrides avec sélecteurs plus spécifiques + !important.
+
+
+V67 - CSS EXTERNALISÉ
+---------------------
+- Tout le CSS du bloc <style> a été déplacé vers public/style.css.
+- index.html charge maintenant style.css via <link rel="stylesheet">.
+- Aucun attribut style inline n'est utilisé.
+- Barres de vie : height 10 px, margin-top/bottom 7 px.
