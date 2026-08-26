@@ -1,34 +1,59 @@
-MARIO CHESS - NETLIFY + SUPABASE
-=================================
+MARIO CHESS - NETLIFY + SUPABASE v53
+=====================================
 
-Cette version N'UTILISE PLUS Netlify Database.
-Elle fonctionne avec Netlify Functions + Supabase Postgres.
+NOUVEAU : COMPTES JOUEURS
+--------------------------
+Au démarrage :
+- un nouveau joueur crée un profil avec NOM + MOT DE PASSE ;
+- un joueur existant sélectionne son profil dans une liste puis saisit son mot de passe.
 
-1. Crée un projet sur Supabase.
-2. Dans Supabase > SQL Editor, exécute SUPABASE_SETUP.sql.
-3. Dans Supabase > Settings > API Keys, récupère :
-   - Project URL
-   - une Secret key (sb_secret_...)
-4. Dans Netlify > Project configuration > Environment variables, ajoute :
-   SUPABASE_URL = https://xxxxx.supabase.co
-   SUPABASE_SECRET_KEY = sb_secret_xxxxx
-5. Push ce dossier complet sur Git puis redéploie Netlify.
-6. Teste :
-   https://TON-SITE.netlify.app/api/health
+SÉCURITÉ
+--------
+Les mots de passe ne sont JAMAIS enregistrés en clair.
+Le backend Netlify les hache avec scrypt + un salt aléatoire.
 
-Résultat attendu :
-{"ok":true,"database":"supabase-postgres"}
+Après connexion, une session aléatoire de 30 jours est créée.
+Seul le hash du token de session est enregistré dans Supabase.
 
-IMPORTANT :
-La Secret key reste uniquement dans les variables Netlify.
-Ne la mets jamais dans public/index.html.
+La route /api/elo identifie maintenant le joueur via sa session :
+un joueur connecté ne peut plus changer l'ELO d'un autre profil en envoyant
+simplement un autre nom dans la requête.
 
-
-CORRECTIF PERMISSIONS
+MISE À JOUR DE LA BDD
 ---------------------
-Si /api/health renvoie :
-  permission denied for table players
+IMPORTANT : retourne dans Supabase > SQL Editor et exécute À NOUVEAU
+le fichier SUPABASE_SETUP.sql de cette v53.
 
-retourne dans Supabase > SQL Editor et exécute à nouveau
-SUPABASE_SETUP.sql. Les trois GRANT à la fin donnent les droits
-nécessaires uniquement au rôle service_role utilisé par le backend.
+Il ajoute :
+- password_hash
+- password_salt
+- table sessions
+- permissions service_role nécessaires
+
+Les anciens profils v51/v52 sans mot de passe peuvent être "réclamés" une fois :
+si tu crées un profil avec exactement leur ancien nom, un mot de passe leur
+sera ajouté en conservant leur ELO existant.
+
+NETLIFY
+-------
+Conserve :
+SUPABASE_URL
+SUPABASE_SECRET_KEY
+
+Aucune nouvelle variable d'environnement n'est nécessaire.
+
+TESTS APRÈS DÉPLOIEMENT
+-----------------------
+/api/health
+  -> {"ok":true,"database":"supabase-postgres"}
+
+/api/profiles
+  -> {"profiles":[]}
+     puis la liste des profils ayant un mot de passe.
+
+IMPORTANT
+---------
+Le système protège l'accès au profil et empêche la modification de l'ELO
+d'un autre joueur via son pseudo. Cependant, le calcul ELO est encore initié
+par le client du jeu. Pour un classement anti-triche strict, il faudra ensuite
+faire valider les résultats des parties côté serveur.

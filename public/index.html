@@ -2657,6 +2657,103 @@
     .db-profile-badge button{min-height:28px;font-size:.6rem}
   }
 
+
+  /* =========================================================
+     COMPTES JOUEURS + MOT DE PASSE — v53
+     ========================================================= */
+  .auth-card{width:min(94vw,470px)}
+  .auth-tabs{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:7px;
+    margin:0 0 14px;
+    padding:5px;
+    border:2px solid rgba(113,54,17,.25);
+    border-radius:15px;
+    background:rgba(255,255,255,.35);
+  }
+  .auth-tab{
+    min-height:44px;
+    padding:8px 7px;
+    border:0;
+    border-radius:10px;
+    cursor:pointer;
+    background:transparent;
+    color:#713611;
+    font-size:.72rem;
+    font-weight:1000;
+  }
+  .auth-tab.active{
+    background:linear-gradient(180deg,#ef4b43,#c71d1b);
+    color:white;
+    box-shadow:0 3px 0 rgba(107,22,14,.17);
+  }
+  .auth-panel.hidden{display:none !important}
+  .auth-panel .profile-field + .profile-field{margin-top:10px}
+
+  #loginProfileSelect,
+  #loginPasswordInput,
+  #registerNameInput,
+  #registerPasswordInput,
+  #registerPasswordConfirmInput{
+    width:100%;
+    min-height:50px;
+    box-sizing:border-box;
+    padding:10px 12px;
+    border:4px solid #744018;
+    border-radius:14px;
+    outline:none;
+    background:#fffef5;
+    color:#40230e;
+    text-align:center;
+    font-size:16px;
+    font-weight:1000;
+    user-select:text !important;
+    -webkit-user-select:text !important;
+  }
+  #loginProfileSelect{
+    appearance:auto;
+    text-align-last:center;
+    cursor:pointer;
+  }
+  #loginProfileSelect:focus,
+  #loginPasswordInput:focus,
+  #registerNameInput:focus,
+  #registerPasswordInput:focus,
+  #registerPasswordConfirmInput:focus{
+    border-color:#c92820;
+    box-shadow:0 0 0 3px rgba(201,40,32,.12);
+  }
+  .auth-refresh{
+    width:100%;
+    min-height:40px;
+    margin-top:7px;
+    border:2px solid rgba(113,54,17,.35);
+    border-radius:12px;
+    cursor:pointer;
+    background:rgba(255,255,255,.48);
+    color:#713611;
+    font-size:.7rem;
+    font-weight:1000;
+  }
+  .auth-refresh:disabled{opacity:.55;cursor:default}
+  .db-profile-badge button{
+    background:#8e1c16 !important;
+  }
+
+  @media(max-width:430px){
+    .auth-card{width:100%}
+    .auth-tabs{gap:5px;margin-bottom:10px}
+    .auth-tab{min-height:42px;font-size:.65rem}
+    #loginProfileSelect,
+    #loginPasswordInput,
+    #registerNameInput,
+    #registerPasswordInput,
+    #registerPasswordConfirmInput{
+      min-height:47px;
+    }
+  }
+
 </style>
 
   <link rel="icon" type="image/png" sizes="512x512" href="favicon-mario-chess.png">
@@ -2826,22 +2923,61 @@
 
 
 
+
 <div class="profile-overlay" id="profileOverlay" aria-hidden="true">
-  <div class="profile-card">
+  <div class="profile-card auth-card">
     <div class="profile-icon">♟</div>
-    <div class="profile-title">Profil joueur</div>
-    <div class="profile-sub">Entre ton nom pour enregistrer ton classement.</div>
+    <div class="profile-title">Compte joueur</div>
+    <div class="profile-sub">Connecte-toi pour retrouver ton classement ELO.</div>
 
-    <label class="profile-field">
-      <span>NOM DU JOUEUR</span>
-      <input id="playerNameInput" type="text" maxlength="20"
-             autocomplete="nickname" autocapitalize="words"
-             spellcheck="false" placeholder="Ton pseudo">
-    </label>
+    <div class="auth-tabs" role="tablist" aria-label="Connexion joueur">
+      <button class="auth-tab active" id="authLoginTab" type="button">SE CONNECTER</button>
+      <button class="auth-tab" id="authRegisterTab" type="button">CRÉER UN PROFIL</button>
+    </div>
 
-    <button class="profile-save" id="saveProfileBtn" type="button">CONTINUER</button>
+    <div class="auth-panel" id="authLoginPanel">
+      <label class="profile-field">
+        <span>PROFIL</span>
+        <select id="loginProfileSelect">
+          <option value="">Chargement des profils…</option>
+        </select>
+      </label>
+
+      <label class="profile-field">
+        <span>MOT DE PASSE</span>
+        <input id="loginPasswordInput" type="password" maxlength="128"
+               autocomplete="current-password" placeholder="Ton mot de passe">
+      </label>
+
+      <button class="profile-save" id="loginProfileBtn" type="button">SE CONNECTER</button>
+      <button class="auth-refresh" id="refreshProfilesBtn" type="button">Actualiser la liste</button>
+    </div>
+
+    <div class="auth-panel hidden" id="authRegisterPanel">
+      <label class="profile-field">
+        <span>NOM DU JOUEUR</span>
+        <input id="registerNameInput" type="text" maxlength="20"
+               autocomplete="nickname" autocapitalize="words"
+               spellcheck="false" placeholder="Ton pseudo">
+      </label>
+
+      <label class="profile-field">
+        <span>MOT DE PASSE</span>
+        <input id="registerPasswordInput" type="password" maxlength="128"
+               autocomplete="new-password" placeholder="8 caractères minimum">
+      </label>
+
+      <label class="profile-field">
+        <span>CONFIRMER LE MOT DE PASSE</span>
+        <input id="registerPasswordConfirmInput" type="password" maxlength="128"
+               autocomplete="new-password" placeholder="Répète ton mot de passe">
+      </label>
+
+      <button class="profile-save" id="registerProfileBtn" type="button">CRÉER LE PROFIL</button>
+    </div>
+
     <div class="profile-status" id="profileStatus">
-      Le profil sera enregistré dans la base de données en ligne.
+      Les mots de passe sont hachés côté serveur et ne sont jamais enregistrés en clair.
     </div>
   </div>
 </div>
@@ -3059,10 +3195,15 @@ let remoteIsHost=false;
 let remoteRoomCode='';
 
 
-const PLAYER_NAME_STORAGE_KEY='marioChessPlayerNameV1';
+
+const AUTH_TOKEN_STORAGE_KEY='marioChessSessionV1';
+const LAST_PROFILE_STORAGE_KEY='marioChessLastProfileV1';
+
 let playerName='';
+let authToken='';
 let databaseAvailable=false;
 let profileLoaded=false;
+let availableProfiles=[];
 
 function cleanPlayerName(value){
   return String(value||'')
@@ -3071,58 +3212,54 @@ function cleanPlayerName(value){
     .trim()
     .slice(0,20);
 }
-function loadStoredPlayerName(){
-  try{return cleanPlayerName(localStorage.getItem(PLAYER_NAME_STORAGE_KEY)||'')}
+function loadAuthToken(){
+  try{return String(localStorage.getItem(AUTH_TOKEN_STORAGE_KEY)||'')}
   catch(e){return ''}
 }
-function saveStoredPlayerName(){
+function saveAuthToken(token){
+  authToken=String(token||'');
   try{
-    if(playerName)localStorage.setItem(PLAYER_NAME_STORAGE_KEY,playerName);
-    else localStorage.removeItem(PLAYER_NAME_STORAGE_KEY);
+    if(authToken)localStorage.setItem(AUTH_TOKEN_STORAGE_KEY,authToken);
+    else localStorage.removeItem(AUTH_TOKEN_STORAGE_KEY);
+  }catch(e){}
+}
+function loadLastProfile(){
+  try{return cleanPlayerName(localStorage.getItem(LAST_PROFILE_STORAGE_KEY)||'')}
+  catch(e){return ''}
+}
+function saveLastProfile(){
+  try{
+    if(playerName)localStorage.setItem(LAST_PROFILE_STORAGE_KEY,playerName);
   }catch(e){}
 }
 async function apiJSON(url,options={}){
+  const headers={'Content-Type':'application/json',...(options.headers||{})};
+  if(authToken)headers.Authorization='Bearer '+authToken;
+
   const response=await fetch(url,{
     ...options,
-    headers:{'Content-Type':'application/json',...(options.headers||{})},
+    headers,
     cache:'no-store'
   });
   let payload={};
   try{payload=await response.json()}catch(e){}
-  if(!response.ok)throw new Error(payload.error||('Erreur serveur '+response.status));
+  if(!response.ok){
+    const err=new Error(payload.error||('Erreur serveur '+response.status));
+    err.status=response.status;
+    throw err;
+  }
   return payload;
 }
-async function loadOrCreateDatabaseProfile(name){
-  const data=await apiJSON('/api/profile',{
-    method:'POST',
-    body:JSON.stringify({
-      name,
-      initial_elo:profileLoaded?ELO_START:playerElo
-    })
-  });
+function applyAuthenticatedPlayer(player,token=''){
+  if(token)saveAuthToken(token);
+  playerName=cleanPlayerName(player&&player.name);
+  if(Number.isFinite(Number(player&&player.elo)))playerElo=Number(player.elo);
   databaseAvailable=true;
-  playerName=cleanPlayerName(data.name||name);
-  if(Number.isFinite(Number(data.elo)))playerElo=Number(data.elo);
-  saveStoredPlayerName();
-  try{localStorage.setItem(ELO_STORAGE_KEY,String(playerElo))}catch(e){}
   profileLoaded=true;
+  saveLastProfile();
+  try{localStorage.setItem(ELO_STORAGE_KEY,String(playerElo))}catch(e){}
   renderProfile();
   renderElo();
-  return data;
-}
-async function syncPlayerEloToDatabase(){
-  if(!databaseAvailable||!playerName)return;
-  try{
-    const data=await apiJSON('/api/elo',{
-      method:'POST',
-      body:JSON.stringify({name:playerName,elo:playerElo})
-    });
-    if(Number.isFinite(Number(data.elo)))playerElo=Number(data.elo);
-    renderProfile();
-    renderElo();
-  }catch(err){
-    console.warn('Synchronisation ELO BDD impossible:',err);
-  }
 }
 function renderProfile(){
   const nameEl=$('profileNameDisplay');
@@ -3130,20 +3267,82 @@ function renderProfile(){
   if(nameEl)nameEl.textContent=playerName||'Joueur';
   if(eloEl)eloEl.textContent=playerElo+' ELO';
 }
-function showProfileOverlay(message=''){
-  const overlay=$('profileOverlay');
-  const input=$('playerNameInput');
+function setAuthStatus(message,kind=''){
   const status=$('profileStatus');
-  if(input)input.value=playerName||loadStoredPlayerName();
-  if(status){
-    status.textContent=message||'Le profil sera enregistré dans la base de données en ligne.';
-    status.className='profile-status';
+  if(!status)return;
+  status.textContent=message||'';
+  status.className='profile-status'+(kind?' '+kind:'');
+}
+function switchAuthMode(mode){
+  const login=mode!=='register';
+  $('authLoginPanel')?.classList.toggle('hidden',!login);
+  $('authRegisterPanel')?.classList.toggle('hidden',login);
+  $('authLoginTab')?.classList.toggle('active',login);
+  $('authRegisterTab')?.classList.toggle('active',!login);
+
+  setAuthStatus(login
+    ? 'Sélectionne ton profil puis entre ton mot de passe.'
+    : 'Le mot de passe sera haché avec scrypt côté serveur et jamais stocké en clair.'
+  );
+
+  setTimeout(()=>{
+    if(login)$('loginPasswordInput')?.focus();
+    else $('registerNameInput')?.focus();
+  },80);
+}
+async function loadProfilesList(){
+  const select=$('loginProfileSelect');
+  const refresh=$('refreshProfilesBtn');
+  if(refresh)refresh.disabled=true;
+  if(select){
+    select.innerHTML='<option value="">Chargement des profils…</option>';
+    select.disabled=true;
   }
+
+  try{
+    const data=await apiJSON('/api/profiles',{method:'GET'});
+    availableProfiles=Array.isArray(data.profiles)?data.profiles:[];
+    const last=loadLastProfile();
+
+    if(select){
+      select.innerHTML='';
+      if(!availableProfiles.length){
+        const opt=document.createElement('option');
+        opt.value='';
+        opt.textContent='Aucun profil — crée-en un';
+        select.appendChild(opt);
+      }else{
+        for(const profile of availableProfiles){
+          const opt=document.createElement('option');
+          opt.value=profile.name;
+          opt.textContent=profile.name;
+          if(last&&profile.name.toLowerCase()===last.toLowerCase())opt.selected=true;
+          select.appendChild(opt);
+        }
+      }
+      select.disabled=!availableProfiles.length;
+    }
+    databaseAvailable=true;
+  }catch(err){
+    databaseAvailable=false;
+    if(select){
+      select.innerHTML='<option value="">BDD indisponible</option>';
+      select.disabled=true;
+    }
+    setAuthStatus('Impossible de charger les profils. Vérifie Supabase et Netlify.','error');
+  }finally{
+    if(refresh)refresh.disabled=false;
+  }
+}
+function showProfileOverlay(message='',mode='login'){
+  const overlay=$('profileOverlay');
+  switchAuthMode(mode);
+  if(message)setAuthStatus(message);
   if(overlay){
     overlay.classList.add('show');
     overlay.setAttribute('aria-hidden','false');
   }
-  setTimeout(()=>input&&input.focus(),120);
+  if(mode==='login')loadProfilesList();
 }
 function hideProfileOverlay(){
   const overlay=$('profileOverlay');
@@ -3152,55 +3351,126 @@ function hideProfileOverlay(){
     overlay.setAttribute('aria-hidden','true');
   }
 }
-async function submitPlayerProfile(){
-  const input=$('playerNameInput');
-  const btn=$('saveProfileBtn');
-  const status=$('profileStatus');
-  const name=cleanPlayerName(input?input.value:'');
+async function registerPlayerProfile(){
+  const name=cleanPlayerName($('registerNameInput')?.value);
+  const password=String($('registerPasswordInput')?.value||'');
+  const confirm=String($('registerPasswordConfirmInput')?.value||'');
+  const btn=$('registerProfileBtn');
+
   if(name.length<2){
-    if(status){
-      status.textContent='Le nom doit contenir au moins 2 caractères.';
-      status.className='profile-status error';
-    }
+    setAuthStatus('Le nom doit contenir au moins 2 caractères.','error');
     return;
   }
-  if(btn)btn.disabled=true;
-  if(status){
-    status.textContent='Connexion à la base de données…';
-    status.className='profile-status';
+  if(password.length<8){
+    setAuthStatus('Le mot de passe doit contenir au moins 8 caractères.','error');
+    return;
   }
+  if(password!==confirm){
+    setAuthStatus('Les deux mots de passe ne correspondent pas.','error');
+    return;
+  }
+
+  if(btn)btn.disabled=true;
+  setAuthStatus('Création sécurisée du profil…');
+
   try{
-    await loadOrCreateDatabaseProfile(name);
-    if(status){
-      status.textContent='Profil enregistré.';
-      status.className='profile-status ok';
-    }
-    setTimeout(hideProfileOverlay,160);
+    const data=await apiJSON('/api/register',{
+      method:'POST',
+      body:JSON.stringify({name,password,initial_elo:playerElo})
+    });
+    applyAuthenticatedPlayer(data.player,data.token);
+    $('registerPasswordInput').value='';
+    $('registerPasswordConfirmInput').value='';
+    setAuthStatus('Profil créé et connecté.','ok');
+    setTimeout(hideProfileOverlay,180);
   }catch(err){
-    databaseAvailable=false;
-    if(status){
-      status.textContent='BDD en ligne indisponible. Vérifie Supabase et les variables Netlify.';
-      status.className='profile-status error';
-    }
+    setAuthStatus(err.message||'Impossible de créer le profil.','error');
   }finally{
     if(btn)btn.disabled=false;
   }
 }
+async function loginPlayerProfile(){
+  const name=cleanPlayerName($('loginProfileSelect')?.value);
+  const password=String($('loginPasswordInput')?.value||'');
+  const btn=$('loginProfileBtn');
+
+  if(!name){
+    setAuthStatus('Sélectionne un profil.','error');
+    return;
+  }
+  if(!password){
+    setAuthStatus('Entre le mot de passe.','error');
+    return;
+  }
+
+  if(btn)btn.disabled=true;
+  setAuthStatus('Connexion…');
+
+  try{
+    const data=await apiJSON('/api/login',{
+      method:'POST',
+      body:JSON.stringify({name,password})
+    });
+    applyAuthenticatedPlayer(data.player,data.token);
+    $('loginPasswordInput').value='';
+    setAuthStatus('Connexion réussie.','ok');
+    setTimeout(hideProfileOverlay,160);
+  }catch(err){
+    setAuthStatus(err.status===401?'Mot de passe incorrect.':(err.message||'Connexion impossible.'),'error');
+  }finally{
+    if(btn)btn.disabled=false;
+  }
+}
+async function logoutPlayerProfile(){
+  const oldToken=authToken;
+  try{
+    if(oldToken)await apiJSON('/api/logout',{method:'POST'});
+  }catch(e){}
+
+  saveAuthToken('');
+  playerName='';
+  databaseAvailable=false;
+  profileLoaded=false;
+  renderProfile();
+  showProfileOverlay('Sélectionne un autre profil ou crée-en un.','login');
+}
+async function syncPlayerEloToDatabase(){
+  if(!databaseAvailable||!authToken||!playerName)return;
+  try{
+    const data=await apiJSON('/api/elo',{
+      method:'POST',
+      body:JSON.stringify({elo:playerElo})
+    });
+    if(Number.isFinite(Number(data.elo)))playerElo=Number(data.elo);
+    renderProfile();
+    renderElo();
+  }catch(err){
+    console.warn('Synchronisation ELO BDD impossible:',err);
+    if(err.status===401){
+      saveAuthToken('');
+      databaseAvailable=false;
+      showProfileOverlay('Ta session a expiré. Reconnecte-toi.','login');
+    }
+  }
+}
 async function bootstrapPlayerProfile(){
-  playerName=loadStoredPlayerName();
+  authToken=loadAuthToken();
   renderProfile();
 
-  if(!playerName){
-    showProfileOverlay();
+  if(!authToken){
+    showProfileOverlay('', 'login');
     return;
   }
 
   try{
-    await loadOrCreateDatabaseProfile(playerName);
+    const data=await apiJSON('/api/me',{method:'GET'});
+    applyAuthenticatedPlayer(data.player);
     hideProfileOverlay();
   }catch(err){
+    saveAuthToken('');
     databaseAvailable=false;
-    showProfileOverlay('Impossible de joindre la BDD en ligne. Vérifie Supabase et les Functions.');
+    profileLoaded=false;
+    showProfileOverlay('Ta session n’est plus valide. Reconnecte-toi.','login');
   }
 }
 
@@ -4131,13 +4401,18 @@ async function boot(){
     $('modeAiBtn').addEventListener('click',()=>showModeOverlay('ai'));
     $('modeRemoteBtn').addEventListener('click',()=>showModeOverlay('remote'));
 
-    $('saveProfileBtn').addEventListener('click',submitPlayerProfile);
-    $('playerNameInput').addEventListener('keydown',e=>{
-      if(e.key==='Enter')submitPlayerProfile();
+    $('authLoginTab').addEventListener('click',()=>switchAuthMode('login'));
+    $('authRegisterTab').addEventListener('click',()=>switchAuthMode('register'));
+    $('loginProfileBtn').addEventListener('click',loginPlayerProfile);
+    $('registerProfileBtn').addEventListener('click',registerPlayerProfile);
+    $('refreshProfilesBtn').addEventListener('click',loadProfilesList);
+    $('loginPasswordInput').addEventListener('keydown',e=>{
+      if(e.key==='Enter')loginPlayerProfile();
     });
-    $('changeProfileBtn').addEventListener('click',()=>{
-      showProfileOverlay('Entre un autre nom pour charger ou créer son classement.');
+    $('registerPasswordConfirmInput').addEventListener('keydown',e=>{
+      if(e.key==='Enter')registerPlayerProfile();
     });
+    $('changeProfileBtn').addEventListener('click',logoutPlayerProfile);
     $('aiBackBtn').addEventListener('click',()=>showModeOverlay('main'));
     $('remoteBackBtn').addEventListener('click',()=>{
       destroyRemote();
