@@ -20,7 +20,7 @@
   <meta name="apple-mobile-web-app-title" content="Mario Chess">
   <meta name="mobile-web-app-capable" content="yes">
 
-  <meta name="mario-chess-build" content="netlify-supabase-v67">
+  <meta name="mario-chess-build" content="netlify-supabase-v68">
 
   <link rel="preload" href="/fonts/nunito-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/outfit-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -191,10 +191,10 @@
 
     <div class="auth-panel" id="authLoginPanel">
       <label class="profile-field">
-        <span>PROFIL</span>
-        <select id="loginProfileSelect">
-          <option value="">Chargement des profils…</option>
-        </select>
+        <span>PSEUDO</span>
+        <input id="loginProfileInput" type="text" maxlength="20"
+               autocomplete="username" autocapitalize="none"
+               spellcheck="false" placeholder="Entre ton pseudo exact">
       </label>
 
       <label class="profile-field">
@@ -203,11 +203,12 @@
                autocomplete="current-password" placeholder="Ton mot de passe">
       </label>
 
+      <div class="profile-name-check" id="profileNameCheck" aria-live="polite"></div>
+
       <button class="profile-save" id="loginProfileBtn" type="button">SE CONNECTER</button>
       <div class="auth-or"><span>OU</span></div>
       <button class="guest-login-btn" id="guestLoginBtn" type="button">JOUER EN INVITÉ</button>
       <div class="guest-login-note">Aucune donnée ne sera enregistrée dans la base.</div>
-      <button class="auth-refresh" id="refreshProfilesBtn" type="button">Actualiser la liste</button>
     </div>
 
     <div class="auth-panel hidden" id="authRegisterPanel">
@@ -460,7 +461,6 @@ let playerName='';
 let authToken='';
 let databaseAvailable=false;
 let profileLoaded=false;
-let availableProfiles=[];
 let isGuest=false;
 let remoteOpponentGuest=false;
 
@@ -505,6 +505,7 @@ async function apiJSON(url,options={}){
   if(!response.ok){
     const err=new Error(payload.error||('Erreur serveur '+response.status));
     err.status=response.status;
+    err.code=payload.code||'';
     throw err;
   }
   return payload;
@@ -550,58 +551,14 @@ function switchAuthMode(mode){
   $('authRegisterTab')?.classList.toggle('active',!login);
 
   setAuthStatus(login
-    ? 'Sélectionne ton profil puis entre ton mot de passe.'
+    ? 'Entre exactement le pseudo enregistré dans la base, puis ton mot de passe.'
     : 'Le mot de passe sera haché avec scrypt côté serveur et jamais stocké en clair.'
   );
 
   setTimeout(()=>{
-    if(login)$('loginPasswordInput')?.focus();
+    if(login)$('loginProfileInput')?.focus();
     else $('registerNameInput')?.focus();
   },80);
-}
-async function loadProfilesList(){
-  const select=$('loginProfileSelect');
-  const refresh=$('refreshProfilesBtn');
-  if(refresh)refresh.disabled=true;
-  if(select){
-    select.innerHTML='<option value="">Chargement des profils…</option>';
-    select.disabled=true;
-  }
-
-  try{
-    const data=await apiJSON('/api/profiles',{method:'GET'});
-    availableProfiles=Array.isArray(data.profiles)?data.profiles:[];
-    const last=loadLastProfile();
-
-    if(select){
-      select.innerHTML='';
-      if(!availableProfiles.length){
-        const opt=document.createElement('option');
-        opt.value='';
-        opt.textContent='Aucun profil — crée-en un';
-        select.appendChild(opt);
-      }else{
-        for(const profile of availableProfiles){
-          const opt=document.createElement('option');
-          opt.value=profile.name;
-          opt.textContent=profile.name;
-          if(last&&profile.name.toLowerCase()===last.toLowerCase())opt.selected=true;
-          select.appendChild(opt);
-        }
-      }
-      select.disabled=!availableProfiles.length;
-    }
-    databaseAvailable=true;
-  }catch(err){
-    databaseAvailable=false;
-    if(select){
-      select.innerHTML='<option value="">BDD indisponible</option>';
-      select.disabled=true;
-    }
-    setAuthStatus('Impossible de charger les profils. Vérifie Supabase et Netlify.','error');
-  }finally{
-    if(refresh)refresh.disabled=false;
-  }
 }
 function showProfileOverlay(message='',mode='login'){
   const overlay=$('profileOverlay');
@@ -611,7 +568,14 @@ function showProfileOverlay(message='',mode='login'){
     overlay.classList.add('show');
     overlay.setAttribute('aria-hidden','false');
   }
-  if(mode==='login')loadProfilesList();
+  if(mode==='login'){
+    const input=$('loginProfileInput');
+    if(input && !cleanPlayerName(input.value)){
+      const last=loadLastProfile();
+      if(last)input.value=last;
+    }
+    setProfileNameCheck('');
+  }
 }
 function hideProfileOverlay(){
   const overlay=$('profileOverlay');
@@ -620,6 +584,56 @@ function hideProfileOverlay(){
     overlay.setAttribute('aria-hidden','true');
   }
 }
+let verifiedLoginProfileName='';
+
+function setProfileNameCheck(message,kind=''){
+  const el=$('profileNameCheck');
+  if(!el)return;
+  el.textContent=message||'';
+  el.className='profile-name-check'+(kind?' '+kind:'');
+}
+
+async function checkLoginProfileName({silent=false}={}){
+  const input=$('loginProfileInput');
+  const name=cleanPlayerName(input?.value);
+
+  verifiedLoginProfileName='';
+
+  if(!name){
+    if(!silent)setProfileNameCheck('Entre ton pseudo.','error');
+    return false;
+  }
+  if(name.length<2){
+    if(!silent)setProfileNameCheck('Le pseudo doit contenir au moins 2 caractères.','error');
+    return false;
+  }
+
+  if(!silent)setProfileNameCheck('Vérification du pseudo…');
+
+  try{
+    const data=await apiJSON('/api/profile-check',{
+      method:'POST',
+      body:JSON.stringify({name})
+    });
+
+    if(data?.exists===true){
+      verifiedLoginProfileName=name;
+      setProfileNameCheck('Pseudo reconnu.','ok');
+      return true;
+    }
+
+    setProfileNameCheck('Pseudo introuvable ou mal orthographié.','error');
+    return false;
+  }catch(err){
+    if(err.status===404 || err.code==='PROFILE_NOT_FOUND'){
+      setProfileNameCheck('Pseudo introuvable ou mal orthographié.','error');
+      return false;
+    }
+    setProfileNameCheck(err.message||'Impossible de vérifier le pseudo.','error');
+    return false;
+  }
+}
+
 async function registerPlayerProfile(){
   const name=cleanPlayerName($('registerNameInput')?.value);
   const password=String($('registerPasswordInput')?.value||'');
@@ -659,12 +673,13 @@ async function registerPlayerProfile(){
   }
 }
 async function loginPlayerProfile(){
-  const name=cleanPlayerName($('loginProfileSelect')?.value);
+  const name=cleanPlayerName($('loginProfileInput')?.value);
   const password=String($('loginPasswordInput')?.value||'');
   const btn=$('loginProfileBtn');
 
   if(!name){
-    setAuthStatus('Sélectionne un profil.','error');
+    setAuthStatus('Entre ton pseudo.','error');
+    setProfileNameCheck('Entre ton pseudo.','error');
     return;
   }
   if(!password){
@@ -673,19 +688,39 @@ async function loginPlayerProfile(){
   }
 
   if(btn)btn.disabled=true;
-  setAuthStatus('Connexion…');
 
   try{
+    if(verifiedLoginProfileName!==name){
+      setAuthStatus('Vérification du pseudo…');
+      const pseudoOk=await checkLoginProfileName();
+      if(!pseudoOk){
+        setAuthStatus('Pseudo introuvable ou mal orthographié.','error');
+        return;
+      }
+    }
+
+    setAuthStatus('Connexion…');
+
     const data=await apiJSON('/api/login',{
       method:'POST',
       body:JSON.stringify({name,password})
     });
+
     applyAuthenticatedPlayer(data.player,data.token);
     $('loginPasswordInput').value='';
+    setProfileNameCheck('');
     setAuthStatus('Connexion réussie.','ok');
     setTimeout(hideProfileOverlay,160);
   }catch(err){
-    setAuthStatus(err.status===401?'Mot de passe incorrect.':(err.message||'Connexion impossible.'),'error');
+    if(err.status===404 || err.code==='PROFILE_NOT_FOUND'){
+      verifiedLoginProfileName='';
+      setProfileNameCheck('Pseudo introuvable ou mal orthographié.','error');
+      setAuthStatus('Pseudo introuvable ou mal orthographié.','error');
+    }else if(err.status===401 || err.code==='BAD_PASSWORD'){
+      setAuthStatus('Mot de passe incorrect.','error');
+    }else{
+      setAuthStatus(err.message||'Connexion impossible.','error');
+    }
   }finally{
     if(btn)btn.disabled=false;
   }
@@ -1910,7 +1945,20 @@ async function boot(){
     $('loginProfileBtn').addEventListener('click',loginPlayerProfile);
     $('guestLoginBtn').addEventListener('click',startGuestSession);
     $('registerProfileBtn').addEventListener('click',registerPlayerProfile);
-    $('refreshProfilesBtn').addEventListener('click',loadProfilesList);
+
+    $('loginProfileInput').addEventListener('input',()=>{
+      verifiedLoginProfileName='';
+      setProfileNameCheck('');
+    });
+    $('loginProfileInput').addEventListener('blur',()=>{
+      if(cleanPlayerName($('loginProfileInput').value))checkLoginProfileName();
+    });
+    $('loginProfileInput').addEventListener('keydown',e=>{
+      if(e.key==='Enter'){
+        e.preventDefault();
+        $('loginPasswordInput')?.focus();
+      }
+    });
     $('loginPasswordInput').addEventListener('keydown',e=>{
       if(e.key==='Enter')loginPlayerProfile();
     });

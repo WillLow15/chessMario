@@ -2684,7 +2684,7 @@
   .auth-panel.hidden{display:none !important}
   .auth-panel .profile-field + .profile-field{margin-top:10px}
 
-  #loginProfileSelect,
+  #loginProfileInput,
   #loginPasswordInput,
   #registerNameInput,
   #registerPasswordInput,
@@ -2704,12 +2704,7 @@
     user-select:text !important;
     -webkit-user-select:text !important;
   }
-  #loginProfileSelect{
-    appearance:auto;
-    text-align-last:center;
-    cursor:pointer;
-  }
-  #loginProfileSelect:focus,
+  #loginProfileInput:focus,
   #loginPasswordInput:focus,
   #registerNameInput:focus,
   #registerPasswordInput:focus,
@@ -2738,7 +2733,7 @@
     .auth-card{width:100%}
     .auth-tabs{gap:5px;margin-bottom:10px}
     .auth-tab{min-height:42px;font-size:.65rem}
-    #loginProfileSelect,
+    #loginProfileInput,
     #loginPasswordInput,
     #registerNameInput,
     #registerPasswordInput,
@@ -3812,3 +3807,29 @@
 }
 /* FIN MOBILE PORTRAIT < 761PX */
 
+
+
+/* =========================================================
+   CONNEXION PAR PSEUDO — v68
+   ========================================================= */
+#loginProfileInput {
+  text-align: center;
+}
+
+.profile-name-check {
+  min-height: 18px;
+  margin: 7px 4px 2px;
+  text-align: center;
+  color: #78502d;
+  font-size: .66rem;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.profile-name-check.ok {
+  color: #21703a;
+}
+
+.profile-name-check.error {
+  color: #aa241d;
+}

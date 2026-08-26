@@ -134,3 +134,14 @@ V67 - CSS EXTERNALISÉ
 - index.html charge maintenant style.css via <link rel="stylesheet">.
 - Aucun attribut style inline n'est utilisé.
 - Barres de vie : height 10 px, margin-top/bottom 7 px.
+
+
+V68 - CONNEXION PAR PSEUDO TEXTE
+---------------------------------
+- Menu déroulant des profils supprimé.
+- Champ texte PSEUDO à la connexion.
+- Vérification du pseudo contre Supabase au blur et avant connexion.
+- Correspondance exacte : orthographe, accents et casse.
+- Le serveur refait la vérification avant le mot de passe.
+- Endpoint public /api/profiles supprimé.
+- Nouvel endpoint /api/profile-check.

@@ -11,7 +11,7 @@ export default async function handler(req) {
   const password = String(body.password || "");
 
   if (!name || !password) {
-    return json({ error: "Nom et mot de passe requis." }, 400);
+    return json({ error: "Pseudo et mot de passe requis." }, 400);
   }
 
   try {
@@ -23,13 +23,22 @@ export default async function handler(req) {
     const rows = await supabase(`players?${q.toString()}`);
     const row = rows?.[0];
 
-    // Même erreur qu'un mauvais mot de passe pour limiter les indices.
-    if (!row || !row.password_hash) {
-      return json({ error: "Identifiants incorrects." }, 401);
+    // Le pseudo doit correspondre exactement au pseudo enregistré :
+    // orthographe, accents et majuscules/minuscules.
+    if (!row || !row.password_hash || cleanName(row.name) !== name) {
+      return json({
+        error: "Pseudo introuvable ou mal orthographié.",
+        code: "PROFILE_NOT_FOUND"
+      }, 404);
     }
 
     const valid = await verifyPassword(password, row.password_salt, row.password_hash);
-    if (!valid) return json({ error: "Identifiants incorrects." }, 401);
+    if (!valid) {
+      return json({
+        error: "Mot de passe incorrect.",
+        code: "BAD_PASSWORD"
+      }, 401);
+    }
 
     const session = await createSession(row.id);
     return json({
@@ -42,4 +51,5 @@ export default async function handler(req) {
     return json({ error: "Erreur de connexion." }, 500);
   }
 }
+
 export const config = { path: "/api/login" };
