@@ -205,3 +205,14 @@ V73 - REPRISE MOBILE DES PARTIES ENTRE AMIS
 - Nouveau bouton Partager utilisant la feuille de partage native iOS/Android quand disponible.
 - Le lien partagé contient aussi ?room=CODE : chez l’ami le code est pré-rempli automatiquement.
 - Aucune modification Supabase n’est nécessaire pour cette version.
+
+
+V74 - RESTAURATION MOBILE PEERJS ROBUSTE
+----------------------------------------
+- Session de salle stockée dans localStorage + sessionStorage.
+- Conservation du peer hôte encore valide au retour dans l'app (ne le détruit plus).
+- Réutilisation de peer.reconnect() quand seul le websocket PeerJS a été suspendu.
+- Le guest recrée uniquement la DataConnection si son PeerJS est encore actif.
+- Synchronisation de position après reprise via resume_probe / sync_request.
+- Reprise déclenchée sur visibilitychange, pageshow, online, pagehide/freeze.
+- Aucun changement Supabase nécessaire.

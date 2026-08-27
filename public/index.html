@@ -20,7 +20,7 @@
   <meta name="apple-mobile-web-app-title" content="Mario Chess">
   <meta name="mobile-web-app-capable" content="yes">
 
-  <meta name="mario-chess-build" content="netlify-supabase-v73">
+  <meta name="mario-chess-build" content="netlify-supabase-v74">
 
   <link rel="preload" href="/fonts/nunito-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/outfit-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -603,7 +603,10 @@ let remoteRoomCode='';
 let remoteReconnectTimer=null;
 let remoteReconnectInProgress=false;
 let remoteConnectionGeneration=0;
-const REMOTE_SESSION_STORAGE_KEY='marioChessRemoteSessionV1';
+let remoteLastConnectedAt=0;
+const REMOTE_SESSION_STORAGE_KEY='marioChessRemoteSessionV2';
+const REMOTE_SESSION_LEGACY_KEY='marioChessRemoteSessionV1';
+const REMOTE_SESSION_TTL_MS=24*60*60*1000;
 
 let correspondenceGameId=null;
 let correspondenceVersion=0;
@@ -2157,17 +2160,39 @@ function makeRoomCode(){
   return out;
 }
 function readRemoteSession(){
-  try{
-    const raw=sessionStorage.getItem(REMOTE_SESSION_STORAGE_KEY);
-    if(!raw)return null;
-    const data=JSON.parse(raw);
-    const code=cleanCode(data&&data.code);
-    if(code.length!==6||!['host','guest'].includes(data&&data.role))return null;
-    return {...data,code};
-  }catch(e){return null;}
+  const stores=[
+    {store:localStorage,key:REMOTE_SESSION_STORAGE_KEY},
+    {store:sessionStorage,key:REMOTE_SESSION_STORAGE_KEY},
+    {store:localStorage,key:REMOTE_SESSION_LEGACY_KEY},
+    {store:sessionStorage,key:REMOTE_SESSION_LEGACY_KEY}
+  ];
+  for(const item of stores){
+    try{
+      const raw=item.store.getItem(item.key);
+      if(!raw)continue;
+      const data=JSON.parse(raw);
+      const code=cleanCode(data&&data.code);
+      if(code.length!==6||!['host','guest'].includes(data&&data.role))continue;
+      const updatedAt=Number(data.updatedAt)||0;
+      if(updatedAt&&Date.now()-updatedAt>REMOTE_SESSION_TTL_MS){
+        try{item.store.removeItem(item.key);}catch(e){}
+        continue;
+      }
+      const normalized={...data,code};
+      // Migration automatique de l'ancienne session vers un stockage persistant.
+      if(item.key!==REMOTE_SESSION_STORAGE_KEY||item.store!==localStorage){
+        try{localStorage.setItem(REMOTE_SESSION_STORAGE_KEY,JSON.stringify(normalized));}catch(e){}
+      }
+      return normalized;
+    }catch(e){}
+  }
+  return null;
 }
 function clearRemoteSession(){
-  try{sessionStorage.removeItem(REMOTE_SESSION_STORAGE_KEY);}catch(e){}
+  for(const store of [localStorage,sessionStorage]){
+    try{store.removeItem(REMOTE_SESSION_STORAGE_KEY);}catch(e){}
+    try{store.removeItem(REMOTE_SESSION_LEGACY_KEY);}catch(e){}
+  }
 }
 function saveRemoteSession(extra={}){
   if(gameMode!=='remote'||!remoteRoomCode)return;
@@ -2194,6 +2219,9 @@ function saveRemoteSession(extra={}){
     updatedAt:Date.now(),
     ...extra
   };
+  // localStorage est volontaire : Safari/iOS peut tuer puis recharger l'onglet
+  // après un changement d'app. sessionStorage seul n'est pas assez robuste.
+  try{localStorage.setItem(REMOTE_SESSION_STORAGE_KEY,JSON.stringify(snapshot));}catch(e){}
   try{sessionStorage.setItem(REMOTE_SESSION_STORAGE_KEY,JSON.stringify(snapshot));}catch(e){}
 }
 function restoreRemoteSnapshot(session){
@@ -2231,6 +2259,7 @@ function destroyRemote({clearSession=true}={}){
   remoteDrawOfferByMe=false;
   remoteDrawOfferIncoming=false;
   remoteReconnectInProgress=false;
+  remoteLastConnectedAt=0;
   if(remoteReconnectTimer){clearTimeout(remoteReconnectTimer);remoteReconnectTimer=null;}
   try{if(peerConn)peerConn.close();}catch(e){}
   try{if(peer)peer.destroy();}catch(e){}
@@ -2273,79 +2302,189 @@ function scheduleRemoteReconnect(delay=900){
   if(remoteReconnectTimer)return;
   remoteReconnectTimer=setTimeout(()=>{
     remoteReconnectTimer=null;
-    if(document.hidden){scheduleRemoteReconnect(1200);return;}
+    if(document.hidden){scheduleRemoteReconnect(1400);return;}
     resumeRemoteConnection().catch(err=>{
       console.warn('Reconnexion distante:',err);
       scheduleRemoteReconnect(1800);
     });
   },delay);
 }
+function remoteHostPeerId(code){
+  return 'mariochess-'+cleanCode(code).toLowerCase();
+}
+function peerIsUsable(p){
+  return !!(p&&!p.destroyed);
+}
+function peerIsOpen(p){
+  return !!(peerIsUsable(p)&&p.open&&!p.disconnected);
+}
+function safelyCloseRemoteConnection(){
+  const old=peerConn;
+  peerConn=null;
+  if(old){try{old.close();}catch(e){}}
+}
 function attachPeerErrors(p){
   p.on('error',err=>{
     console.error('PeerJS',err);
-    if(gameMode!=='remote')return;
+    if(gameMode!=='remote'||p!==peer)return;
     if(err&&err.type==='peer-unavailable'){
       setRemoteStatus(remoteIsHost?'En attente de ton ami…':'Ton ami n’est pas encore reconnecté. Nouvelle tentative…','wait');
-      scheduleRemoteReconnect(1600);
+      scheduleRemoteReconnect(1200);
       return;
     }
     if(err&&err.type==='unavailable-id'&&remoteIsHost){
-      // The signaling server may still hold our ID briefly after a mobile suspension.
+      // Un ancien socket mobile peut conserver l'identifiant quelques secondes.
+      // On détruit uniquement CE peer défaillant, puis on retente le même code.
+      try{p.destroy();}catch(e){}
+      if(peer===p)peer=null;
       setRemoteStatus('Récupération de la salle '+remoteRoomCode+'…','wait');
       scheduleRemoteReconnect(1800);
+      return;
+    }
+    if(err&&['network','server-error','socket-error','socket-closed'].includes(err.type)){
+      setRemoteStatus('Réseau interrompu. Reconnexion automatique…','wait');
+      scheduleRemoteReconnect(900);
       return;
     }
     setRemoteStatus('Connexion interrompue. Reconnexion automatique…','wait');
     scheduleRemoteReconnect(1200);
   });
   p.on('disconnected',()=>{
-    if(gameMode!=='remote'||document.hidden)return;
-    try{if(!p.destroyed)p.reconnect();}catch(e){scheduleRemoteReconnect(700);}
+    if(gameMode!=='remote'||p!==peer)return;
+    if(document.hidden)return;
+    try{
+      if(!p.destroyed)p.reconnect();
+    }catch(e){scheduleRemoteReconnect(650);}
   });
   p.on('close',()=>{
+    if(p===peer)peer=null;
     if(gameMode==='remote'&&remoteRoomCode)scheduleRemoteReconnect(700);
   });
 }
-async function createHostPeerForCode(code){
+function connectGuestToHost(p,code){
+  if(!peerIsUsable(p)||!p.open)return null;
+  const conn=p.connect(remoteHostPeerId(code),{reliable:true,serialization:'json'});
+  setupRemoteConnection(conn,false);
+  return conn;
+}
+async function createHostPeerForCode(code,{force=false}={}){
   await loadPeerJS();
+  const hostId=remoteHostPeerId(code);
+
+  // Correctif principal v74 : si le peer hôte est encore vivant après le
+  // changement d'app, NE PAS le détruire. Il doit simplement continuer à
+  // écouter la connexion de l'ami avec le même code.
+  if(!force&&peerIsOpen(peer)&&peer.id===hostId){
+    remoteIsHost=true;
+    remoteRoomCode=code;
+    remoteReconnectInProgress=false;
+    $('accessCode').textContent=code;
+    $('accessCodeBox').classList.remove('hidden');
+    setRemoteStatus(peerConn&&peerConn.open?'Reconnecté à ton ami.':'Salle '+code+' restaurée. En attente de ton ami…','wait');
+    saveRemoteSession({role:'host',code,active:!!(peerConn&&peerConn.open)});
+    return peer;
+  }
+
+  // Si le peer existe mais son websocket de signalisation est seulement
+  // déconnecté, PeerJS sait récupérer le MÊME identifiant via reconnect().
+  if(!force&&peerIsUsable(peer)&&peer.id===hostId&&peer.disconnected){
+    try{
+      peer.reconnect();
+      remoteIsHost=true;
+      remoteRoomCode=code;
+      setRemoteStatus('Récupération de la salle '+code+'…','wait');
+      saveRemoteSession({role:'host',code,active:false});
+      return peer;
+    }catch(e){}
+  }
+
   const generation=++remoteConnectionGeneration;
-  try{if(peer&&!peer.destroyed)peer.destroy();}catch(e){}
+  const old=peer;
+  if(old){try{old.destroy();}catch(e){}}
   peer=null;
-  const id='mariochess-'+code.toLowerCase();
-  const p=new Peer(id);
+
+  const p=new Peer(hostId);
   peer=p;
   attachPeerErrors(p);
   p.on('open',()=>{
-    if(generation!==remoteConnectionGeneration||gameMode!=='remote')return;
+    if(generation!==remoteConnectionGeneration||gameMode!=='remote'||p!==peer)return;
     remoteReconnectInProgress=false;
     remoteIsHost=true;
     remoteRoomCode=code;
     $('accessCode').textContent=code;
     $('accessCodeBox').classList.remove('hidden');
-    setRemoteStatus(peerConn&&peerConn.open?'Reconnecté à ton ami.':"Partage ce code. Tu peux changer d’app puis revenir : la salle sera restaurée.",'wait');
-    saveRemoteSession({role:'host',code});
+    setRemoteStatus(peerConn&&peerConn.open?'Reconnecté à ton ami.':'Salle '+code+' prête. En attente de ton ami…','wait');
+    saveRemoteSession({role:'host',code,active:!!(peerConn&&peerConn.open)});
   });
   p.on('connection',conn=>{
-    if(generation!==remoteConnectionGeneration){try{conn.close();}catch(e){};return;}
+    if(generation!==remoteConnectionGeneration||p!==peer){try{conn.close();}catch(e){};return;}
     if(peerConn&&peerConn.open){try{peerConn.close();}catch(e){}}
     setupRemoteConnection(conn,true);
   });
   return p;
 }
-async function createGuestPeerForCode(code){
+async function createGuestPeerForCode(code,{force=false}={}){
   await loadPeerJS();
+
+  // Un guest dont le PeerJS est toujours ouvert peut recréer uniquement la
+  // DataConnection. Inutile de casser le websocket PeerJS lui-même.
+  if(!force&&peerIsOpen(peer)){
+    remoteIsHost=false;
+    remoteRoomCode=code;
+    if(!peerConn||!peerConn.open)connectGuestToHost(peer,code);
+    return peer;
+  }
+
+  if(!force&&peerIsUsable(peer)&&peer.disconnected){
+    try{
+      peer.reconnect();
+      remoteIsHost=false;
+      remoteRoomCode=code;
+      setRemoteStatus('Reconnexion à la salle '+code+'…','wait');
+      return peer;
+    }catch(e){}
+  }
+
   const generation=++remoteConnectionGeneration;
-  try{if(peer&&!peer.destroyed)peer.destroy();}catch(e){}
+  const old=peer;
+  if(old){try{old.destroy();}catch(e){}}
   peer=null;
   const p=new Peer();
   peer=p;
   attachPeerErrors(p);
   p.on('open',()=>{
-    if(generation!==remoteConnectionGeneration||gameMode!=='remote')return;
-    const conn=p.connect('mariochess-'+code.toLowerCase(),{reliable:true});
-    setupRemoteConnection(conn,false);
+    if(generation!==remoteConnectionGeneration||gameMode!=='remote'||p!==peer)return;
+    connectGuestToHost(p,code);
   });
   return p;
+}
+function probeRemoteConnection(){
+  if(gameMode!=='remote'||!peerConn||!peerConn.open)return false;
+  const conn=peerConn;
+  const sentAt=Date.now();
+  try{
+    conn.send({type:'resume_probe',at:sentAt});
+    setTimeout(()=>{
+      if(gameMode!=='remote'||peerConn!==conn||!conn.open)return;
+      // Sur iOS une DataConnection peut rester marquée "open" alors que le
+      // transport WebRTC est déjà mort. Sans réponse après la reprise, on la
+      // ferme volontairement afin de déclencher une vraie reconnexion.
+      if(remoteLastConnectedAt<sentAt){
+        try{conn.close();}catch(e){}
+        if(peerConn===conn)peerConn=null;
+        remoteReady=false;
+        saveRemoteSession({active:false});
+        setRemoteStatus('La connexion mobile a expiré. Récupération de la salle…','wait');
+        scheduleRemoteReconnect(120);
+      }
+    },2200);
+    return true;
+  }catch(e){
+    safelyCloseRemoteConnection();
+    remoteReady=false;
+    scheduleRemoteReconnect(120);
+    return false;
+  }
 }
 async function resumeRemoteConnection(){
   if(remoteReconnectInProgress||document.hidden)return;
@@ -2356,29 +2495,26 @@ async function resumeRemoteConnection(){
   remoteRoomCode=session.code;
   remoteIsHost=session.role==='host';
 
-  if(peerConn&&peerConn.open){
-    remoteReady=true;
-    remoteReconnectInProgress=false;
-    saveRemoteSession({active:true});
-    return;
-  }
-
-  if(peer&&!peer.destroyed&&peer.disconnected){
-    try{
-      peer.reconnect();
-      remoteReconnectInProgress=false;
-      setRemoteStatus('Reconnexion de la salle…','wait');
-      setTimeout(()=>{
-        if(gameMode==='remote'&&(!peerConn||!peerConn.open))scheduleRemoteReconnect(500);
-      },900);
-      return;
-    }catch(e){}
-  }
-
-  setRemoteStatus(remoteIsHost?'Restauration de ta salle '+session.code+'…':'Reconnexion à la salle '+session.code+'…','wait');
   try{
-    if(remoteIsHost)await createHostPeerForCode(session.code);
-    else await createGuestPeerForCode(session.code);
+    // Si la DataConnection est réellement ouverte, on la garde et on sonde
+    // l'autre appareil. C'était précisément ce qui était cassé en v73.
+    if(peerConn&&peerConn.open){
+      remoteReady=true;
+      remoteLastConnectedAt=Date.now();
+      saveRemoteSession({active:true});
+      probeRemoteConnection();
+      setRemoteStatus('Partie reconnectée.','ok');
+      return;
+    }
+
+    remoteReady=false;
+    setRemoteStatus(remoteIsHost?'Restauration de ta salle '+session.code+'…':'Reconnexion à la salle '+session.code+'…','wait');
+
+    if(remoteIsHost){
+      await createHostPeerForCode(session.code);
+    }else{
+      await createGuestPeerForCode(session.code);
+    }
   }finally{
     remoteReconnectInProgress=false;
   }
@@ -2396,7 +2532,27 @@ async function restoreRemoteSessionOnBoot(){
   await resumeRemoteConnection();
   return true;
 }
+function sendRemoteInit(conn){
+  if(!conn||!conn.open)return;
+  conn.send({
+    type:'init',
+    fen:chess.fen(),
+    hostCamp:'w',
+    guestCamp:'b',
+    clocks:{w:clockState.w,b:clockState.b},
+    clockStarted:clockStarted,
+    timeControlKey:selectedTimeControlKey,
+    timeControlLabel:TIME_CONTROL_LABEL,
+    initialClockMs:INITIAL_CLOCK_MS,
+    incrementMs:CLOCK_INCREMENT_MS,
+    elo:playerElo,
+    playerName:isGuest?'Invité':(playerName||'Joueur'),
+    isGuest:isGuest,
+    resume:true
+  });
+}
 function setupRemoteConnection(conn,isHost){
+  if(peerConn&&peerConn!==conn){try{peerConn.close();}catch(e){}}
   peerConn=conn;
   remoteIsHost=isHost;
   setRemoteStatus(isHost?'Un ami se connecte…':'Connexion à la partie…','wait');
@@ -2406,24 +2562,11 @@ function setupRemoteConnection(conn,isHost){
     remoteReconnectInProgress=false;
     remoteRoomCode=remoteRoomCode||cleanCode(readRemoteSession()?.code);
     saveRemoteSession({active:true,role:isHost?'host':'guest'});
+    remoteLastConnectedAt=Date.now();
     if(isHost){
       playerCamp='w';
       flipped=false;
-      conn.send({
-        type:'init',
-        fen:chess.fen(),
-        hostCamp:'w',
-        guestCamp:'b',
-        clocks:{w:clockState.w,b:clockState.b},
-        clockStarted:clockStarted,
-        timeControlKey:selectedTimeControlKey,
-        timeControlLabel:TIME_CONTROL_LABEL,
-        initialClockMs:INITIAL_CLOCK_MS,
-        incrementMs:CLOCK_INCREMENT_MS,
-        elo:playerElo,
-        playerName:isGuest?'Invité':(playerName||'Joueur'),
-        isGuest:isGuest
-      });
+      sendRemoteInit(conn);
       hideModeOverlay();
       if(!clockStarted&&chess.history().length===0)resetClock();
       renderAll();
@@ -2433,6 +2576,22 @@ function setupRemoteConnection(conn,isHost){
 
   conn.on('data',data=>{
     if(!data||typeof data!=='object')return;
+    remoteLastConnectedAt=Date.now();
+    if(data.type==='resume_probe'){
+      try{if(conn.open)conn.send({type:'resume_pong',at:Date.now()});}catch(e){}
+      if(isHost)sendRemoteInit(conn);
+      return;
+    }
+    if(data.type==='resume_pong'){
+      remoteReady=true;
+      saveRemoteSession({active:true});
+      setRemoteStatus('Partie reconnectée.','ok');
+      return;
+    }
+    if(data.type==='sync_request'){
+      if(isHost)sendRemoteInit(conn);
+      return;
+    }
     if(data.type==='init'&&!isHost){
       chess.load(data.fen);
       playerCamp=data.guestCamp||'b';
@@ -2459,8 +2618,10 @@ function setupRemoteConnection(conn,isHost){
       clockLastTick=clockStarted?performance.now():0;
       if(clockStarted&&!clockInterval)clockInterval=setInterval(clockTick,200);
       remoteReady=true;
+      remoteLastConnectedAt=Date.now();
       hideModeOverlay();
       renderAll();
+      setRemoteStatus('Partie reconnectée.','ok');
       saveRemoteSession({active:true,role:'guest'});
       return;
     }
@@ -2524,7 +2685,18 @@ function setupRemoteConnection(conn,isHost){
     }
   });
 
+  conn.on('error',err=>{
+    console.warn('DataConnection distante:',err);
+    if(gameMode==='remote'&&remoteRoomCode){
+      remoteReady=false;
+      saveRemoteSession({active:false});
+      setRemoteStatus('Connexion interrompue. Reconnexion automatique…','wait');
+      scheduleRemoteReconnect(500);
+    }
+  });
+
   conn.on('close',()=>{
+    if(peerConn===conn)peerConn=null;
     if(gameMode==='remote'&&remoteRoomCode){
       remoteReady=false;
       saveRemoteSession({active:false});
@@ -2587,7 +2759,7 @@ async function shareRemoteCode(){
   try{
     if(navigator.share){
       await navigator.share({title:'Mario Bros Chess',text,url});
-      setRemoteStatus('Code partagé. La salle reste active pendant ton retour dans le jeu.','ok');
+      setRemoteStatus('Code partagé. Reviens simplement dans le jeu : la salle reprend avec le même code.','ok');
       return;
     }
   }catch(err){
@@ -3379,21 +3551,36 @@ async function boot(){
     $('correspondenceCodeInput').addEventListener('input',e=>{e.target.value=cleanCorrespondenceCode(e.target.value);});
     $('correspondenceCodeInput').addEventListener('keydown',e=>{if(e.key==='Enter')joinCorrespondenceGame();});
     $('correspondenceOverlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeCorrespondenceMenu();});
-    document.addEventListener('visibilitychange',()=>{
-      if(document.hidden){
-        if(gameMode==='remote'&&remoteRoomCode){
-          commitClock();
-          saveRemoteSession({active:!!remoteReady});
-        }
-        return;
+    const persistRemoteBeforeSuspend=()=>{
+      if(gameMode==='remote'&&remoteRoomCode){
+        commitClock();
+        saveRemoteSession({active:!!remoteReady});
       }
+    };
+    const resumeRemoteAfterSuspend=()=>{
+      const session=readRemoteSession();
+      if(!session)return;
+      if(gameMode!=='remote'||!remoteRoomCode)restoreRemoteSnapshot(session);
+      // Laisse Safari réactiver le websocket avant la première tentative.
+      setTimeout(()=>resumeRemoteConnection(),120);
+      setTimeout(()=>{
+        if(gameMode==='remote'&&(!peerConn||!peerConn.open))resumeRemoteConnection();
+        else if(gameMode==='remote'&&peerConn&&peerConn.open){
+          try{peerConn.send({type:'sync_request'});}catch(e){scheduleRemoteReconnect(200);}
+        }
+      },1100);
+    };
+    document.addEventListener('visibilitychange',()=>{
+      if(document.hidden){persistRemoteBeforeSuspend();return;}
       refreshCurrentCorrespondenceGame(true);
       loadOngoingCorrespondenceSidebar(true);
-      if(readRemoteSession())resumeRemoteConnection();
+      resumeRemoteAfterSuspend();
     });
-    window.addEventListener('pageshow',()=>{
-      if(readRemoteSession())resumeRemoteConnection();
-    });
+    window.addEventListener('pagehide',persistRemoteBeforeSuspend);
+    window.addEventListener('pageshow',resumeRemoteAfterSuspend);
+    window.addEventListener('online',resumeRemoteAfterSuspend);
+    if('onfreeze' in document)document.addEventListener('freeze',persistRemoteBeforeSuspend);
+    if('onresume' in document)document.addEventListener('resume',resumeRemoteAfterSuspend);
     startOngoingGamesPolling();
     configureTimeControl(selectedTimeControlKey);
 
@@ -3443,9 +3630,9 @@ async function boot(){
       saveRemoteSession({role:'host',code,active:!!remoteReady});
       try{
         await navigator.clipboard.writeText(code);
-        setRemoteStatus('Code '+code+' copié. Tu peux changer d’app : la salle sera restaurée à ton retour.','ok');
+        setRemoteStatus('Code '+code+' copié. Tu peux changer d’app : la salle reste récupérable avec le même code.','ok');
       }catch(e){
-        setRemoteStatus('Code : '+code+' — la salle sera restaurée à ton retour.','ok');
+        setRemoteStatus('Code : '+code+' — le même code sera récupéré à ton retour.','ok');
       }
     });
     $('shareCodeBtn').addEventListener('click',shareRemoteCode);
