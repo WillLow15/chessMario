@@ -1,7 +1,7 @@
 {
   "name": "mario-chess-netlify-supabase",
   "private": true,
-  "version": "76.0.0",
+  "version": "77.0.0",
   "type": "module",
   "engines": {
     "node": ">=22.13.0"

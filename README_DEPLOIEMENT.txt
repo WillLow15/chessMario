@@ -237,3 +237,15 @@ V76 - CREATION DE PARTIE EN LIGNE STABLE
 - Les collisions rares de code régénèrent automatiquement une nouvelle salle.
 - La restauration mobile/localStorage de la v74/v75 est conservée.
 - Aucun changement Supabase nécessaire.
+
+
+V77 - ACTIONS DE PARTIE DANS LA BARRE STICKY
+---------------------------------------------
+- Hors partie : la barre du bas affiche Jouer + Profil.
+- Dès qu'une partie est réellement lancée : Jouer disparaît.
+- La barre affiche alors Nulle + Abandonner + Profil.
+- Quand la partie se termine, Jouer réapparaît automatiquement.
+- Les actions Nulle / Abandonner ne sont plus affichées sous l'échiquier.
+- Les règles ELO / accord de nulle existantes restent inchangées.
+- Conservation du layout <=1260px et des barres de vie centrées.
+- Aucun changement Supabase nécessaire.

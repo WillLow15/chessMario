@@ -20,7 +20,7 @@
   <meta name="apple-mobile-web-app-title" content="Mario Chess">
   <meta name="mobile-web-app-capable" content="yes">
 
-  <meta name="mario-chess-build" content="netlify-supabase-v76">
+  <meta name="mario-chess-build" content="netlify-supabase-v77">
 
   <link rel="preload" href="/fonts/nunito-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/outfit-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -144,11 +144,6 @@
       <div class="board-area">
         <div class="board-topbar"><div class="turn-badge" id="turnBadge">Tour : Blancs</div></div>
         <div class="board" id="board"></div>
-        <div class="game-actions hidden" id="gameActions" aria-label="Actions de la partie">
-          <button class="game-action-btn draw" id="offerDrawBtn" type="button"><span class="game-action-icon" aria-hidden="true">½</span><span id="offerDrawBtnText">Nulle</span></button>
-          <button class="game-action-btn resign" id="resignGameBtn" type="button"><span class="game-action-icon" aria-hidden="true">⚑</span><span>Abandonner</span></button>
-          <div class="game-action-status" id="gameActionStatus" aria-live="polite"></div>
-        </div>
       </div>
       <div class="footer-note"></div>
     </main>
@@ -331,6 +326,19 @@
     <span class="bottom-nav-icon" aria-hidden="true">♟</span>
     <span class="bottom-nav-copy"><strong>Jouer</strong><small id="bottomTimeLabel">10 min</small></span>
   </button>
+
+  <div class="game-actions hidden" id="gameActions" aria-label="Actions de la partie">
+    <button class="game-action-btn draw" id="offerDrawBtn" type="button">
+      <span class="game-action-icon" aria-hidden="true">½</span>
+      <span id="offerDrawBtnText">Nulle</span>
+    </button>
+    <button class="game-action-btn resign" id="resignGameBtn" type="button">
+      <span class="game-action-icon" aria-hidden="true">⚑</span>
+      <span>Abandonner</span>
+    </button>
+    <div class="game-action-status" id="gameActionStatus" aria-live="polite"></div>
+  </div>
+
   <button class="bottom-nav-btn profile" id="bottomProfileBtn" type="button">
     <span class="bottom-nav-icon" aria-hidden="true">●</span>
     <span class="bottom-nav-copy"><strong>Profil</strong><small id="bottomProfileLabel">Mon compte</small></span>
@@ -1291,12 +1299,21 @@ function closeGameActionDialog(){
 }
 function renderGameActions(){
   const box=$('gameActions'),draw=$('offerDrawBtn'),drawText=$('offerDrawBtnText'),resign=$('resignGameBtn');
+  const nav=$('bottomAppNav'),play=$('bottomPlayBtn');
   if(!box||!draw||!drawText||!resign)return;
+
   const corrActive=gameMode==='correspondence'&&correspondenceStatus==='active';
   const normalActive=(gameMode==='local'||gameMode==='ai'||gameMode==='remote')&&!!playerCamp;
   const active=(corrActive||normalActive)&&!manualGameFinished&&chess&&!chess.game_over()&&!timeoutWinner;
+
   box.classList.toggle('hidden',!active);
-  if(!active)return;
+  if(nav)nav.classList.toggle('game-active',active);
+  if(play)play.classList.toggle('hidden',active);
+
+  if(!active){
+    setGameActionStatus('');
+    return;
+  }
   resign.disabled=false;
   if(gameMode==='ai'){
     draw.disabled=true;drawText.textContent='Nulle';draw.title='La nulle par accord nécessite deux joueurs humains.';

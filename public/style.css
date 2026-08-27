@@ -5052,3 +5052,170 @@ button.ongoing-games-empty,
   }
 }
 
+/* =========================================================
+   MENU STICKY — ACTIONS PENDANT UNE PARTIE — v77
+   ========================================================= */
+
+/* Hors partie : comportement habituel Jouer + Profil */
+.bottom-app-nav:not(.game-active) {
+  grid-template-columns: 1fr 1fr !important;
+}
+
+/* Partie lancée : Nulle + Abandonner + Profil */
+.bottom-app-nav.game-active {
+  width: min(590px, calc(100% - 24px)) !important;
+  grid-template-columns: minmax(0, 2fr) minmax(90px, 1fr) !important;
+  gap: 6px !important;
+}
+
+.bottom-app-nav.game-active > #bottomPlayBtn {
+  display: none !important;
+}
+
+.bottom-app-nav.game-active > .game-actions {
+  position: relative !important;
+  grid-column: 1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  gap: 6px !important;
+
+  align-items: stretch !important;
+  box-sizing: border-box !important;
+}
+
+.bottom-app-nav.game-active > #bottomProfileBtn {
+  grid-column: 2 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+/* Les boutons d'action adoptent exactement le format de la barre du bas. */
+.bottom-app-nav.game-active .game-action-btn {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 50px !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 7px 8px !important;
+
+  border-radius: 15px !important;
+  box-shadow: 0 3px 0 rgba(92,47,19,.10) !important;
+
+  font-size: .68rem !important;
+  line-height: 1.05 !important;
+}
+
+.bottom-app-nav.game-active .game-action-btn.draw {
+  border-color: #a77a28 !important;
+  background: linear-gradient(180deg,#fff4a8,#f4cf58) !important;
+}
+
+.bottom-app-nav.game-active .game-action-btn.resign {
+  border-color: #8f241d !important;
+  background: linear-gradient(180deg,#e45b47,#bb2d24) !important;
+}
+
+/* Le message d'état ne crée pas une quatrième case dans la barre.
+   Il apparaît juste au-dessus lorsqu'il est nécessaire. */
+.bottom-app-nav.game-active .game-action-status {
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: calc(100% + 10px) !important;
+  z-index: 2 !important;
+
+  width: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 6px 9px !important;
+
+  border: 2px solid rgba(96,51,26,.22) !important;
+  border-radius: 10px !important;
+
+  background: rgba(255,248,219,.97) !important;
+  box-shadow: 0 4px 12px rgba(34,54,60,.16) !important;
+
+  text-align: center !important;
+  font-size: .57rem !important;
+}
+
+.bottom-app-nav.game-active .game-action-status:empty {
+  display: none !important;
+}
+
+/* Le profil est volontairement plus compact lorsqu'une partie est en cours. */
+.bottom-app-nav.game-active #bottomProfileBtn {
+  padding-left: 7px !important;
+  padding-right: 7px !important;
+}
+
+.bottom-app-nav.game-active #bottomProfileBtn .bottom-nav-copy {
+  min-width: 0 !important;
+}
+
+.bottom-app-nav.game-active #bottomProfileBtn .bottom-nav-copy small {
+  max-width: 82px !important;
+}
+
+@media (max-width: 760px) {
+  .bottom-app-nav.game-active {
+    width: calc(100% - 12px) !important;
+    grid-template-columns: minmax(0, 2fr) minmax(76px, 1fr) !important;
+    gap: 4px !important;
+  }
+
+  .bottom-app-nav.game-active > .game-actions {
+    gap: 4px !important;
+  }
+
+  .bottom-app-nav.game-active .game-action-btn,
+  .bottom-app-nav.game-active #bottomProfileBtn {
+    min-height: 47px !important;
+    border-radius: 12px !important;
+  }
+
+  .bottom-app-nav.game-active .game-action-btn {
+    padding: 6px 5px !important;
+    font-size: .61rem !important;
+  }
+
+  .bottom-app-nav.game-active .game-action-icon {
+    width: 20px !important;
+    height: 20px !important;
+    flex: 0 0 20px !important;
+    font-size: .75rem !important;
+  }
+
+  .bottom-app-nav.game-active #bottomProfileBtn {
+    gap: 5px !important;
+  }
+
+  .bottom-app-nav.game-active #bottomProfileBtn .bottom-nav-copy strong {
+    font-size: .68rem !important;
+  }
+
+  .bottom-app-nav.game-active #bottomProfileBtn .bottom-nav-copy small {
+    display: none !important;
+  }
+}
+
+@media (max-width: 410px) {
+  .bottom-app-nav.game-active .game-action-icon,
+  .bottom-app-nav.game-active #bottomProfileBtn .bottom-nav-icon {
+    display: none !important;
+  }
+
+  .bottom-app-nav.game-active .game-action-btn {
+    font-size: .58rem !important;
+  }
+
+  .bottom-app-nav.game-active #bottomProfileBtn .bottom-nav-copy {
+    align-items: center !important;
+  }
+}
+
