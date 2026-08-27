@@ -1,5 +1,5 @@
 import { Chess } from 'chess.js-legacy';
-import { marioTheme as activeTheme } from '../themes/mario.js';
+import { activeTheme } from '../themes/index.js';
 
 let PeerCtor=null;
 
@@ -97,6 +97,7 @@ const PIECE_SKINS=activeTheme.pieces;
 const SHELL_GREEN_SRC=activeTheme.effects.shellGreen;
 const SHELL_RED_SRC=activeTheme.effects.shellRed;
 const MATE_CHARACTER_SRC=activeTheme.effects.resultCharacter;
+const PROJECTILE_ALT=activeTheme.effects.projectileAlt||'Projectile';
 const PIECE_VALUE={p:1,n:3,b:3,r:5,q:9,k:0};
 function pieceData(color,type){return PIECE_SKINS[color][type];}
 function makePieceEl(color,type){
@@ -550,20 +551,9 @@ function eloRankName(value){
 let playerElo=loadPlayerElo();
 let opponentElo=null;
 
-const AI_FUNNY_NAMES=[
-  'BowserBot',
-  'ToadGPT',
-  'Koopa Kasparov',
-  'Yoshi Calculateur',
-  'Goomba Genius',
-  'Kamek 3000',
-  'Wario Stockfish',
-  'Boo DeepThink',
-  'Peach Engine',
-  'Donkey Kong.exe',
-  'Luigi Logic',
-  'Bob-omb Brain'
-];
+const AI_FUNNY_NAMES=Array.isArray(activeTheme.aiNames)&&activeTheme.aiNames.length
+  ? activeTheme.aiNames
+  : ['Chess Engine'];
 let aiDisplayName='';
 let remoteOpponentName='';
 
@@ -2459,11 +2449,12 @@ async function shareRemoteCode(){
   const code=cleanCode($('accessCode')?.textContent);
   if(code.length!==6)return;
   const url=remoteShareUrl(code);
-  const text='Rejoins ma partie Mario Bros Chess avec le code '+code+'.';
+  const shareTitle=activeTheme.shareTitle||activeTheme.documentTitle||activeTheme.label||'Chess';
+  const text='Rejoins ma partie '+shareTitle+' avec le code '+code+'.';
   saveRemoteSession({role:'host',code,active:!!remoteReady});
   try{
     if(navigator.share){
-      await navigator.share({title:'Mario Bros Chess',text,url});
+      await navigator.share({title:shareTitle,text,url});
       setRemoteStatus('Code partagé. Reviens simplement dans le jeu : la salle reprend avec le même code.','ok');
       return;
     }
@@ -3051,7 +3042,7 @@ function animateSmoothMove(fromRect,toRect,color,type,targetSquare){
   },540);
 }
 
-function playShellCaptureRects(fromRect,toRect,color,type,attackerColor,targetSquare){if(!fromRect||!toRect)return;const startX=fromRect.left+fromRect.width/2;const startY=fromRect.top+fromRect.height/2;const endX=toRect.left+toRect.width/2;const endY=toRect.top+toRect.height/2;const dx=endX-startX;const dy=endY-startY;const distance=Math.hypot(dx,dy);const rot=((distance/10)+360)*(dx>=0?1:-1);const shell=document.createElement('div');shell.className='shell-shot '+(attackerColor==='w'?'green':'red');shell.style.left=startX+'px';shell.style.top=startY+'px';shell.style.setProperty('--dx',dx+'px');shell.style.setProperty('--dy',dy+'px');shell.style.setProperty('--rot',rot+'deg');const shellImg=document.createElement('img');shellImg.src=attackerColor==='w'?SHELL_GREEN_SRC:SHELL_RED_SRC;shellImg.alt='Carapace';shell.appendChild(shellImg);document.body.appendChild(shell);for(let i=1;i<=6;i++){setTimeout(()=>{const t=i/6;const trail=document.createElement('div');trail.className='shell-trail';trail.style.left=(startX+dx*t)+'px';trail.style.top=(startY+dy*t)+'px';document.body.appendChild(trail);setTimeout(()=>trail.remove(),420);},i*45);}const boardShell=document.querySelector('.board-shell');shell.classList.add('launch');setTimeout(()=>{const targetEl=document.querySelector(`[data-sq="${targetSquare}"]`);if(targetEl){targetEl.classList.add('capture-hit');setTimeout(()=>targetEl.classList.remove('capture-hit'),420);}boardShell&&boardShell.classList.add('impact');setTimeout(()=>boardShell&&boardShell.classList.remove('impact'),420);spawnCaptureImpact(endX,endY,color,type,attackerColor);},430);setTimeout(()=>shell.remove(),600);} 
+function playShellCaptureRects(fromRect,toRect,color,type,attackerColor,targetSquare){if(!fromRect||!toRect)return;const startX=fromRect.left+fromRect.width/2;const startY=fromRect.top+fromRect.height/2;const endX=toRect.left+toRect.width/2;const endY=toRect.top+toRect.height/2;const dx=endX-startX;const dy=endY-startY;const distance=Math.hypot(dx,dy);const rot=((distance/10)+360)*(dx>=0?1:-1);const shell=document.createElement('div');shell.className='shell-shot '+(attackerColor==='w'?'green':'red');shell.style.left=startX+'px';shell.style.top=startY+'px';shell.style.setProperty('--dx',dx+'px');shell.style.setProperty('--dy',dy+'px');shell.style.setProperty('--rot',rot+'deg');const shellImg=document.createElement('img');shellImg.src=attackerColor==='w'?SHELL_GREEN_SRC:SHELL_RED_SRC;shellImg.alt=PROJECTILE_ALT;shell.appendChild(shellImg);document.body.appendChild(shell);for(let i=1;i<=6;i++){setTimeout(()=>{const t=i/6;const trail=document.createElement('div');trail.className='shell-trail';trail.style.left=(startX+dx*t)+'px';trail.style.top=(startY+dy*t)+'px';document.body.appendChild(trail);setTimeout(()=>trail.remove(),420);},i*45);}const boardShell=document.querySelector('.board-shell');shell.classList.add('launch');setTimeout(()=>{const targetEl=document.querySelector(`[data-sq="${targetSquare}"]`);if(targetEl){targetEl.classList.add('capture-hit');setTimeout(()=>targetEl.classList.remove('capture-hit'),420);}boardShell&&boardShell.classList.add('impact');setTimeout(()=>boardShell&&boardShell.classList.remove('impact'),420);spawnCaptureImpact(endX,endY,color,type,attackerColor);},430);setTimeout(()=>shell.remove(),600);} 
 
 function playMove(from,to,source='local'){
   if(source==='local'&&gameMode==='correspondence'){
@@ -3124,7 +3115,7 @@ function playMove(from,to,source='local'){
     scheduleAIMove(visualDelay);
   }
 }
-function playShellCapture(fromSquare,targetSquare,color,type,attackerColor){const fromEl=document.querySelector(`[data-sq="${fromSquare}"]`);const targetEl=document.querySelector(`[data-sq="${targetSquare}"]`);if(!fromEl||!targetEl)return;const fromRect=fromEl.getBoundingClientRect();const targetRect=targetEl.getBoundingClientRect();const startX=fromRect.left+fromRect.width/2;const startY=fromRect.top+fromRect.height/2;const endX=targetRect.left+targetRect.width/2;const endY=targetRect.top+targetRect.height/2;const dx=endX-startX;const dy=endY-startY;const distance=Math.hypot(dx,dy);const rot=((distance/10)+360)*(dx>=0?1:-1);const shell=document.createElement('div');shell.className='shell-shot '+(attackerColor==='w'?'green':'red');shell.style.left=startX+'px';shell.style.top=startY+'px';shell.style.setProperty('--dx',dx+'px');shell.style.setProperty('--dy',dy+'px');shell.style.setProperty('--rot',rot+'deg');const shellImg=document.createElement('img');shellImg.src=attackerColor==='w'?SHELL_GREEN_SRC:SHELL_RED_SRC;shellImg.alt='Carapace';shell.appendChild(shellImg);document.body.appendChild(shell);for(let i=1;i<=6;i++){setTimeout(()=>{const t=i/6;const trail=document.createElement('div');trail.className='shell-trail';trail.style.left=(startX+dx*t)+'px';trail.style.top=(startY+dy*t)+'px';document.body.appendChild(trail);setTimeout(()=>trail.remove(),420);},i*45);}const boardShell=document.querySelector('.board-shell');shell.classList.add('launch');setTimeout(()=>{targetEl.classList.add('capture-hit');boardShell&&boardShell.classList.add('impact');setTimeout(()=>targetEl.classList.remove('capture-hit'),420);setTimeout(()=>boardShell&&boardShell.classList.remove('impact'),420);spawnCaptureImpact(endX,endY,color,type,attackerColor);},470);setTimeout(()=>shell.remove(),620);}
+function playShellCapture(fromSquare,targetSquare,color,type,attackerColor){const fromEl=document.querySelector(`[data-sq="${fromSquare}"]`);const targetEl=document.querySelector(`[data-sq="${targetSquare}"]`);if(!fromEl||!targetEl)return;const fromRect=fromEl.getBoundingClientRect();const targetRect=targetEl.getBoundingClientRect();const startX=fromRect.left+fromRect.width/2;const startY=fromRect.top+fromRect.height/2;const endX=targetRect.left+targetRect.width/2;const endY=targetRect.top+targetRect.height/2;const dx=endX-startX;const dy=endY-startY;const distance=Math.hypot(dx,dy);const rot=((distance/10)+360)*(dx>=0?1:-1);const shell=document.createElement('div');shell.className='shell-shot '+(attackerColor==='w'?'green':'red');shell.style.left=startX+'px';shell.style.top=startY+'px';shell.style.setProperty('--dx',dx+'px');shell.style.setProperty('--dy',dy+'px');shell.style.setProperty('--rot',rot+'deg');const shellImg=document.createElement('img');shellImg.src=attackerColor==='w'?SHELL_GREEN_SRC:SHELL_RED_SRC;shellImg.alt=PROJECTILE_ALT;shell.appendChild(shellImg);document.body.appendChild(shell);for(let i=1;i<=6;i++){setTimeout(()=>{const t=i/6;const trail=document.createElement('div');trail.className='shell-trail';trail.style.left=(startX+dx*t)+'px';trail.style.top=(startY+dy*t)+'px';document.body.appendChild(trail);setTimeout(()=>trail.remove(),420);},i*45);}const boardShell=document.querySelector('.board-shell');shell.classList.add('launch');setTimeout(()=>{targetEl.classList.add('capture-hit');boardShell&&boardShell.classList.add('impact');setTimeout(()=>targetEl.classList.remove('capture-hit'),420);setTimeout(()=>boardShell&&boardShell.classList.remove('impact'),420);spawnCaptureImpact(endX,endY,color,type,attackerColor);},470);setTimeout(()=>shell.remove(),620);}
 function spawnCaptureImpact(x,y,color,type,attackerColor){const overlay=document.createElement('div');overlay.className='capture-overlay';overlay.style.left=x+'px';overlay.style.top=(y-10)+'px';const flash=document.createElement('div');flash.className='flash';overlay.appendChild(flash);const ring=document.createElement('div');ring.className='ringwave';overlay.appendChild(ring);const slash=document.createElement('div');slash.className='slash';overlay.appendChild(slash);const victim=document.createElement('div');victim.className='victim';victim.appendChild(makePieceEl(color,type));overlay.appendChild(victim);const text=document.createElement('div');text.className='powtext';text.textContent=attackerColor==='w'?'SMASH!':'K.O.!';overlay.appendChild(text);const stars=document.createElement('div');stars.className='stars';for(let i=0;i<10;i++){const star=document.createElement('div');star.className='star';star.textContent=i%3===0?'★':(i%2===0?'✦':'✸');star.style.left=(62+Math.random()*56)+'px';star.style.top=(48+Math.random()*40)+'px';star.style.setProperty('--x',(-78+Math.random()*156)+'px');star.style.setProperty('--y',(-66+Math.random()*84)+'px');star.style.animationDelay=(Math.random()*0.12)+'s';stars.appendChild(star);}overlay.appendChild(stars);const smokes=document.createElement('div');smokes.className='smokes';for(let i=0;i<8;i++){const s=document.createElement('div');s.className='smoke';s.style.left=(75+Math.random()*30)+'px';s.style.top=(88+Math.random()*20)+'px';s.style.setProperty('--sx',(-55+Math.random()*110)+'px');s.style.setProperty('--sy',(-40-Math.random()*35)+'px');s.style.animationDelay=(Math.random()*0.1)+'s';smokes.appendChild(s);}overlay.appendChild(smokes);const coins=document.createElement('div');coins.className='coins';for(let i=0;i<6;i++){const c=document.createElement('div');c.className='coinfx';c.style.left=(80+Math.random()*22)+'px';c.style.top=(86+Math.random()*14)+'px';c.style.setProperty('--cx',(-90+Math.random()*180)+'px');c.style.setProperty('--cy',(-45-Math.random()*60)+'px');c.style.animationDelay=(Math.random()*0.08)+'s';coins.appendChild(c);}overlay.appendChild(coins);document.body.appendChild(overlay);setTimeout(()=>overlay.remove(),1250);} 
 function resetGame(){
   hideMateOverlay();

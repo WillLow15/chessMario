@@ -5219,3 +5219,644 @@ button.ongoing-games-empty,
   }
 }
 
+
+/* ======================================================================
+   DARK FANTASY — THEME V1
+   Pure skin layer: no gameplay / network / rules are changed here.
+   ====================================================================== */
+
+.react-app-root[data-theme="dark-fantasy"]{
+  --df-ink:#09090a;
+  --df-panel:#111113;
+  --df-panel-2:#181719;
+  --df-panel-3:#201b1a;
+  --df-line:#654c35;
+  --df-line-soft:#3e3228;
+  --df-bronze:#9d7a4d;
+  --df-bronze-light:#c9ad78;
+  --df-bone:#ddd3bd;
+  --df-bone-soft:#bdb19a;
+  --df-blood:#9e3028;
+  --df-blood-light:#d34e3d;
+  --df-ash:#c9c1b1;
+  --df-smoke:#77716b;
+  color:#d8cfbd;
+}
+
+html[data-theme="dark-fantasy"] body{
+  color:#d8cfbd !important;
+  background:#08090a !important;
+}
+
+/* Atmospheric world ---------------------------------------------------- */
+.react-app-root[data-theme="dark-fantasy"] .world-bg{
+  background:#08090a !important;
+  isolation:isolate;
+}
+.react-app-root[data-theme="dark-fantasy"] .world-bg::before{
+  content:"";
+  position:absolute;
+  inset:-24px;
+  z-index:-3;
+  background:
+    linear-gradient(180deg,rgba(3,4,5,.18),rgba(4,4,5,.66) 58%,rgba(5,5,6,.92)),
+    url('/assets/dark-fantasy/theme-bg.webp') center top / cover no-repeat;
+  filter:brightness(.58) saturate(.66) contrast(1.08) blur(1.8px);
+  transform:scale(1.025);
+}
+.react-app-root[data-theme="dark-fantasy"] .world-bg::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-2;
+  background:
+    radial-gradient(circle at 80% 18%,rgba(142,38,29,.28),transparent 24%),
+    radial-gradient(circle at 18% 72%,rgba(121,44,34,.12),transparent 26%),
+    repeating-linear-gradient(115deg,transparent 0 53px,rgba(255,255,255,.012) 54px 55px),
+    linear-gradient(90deg,rgba(0,0,0,.60),transparent 28%,transparent 72%,rgba(0,0,0,.62));
+  box-shadow:inset 0 0 180px rgba(0,0,0,.88);
+}
+.react-app-root[data-theme="dark-fantasy"] .parallax-back,
+.react-app-root[data-theme="dark-fantasy"] .parallax-mid,
+.react-app-root[data-theme="dark-fantasy"] .parallax-front{
+  display:none !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .world-vignette{
+  display:block !important;
+  z-index:2 !important;
+  background:
+    radial-gradient(circle at center,transparent 28%,rgba(0,0,0,.20) 65%,rgba(0,0,0,.77) 100%),
+    linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.28)) !important;
+}
+
+/* Loader ---------------------------------------------------------------- */
+.react-app-root[data-theme="dark-fantasy"] .game-loader{
+  background:
+    radial-gradient(circle at center,rgba(92,31,27,.18),transparent 38%),
+    linear-gradient(180deg,#0c0d0f,#050506) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .game-loader-card{
+  color:var(--df-bone) !important;
+  background:linear-gradient(180deg,rgba(25,23,23,.98),rgba(9,9,10,.98)) !important;
+  border-color:var(--df-line) !important;
+  box-shadow:0 20px 70px rgba(0,0,0,.68),inset 0 0 0 1px rgba(202,174,119,.10) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .game-loader-icon-wrap{
+  background:radial-gradient(circle,rgba(158,48,40,.24),transparent 70%) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .game-loader-ring{
+  border-color:rgba(185,157,101,.22) !important;
+  border-top-color:var(--df-blood-light) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .game-loader-title{
+  color:var(--df-bone) !important;
+  letter-spacing:.12em !important;
+  text-shadow:0 2px 0 #000,0 0 20px rgba(171,62,49,.20) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .game-loader-progress-shell{
+  background:#070708 !important;
+  border-color:#4b392c !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .game-loader-progress{
+  background:linear-gradient(90deg,#57201d,#a6382e,#d05944) !important;
+  box-shadow:0 0 18px rgba(191,58,45,.33) !important;
+}
+
+/* Title ----------------------------------------------------------------- */
+.react-app-root[data-theme="dark-fantasy"] .titlebar{
+  padding-top:10px !important;
+  padding-bottom:4px !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .logo{
+  position:relative;
+  padding:7px 24px 8px !important;
+  border:0 !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  color:var(--df-bone) !important;
+  font-family:Georgia,"Times New Roman",serif !important;
+  font-size:clamp(1rem,2.25vw,1.8rem) !important;
+  letter-spacing:.10em !important;
+  text-shadow:0 2px 1px #000,0 0 22px rgba(173,64,51,.13) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .logo::before,
+.react-app-root[data-theme="dark-fantasy"] .logo::after{
+  content:"" !important;
+  position:absolute !important;
+  top:50% !important;
+  width:64px !important;
+  height:1px !important;
+  opacity:.65 !important;
+  background:linear-gradient(90deg,transparent,var(--df-bronze),transparent) !important;
+  animation:none !important;
+  transform:none !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .logo::before{right:100% !important;left:auto !important;}
+.react-app-root[data-theme="dark-fantasy"] .logo::after{left:100% !important;right:auto !important;}
+.react-app-root[data-theme="dark-fantasy"] .logo span{color:inherit !important;}
+.react-app-root[data-theme="dark-fantasy"] .logo .dark-title-mid{
+  margin:0 .35em;
+  color:#9a8060 !important;
+  font-size:.65em;
+  font-style:italic;
+  text-transform:lowercase;
+  letter-spacing:.03em;
+}
+
+/* Clocks / life bars ---------------------------------------------------- */
+.react-app-root[data-theme="dark-fantasy"] .chess-clocks{
+  width:min(720px,calc(100% - 24px)) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .chess-clock{
+  color:var(--df-bone) !important;
+  background:linear-gradient(180deg,rgba(28,27,28,.96),rgba(12,12,13,.96)) !important;
+  border:2px solid var(--df-line) !important;
+  border-radius:7px !important;
+  box-shadow:0 7px 20px rgba(0,0,0,.42),inset 0 1px 0 rgba(210,185,137,.08) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .chess-clock span{
+  color:#a79881 !important;
+  font-family:Georgia,"Times New Roman",serif !important;
+  letter-spacing:.12em !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .chess-clock strong{
+  color:#d9cdb6 !important;
+  font-family:Georgia,"Times New Roman",serif !important;
+  font-weight:600 !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .chess-clock.active{
+  transform:translateY(-1px) !important;
+  border-color:#a13b31 !important;
+  box-shadow:0 0 0 1px rgba(165,62,50,.35),0 0 24px rgba(150,45,36,.18),0 8px 22px rgba(0,0,0,.48) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .clock-center{
+  color:#cbbda6 !important;
+  background:linear-gradient(180deg,#241918,#100e0f) !important;
+  border:2px solid #6f4934 !important;
+  border-radius:5px !important;
+  font-family:Georgia,"Times New Roman",serif !important;
+  letter-spacing:.08em !important;
+  box-shadow:0 4px 12px rgba(0,0,0,.35) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .advantage-wrap.sf-wrap{
+  color:var(--df-bone) !important;
+  background:linear-gradient(180deg,rgba(20,19,20,.94),rgba(10,10,11,.94)) !important;
+  border:2px solid var(--df-line) !important;
+  border-radius:7px !important;
+  box-shadow:0 8px 24px rgba(0,0,0,.42),inset 0 0 0 1px rgba(194,160,105,.06) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .sf-topline,
+.react-app-root[data-theme="dark-fantasy"] .sf-player-label{
+  color:#b9ac96 !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .sf-topline span:first-child{
+  font-family:Georgia,"Times New Roman",serif !important;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+.react-app-root[data-theme="dark-fantasy"] .dot-team{
+  border-color:#625344 !important;
+  box-shadow:0 0 0 1px #080809,inset 0 1px 0 rgba(255,255,255,.2) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .dot-team.white{background:linear-gradient(180deg,#efe6d1,#988c78) !important;}
+.react-app-root[data-theme="dark-fantasy"] .dot-team.black{background:linear-gradient(180deg,#4c2626,#121214) !important;}
+.react-app-root[data-theme="dark-fantasy"] .sf-life-frame{
+  border-color:#66513b !important;
+  background:linear-gradient(180deg,#473527,#221b17) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 3px 8px rgba(0,0,0,.38) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .sf-life-bg{background:#070708 !important;}
+.react-app-root[data-theme="dark-fantasy"] .white-fill{
+  background:linear-gradient(90deg,#efeadc,#c2b89f 48%,#857967 100%) !important;
+  box-shadow:0 0 12px rgba(220,210,185,.20) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .black-fill{
+  background:linear-gradient(270deg,#d95745,#9c2f28 48%,#4b1718 100%) !important;
+  box-shadow:0 0 16px rgba(184,52,42,.28) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .sf-life-fill.strong,
+.react-app-root[data-theme="dark-fantasy"] .white-fill.strong{background:linear-gradient(90deg,#fff8e9,#c9bfa8,#8d806d) !important;}
+.react-app-root[data-theme="dark-fantasy"] .black-fill.strong{background:linear-gradient(270deg,#e26751,#a33229,#4b1718) !important;}
+.react-app-root[data-theme="dark-fantasy"] .sf-life-fill.danger{background:linear-gradient(90deg,#d25642,#8e251f,#3e1012) !important;}
+.react-app-root[data-theme="dark-fantasy"] .sf-life-gloss{opacity:.18 !important;}
+.react-app-root[data-theme="dark-fantasy"] .vs-badge{
+  color:#d6c6ac !important;
+  background:radial-gradient(circle,#6d211d,#1b1112 65%,#0a0a0b) !important;
+  border-color:#75513a !important;
+  box-shadow:0 0 16px rgba(163,49,39,.22) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .adv-mini{
+  color:#bcae97 !important;
+  background:#0d0d0e !important;
+  border-color:#4c3b2d !important;
+}
+
+/* Main panels ----------------------------------------------------------- */
+.react-app-root[data-theme="dark-fantasy"] .panel,
+.react-app-root[data-theme="dark-fantasy"] .hud-card{
+  color:#d4cab8 !important;
+  background:
+    linear-gradient(180deg,rgba(25,24,25,.97),rgba(11,11,12,.97)) !important;
+  border:2px solid var(--df-line) !important;
+  border-radius:7px !important;
+  box-shadow:0 12px 32px rgba(0,0,0,.46),inset 0 0 0 1px rgba(194,160,105,.05) !important;
+  backdrop-filter:blur(7px) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .panel .panel-head{
+  color:#c9bda8 !important;
+  background:
+    linear-gradient(90deg,transparent,rgba(120,42,34,.20),transparent),
+    linear-gradient(180deg,#232021,#121214) !important;
+  border-bottom:1px solid #5c4938 !important;
+  font-family:Georgia,"Times New Roman",serif !important;
+  letter-spacing:.12em !important;
+  text-align:center;
+  text-shadow:0 1px 0 #000 !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .panel .section{
+  border-top:1px solid rgba(142,111,78,.24) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .player-card strong,
+.react-app-root[data-theme="dark-fantasy"] .section-label-spaced{
+  color:#ddd2bc !important;
+  font-family:Georgia,"Times New Roman",serif !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .sub,
+.react-app-root[data-theme="dark-fantasy"] .team-elo-line{
+  color:#9d9486 !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .avatar{
+  border:1px solid #725a41 !important;
+  border-radius:4px !important;
+  background:
+    radial-gradient(circle at center,rgba(136,45,37,.20),transparent 62%),
+    linear-gradient(180deg,#1d1c1d,#09090a) !important;
+  box-shadow:0 5px 16px rgba(0,0,0,.48),inset 0 0 0 1px rgba(209,178,123,.08) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .cap,
+.react-app-root[data-theme="dark-fantasy"] .hint-chip,
+.react-app-root[data-theme="dark-fantasy"] .move-row{
+  color:#c8bcaa !important;
+  background:linear-gradient(180deg,#1a191a,#0d0d0e) !important;
+  border-color:#493a2d !important;
+  border-radius:4px !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .moves::-webkit-scrollbar-thumb,
+.react-app-root[data-theme="dark-fantasy"] *::-webkit-scrollbar-thumb{
+  background:#594334 !important;
+}
+
+/* Board ----------------------------------------------------------------- */
+.react-app-root[data-theme="dark-fantasy"] .board-shell{
+  background:transparent !important;
+  border:0 !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  padding-top:0 !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .board-shell::before,
+.react-app-root[data-theme="dark-fantasy"] .board-shell::after,
+.react-app-root[data-theme="dark-fantasy"] .pipe-left,
+.react-app-root[data-theme="dark-fantasy"] .pipe-right{
+  display:none !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .board-topbar{
+  margin-bottom:8px !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .turn-badge{
+  min-width:190px !important;
+  color:#d4c5ab !important;
+  background:linear-gradient(180deg,#211d1d,#0e0e0f) !important;
+  border:1px solid #72523a !important;
+  border-radius:4px !important;
+  box-shadow:0 5px 16px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.04) !important;
+  font-family:Georgia,"Times New Roman",serif !important;
+  letter-spacing:.05em !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .board{
+  border:6px solid #1d1a18 !important;
+  outline:2px solid #765b40 !important;
+  outline-offset:2px;
+  border-radius:2px !important;
+  background:#0b0b0c !important;
+  box-shadow:
+    0 16px 44px rgba(0,0,0,.60),
+    0 0 0 1px rgba(208,173,112,.12),
+    inset 0 0 36px rgba(0,0,0,.35) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .sq.light{
+  background:
+    radial-gradient(circle at 30% 26%,rgba(255,255,255,.10),transparent 32%),
+    linear-gradient(135deg,#b9b09f,#8e877c 60%,#aaa292) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .sq.dark{
+  background:
+    radial-gradient(circle at 70% 72%,rgba(117,69,56,.11),transparent 34%),
+    linear-gradient(135deg,#2a2928,#151617 62%,#242222) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .sq::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:.16;
+  background:
+    linear-gradient(28deg,transparent 46%,rgba(0,0,0,.26) 47% 48%,transparent 49%),
+    linear-gradient(112deg,transparent 61%,rgba(255,255,255,.09) 62% 63%,transparent 64%);
+}
+.react-app-root[data-theme="dark-fantasy"] .sq.light .coord{color:#312d28 !important;text-shadow:none !important;}
+.react-app-root[data-theme="dark-fantasy"] .sq.dark .coord{color:#b9aa91 !important;text-shadow:0 1px 0 #000 !important;}
+.react-app-root[data-theme="dark-fantasy"] .sq.selected{
+  box-shadow:inset 0 0 0 4px rgba(206,166,87,.90),inset 0 0 22px rgba(206,166,87,.28) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .sq.last{
+  box-shadow:inset 0 0 0 999px rgba(119,68,54,.24) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .sq.check{
+  box-shadow:inset 0 0 0 999px rgba(151,35,30,.35),inset 0 0 24px rgba(229,65,48,.35) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .dot{
+  background:#c5a85e !important;
+  border-color:#241c15 !important;
+  box-shadow:0 0 10px rgba(208,170,84,.36) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .dot.capture-landing{background:#b53d30 !important;}
+.react-app-root[data-theme="dark-fantasy"] .sq.capture-target{
+  box-shadow:inset 0 0 0 4px rgba(193,55,44,.92),inset 0 0 23px rgba(164,42,34,.38) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .sq.capture-target::before{
+  color:#f07b65 !important;
+  text-shadow:0 0 10px rgba(220,59,47,.68) !important;
+}
+
+/* Piece cards disappear; SVG itself becomes the physical piece. */
+.react-app-root[data-theme="dark-fantasy"] .piece{
+  width:96% !important;
+  height:96% !important;
+  padding:0 !important;
+  border:0 !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  overflow:visible !important;
+  filter:drop-shadow(0 5px 4px rgba(0,0,0,.48)) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .piece.white,
+.react-app-root[data-theme="dark-fantasy"] .piece.black{background:transparent !important;}
+.react-app-root[data-theme="dark-fantasy"] .piece-img{
+  width:100% !important;
+  height:100% !important;
+  transform:scale(1.08);
+}
+.react-app-root[data-theme="dark-fantasy"] .cap .piece-img{transform:scale(1.05);}
+.react-app-root[data-theme="dark-fantasy"] .piece.capture-threat{
+  filter:drop-shadow(0 0 6px rgba(230,70,53,.95)) drop-shadow(0 4px 4px rgba(0,0,0,.5)) !important;
+}
+
+/* Buttons --------------------------------------------------------------- */
+.react-app-root[data-theme="dark-fantasy"] button{
+  font-family:"Outfit","Nunito",sans-serif;
+}
+.react-app-root[data-theme="dark-fantasy"] .btn-main,
+.react-app-root[data-theme="dark-fantasy"] .remote-main-btn,
+.react-app-root[data-theme="dark-fantasy"] .profile-save,
+.react-app-root[data-theme="dark-fantasy"] .guest-login-btn,
+.react-app-root[data-theme="dark-fantasy"] .mate-replay,
+.react-app-root[data-theme="dark-fantasy"] .correspondence-create-btn{
+  color:#eee4d1 !important;
+  background:linear-gradient(180deg,#8e3028,#5b1d1b) !important;
+  border:1px solid #b45c44 !important;
+  border-radius:5px !important;
+  box-shadow:0 4px 0 #2b0d0d,0 7px 14px rgba(0,0,0,.30) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .btn-yellow,
+.react-app-root[data-theme="dark-fantasy"] .secondary,
+.react-app-root[data-theme="dark-fantasy"] .mode-back,
+.react-app-root[data-theme="dark-fantasy"] .auth-refresh{
+  color:#d7cab5 !important;
+  background:linear-gradient(180deg,#292729,#141415) !important;
+  border:1px solid #69523c !important;
+  border-radius:5px !important;
+  box-shadow:0 4px 0 #080809 !important;
+}
+
+/* Ongoing games --------------------------------------------------------- */
+.react-app-root[data-theme="dark-fantasy"] .ongoing-games-block{
+  background:linear-gradient(180deg,rgba(19,18,19,.92),rgba(9,9,10,.94)) !important;
+  border-color:#4d3d30 !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .ongoing-games-head{
+  color:#c9bda8 !important;
+  border-color:#4d3d30 !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .ongoing-game-card,
+.react-app-root[data-theme="dark-fantasy"] .correspondence-item{
+  color:#cfc3ae !important;
+  background:#121213 !important;
+  border-color:#49382d !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .ongoing-games-count{
+  color:#efdfc2 !important;
+  background:#7d2923 !important;
+}
+
+/* Modal / sheets -------------------------------------------------------- */
+.react-app-root[data-theme="dark-fantasy"] .mode-overlay,
+.react-app-root[data-theme="dark-fantasy"] .profile-overlay,
+.react-app-root[data-theme="dark-fantasy"] .app-sheet-overlay,
+.react-app-root[data-theme="dark-fantasy"] .profile-dashboard-overlay,
+.react-app-root[data-theme="dark-fantasy"] .correspondence-overlay,
+.react-app-root[data-theme="dark-fantasy"] .camp-overlay,
+.react-app-root[data-theme="dark-fantasy"] .game-action-overlay,
+.react-app-root[data-theme="dark-fantasy"] .mate-overlay{
+  background:rgba(3,3,4,.76) !important;
+  backdrop-filter:blur(7px) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .mode-card,
+.react-app-root[data-theme="dark-fantasy"] .profile-card,
+.react-app-root[data-theme="dark-fantasy"] .app-sheet,
+.react-app-root[data-theme="dark-fantasy"] .profile-dashboard,
+.react-app-root[data-theme="dark-fantasy"] .correspondence-sheet,
+.react-app-root[data-theme="dark-fantasy"] .camp-card,
+.react-app-root[data-theme="dark-fantasy"] .game-action-dialog{
+  color:#d8cfbd !important;
+  background:
+    radial-gradient(circle at 50% 0,rgba(125,41,34,.14),transparent 38%),
+    linear-gradient(180deg,#211f20,#0d0d0e 74%) !important;
+  border:2px solid #765b40 !important;
+  border-radius:8px !important;
+  box-shadow:0 18px 58px rgba(0,0,0,.68),inset 0 0 0 1px rgba(201,171,119,.05) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .mode-title,
+.react-app-root[data-theme="dark-fantasy"] .app-sheet-title,
+.react-app-root[data-theme="dark-fantasy"] .profile-title,
+.react-app-root[data-theme="dark-fantasy"] .game-action-dialog-title{
+  color:#e0d4bf !important;
+  font-family:Georgia,"Times New Roman",serif !important;
+  letter-spacing:.05em;
+}
+.react-app-root[data-theme="dark-fantasy"] .mode-sub,
+.react-app-root[data-theme="dark-fantasy"] .app-sheet-sub,
+.react-app-root[data-theme="dark-fantasy"] .profile-sub,
+.react-app-root[data-theme="dark-fantasy"] .game-action-dialog-text{
+  color:#a99d8b !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .mode-choice,
+.react-app-root[data-theme="dark-fantasy"] .level-btn,
+.react-app-root[data-theme="dark-fantasy"] .time-control-btn{
+  color:#d4c7b2 !important;
+  background:linear-gradient(180deg,#292728,#121213) !important;
+  border:1px solid #614b38 !important;
+  border-radius:5px !important;
+  box-shadow:0 5px 0 #070708 !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .mode-choice:hover,
+.react-app-root[data-theme="dark-fantasy"] .level-btn:hover,
+.react-app-root[data-theme="dark-fantasy"] .time-control-btn:hover,
+.react-app-root[data-theme="dark-fantasy"] .time-control-btn.active{
+  border-color:#a94336 !important;
+  background:linear-gradient(180deg,#3d2826,#191314) !important;
+  box-shadow:0 0 0 1px rgba(179,65,51,.28),0 5px 0 #080708 !important;
+}
+.react-app-root[data-theme="dark-fantasy"] input,
+.react-app-root[data-theme="dark-fantasy"] select,
+.react-app-root[data-theme="dark-fantasy"] textarea{
+  color:#e1d7c5 !important;
+  caret-color:#d45745 !important;
+  background:#09090a !important;
+  border-color:#5a4434 !important;
+}
+.react-app-root[data-theme="dark-fantasy"] input::placeholder{color:#777067 !important;}
+.react-app-root[data-theme="dark-fantasy"] .db-profile-badge,
+.react-app-root[data-theme="dark-fantasy"] .profile-stat,
+.react-app-root[data-theme="dark-fantasy"] .profile-history-section,
+.react-app-root[data-theme="dark-fantasy"] .profile-history-item,
+.react-app-root[data-theme="dark-fantasy"] .profile-dashboard-elo{
+  color:#cec2ad !important;
+  background:rgba(10,10,11,.78) !important;
+  border-color:#49382d !important;
+}
+
+/* Result screen --------------------------------------------------------- */
+.react-app-root[data-theme="dark-fantasy"] .mate-panel{
+  filter:none !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .mate-character img{
+  filter:drop-shadow(0 18px 22px rgba(0,0,0,.72)) drop-shadow(0 0 18px rgba(173,50,40,.18)) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .mate-sign{
+  color:#ddd1bb !important;
+  background:linear-gradient(180deg,#242122,#0d0d0e) !important;
+  border-color:#765b40 !important;
+  border-radius:7px !important;
+  box-shadow:0 12px 36px rgba(0,0,0,.62) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .mate-sign-top,
+.react-app-root[data-theme="dark-fantasy"] .mate-sign-name{
+  font-family:Georgia,"Times New Roman",serif !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .mate-sign-name{color:#c94a3a !important;}
+
+/* Bottom navigation ----------------------------------------------------- */
+.react-app-root[data-theme="dark-fantasy"] .bottom-app-nav{
+  background:rgba(10,10,11,.96) !important;
+  border:1px solid #72583f !important;
+  border-radius:7px !important;
+  box-shadow:0 12px 30px rgba(0,0,0,.58),inset 0 1px 0 rgba(204,172,115,.05) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .bottom-nav-btn{
+  color:#cfc2ac !important;
+  background:linear-gradient(180deg,#232123,#121213) !important;
+  border:1px solid #49392d !important;
+  border-radius:4px !important;
+  box-shadow:none !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .bottom-nav-btn.play{
+  color:#f1e5d0 !important;
+  background:linear-gradient(180deg,#8d3028,#561a19) !important;
+  border-color:#ad513e !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .bottom-nav-icon{
+  color:#c8b594 !important;
+  background:rgba(255,255,255,.035) !important;
+  border-radius:3px !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .bottom-app-nav.game-active .game-action-btn.draw{
+  color:#ded1ba !important;
+  background:linear-gradient(180deg,#4d4132,#292119) !important;
+  border-color:#7a6446 !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .bottom-app-nav.game-active .game-action-btn.resign{
+  color:#f1e2d3 !important;
+  background:linear-gradient(180deg,#902f27,#541818) !important;
+  border-color:#ad4b3b !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .game-action-status{
+  color:#bcae98 !important;
+  background:#0c0c0d !important;
+  border-color:#544233 !important;
+}
+
+/* Capture animation reskin. Existing timing and sequence are untouched. */
+.react-app-root[data-theme="dark-fantasy"] .shell-projectile,
+.react-app-root[data-theme="dark-fantasy"] .capture-shell{
+  filter:drop-shadow(0 0 10px rgba(184,53,42,.55)) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .smooth-piece-move{
+  filter:drop-shadow(0 7px 5px rgba(0,0,0,.55)) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .capture-overlay .pipe{display:none !important;}
+.react-app-root[data-theme="dark-fantasy"] .capture-overlay .star{color:#a94336 !important;text-shadow:0 0 8px #8d2d26 !important;}
+
+/* Small screens --------------------------------------------------------- */
+@media (max-width:1260px){
+  .react-app-root[data-theme="dark-fantasy"] .wrap{
+    max-width:960px !important;
+  }
+}
+@media (max-width:760px){
+  .react-app-root[data-theme="dark-fantasy"] .logo{
+    font-size:clamp(.78rem,4vw,1rem) !important;
+    letter-spacing:.07em !important;
+    padding:4px 7px !important;
+  }
+  .react-app-root[data-theme="dark-fantasy"] .logo::before,
+  .react-app-root[data-theme="dark-fantasy"] .logo::after{width:28px !important;}
+  .react-app-root[data-theme="dark-fantasy"] .chess-clock{
+    border-width:1px !important;
+  }
+  .react-app-root[data-theme="dark-fantasy"] .board{
+    border-width:4px !important;
+    outline-width:1px !important;
+  }
+  .react-app-root[data-theme="dark-fantasy"] .panel,
+  .react-app-root[data-theme="dark-fantasy"] .mode-card,
+  .react-app-root[data-theme="dark-fantasy"] .profile-card,
+  .react-app-root[data-theme="dark-fantasy"] .profile-dashboard,
+  .react-app-root[data-theme="dark-fantasy"] .app-sheet{
+    border-radius:5px !important;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .react-app-root[data-theme="dark-fantasy"] *{
+    text-shadow:none;
+  }
+}
+
+/* Dark Fantasy capture projectile colors */
+.react-app-root[data-theme="dark-fantasy"] ~ .shell-shot.green img,
+html[data-theme="dark-fantasy"] .shell-shot.green img{
+  filter:drop-shadow(0 0 10px rgba(224,213,188,.58)) drop-shadow(0 8px 13px rgba(0,0,0,.55)) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] ~ .shell-shot.red img,
+html[data-theme="dark-fantasy"] .shell-shot.red img{
+  filter:drop-shadow(0 0 12px rgba(193,56,44,.62)) drop-shadow(0 8px 13px rgba(0,0,0,.58)) !important;
+}
+html[data-theme="dark-fantasy"] .shell-trail{
+  background:radial-gradient(circle,#e0d6c1 0%,#a84a3b 28%,rgba(99,29,27,.48) 55%,rgba(30,12,13,0) 80%) !important;
+  filter:blur(1.5px) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .sq.capture-hit{
+  box-shadow:inset 0 0 0 999px rgba(151,47,39,.30),0 0 0 3px rgba(189,71,54,.34) !important;
+}

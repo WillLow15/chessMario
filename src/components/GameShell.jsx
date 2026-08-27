@@ -1,15 +1,16 @@
 import React from 'react';
 
-export function GameShell() {
+export function GameShell({ theme }) {
+  const ui=theme?.ui || {};
   return (
     <>
     <div className={"game-loader"} id={"gameLoader"} role={"status"} aria-live={"polite"} aria-label={"Chargement du jeu"}>
       <div className={"game-loader-card"}>
         <div className={"game-loader-icon-wrap"}>
           <div className={"game-loader-ring"} aria-hidden={"true"}></div>
-          <img className={"game-loader-icon"} src={"/icon-192-v40.png"} alt={""} />
+          <img className={"game-loader-icon"} src={ui.loaderIcon || "/icon-192-v40.png"} alt={""} />
         </div>
-        <div className={"game-loader-title"}>MARIO CHESS</div>
+        <div className={"game-loader-title"}>{ui.loaderTitle || "MARIO CHESS"}</div>
         <div className={"game-loader-status"} id={"gameLoaderStatus"}>Préparation du jeu…</div>
         <div className={"game-loader-progress-shell"} aria-hidden={"true"}>
           <div className={"game-loader-progress"} id={"gameLoaderProgress"}></div>
@@ -101,9 +102,16 @@ export function GameShell() {
     </div>
     <div className={"titlebar"}>
       <div className={"logo"}>
-        <span className={"red"}>Mario</span>
-        <span className={"green"}>Bros</span>
-        <span className={"yellow"}>Chess</span>
+        {(ui.titleParts || [
+          {text:'Mario',className:'red'},
+          {text:'Bros',className:'green'},
+          {text:'Chess',className:'yellow'}
+        ]).map((part,index)=>(
+          <React.Fragment key={part.text+'-'+index}>
+            {index>0 ? ' ' : null}
+            <span className={part.className || ''}>{part.text}</span>
+          </React.Fragment>
+        ))}
       </div>
     </div>
     <div className={"chess-clocks"} aria-label={"Chronos de la partie"}>
@@ -161,7 +169,7 @@ export function GameShell() {
         <div className={"section"}>
           <div className={"player-card"}>
             <div className={"avatar"}>
-              <img src={"/assets/mario/king-boo.webp"} alt={"Roi Boo"} />
+              <img src={ui.whiteAvatar || "/assets/mario/king-boo.webp"} alt={ui.whiteAvatarAlt || "Roi Boo"} />
             </div>
             <div className={"team-player-info"}>
               <strong id={"whiteTeamName"}>Blancs</strong>
@@ -210,7 +218,7 @@ export function GameShell() {
         <div className={"section"}>
           <div className={"player-card"}>
             <div className={"avatar"}>
-              <img src={"/assets/mario/donkey-kong.webp"} alt={"Donkey Kong"} />
+              <img src={ui.blackAvatar || "/assets/mario/donkey-kong.webp"} alt={ui.blackAvatarAlt || "Donkey Kong"} />
             </div>
             <div className={"team-player-info"}>
               <strong id={"blackTeamName"}>Noirs</strong>

@@ -1,6 +1,11 @@
 export const marioTheme = Object.freeze({
   id: 'mario',
   label: 'Mario Bros',
+  shareTitle: 'Mario Bros Chess',
+  aiNames: [
+    'BowserBot','ToadGPT','Koopa Kasparov','Yoshi Calculateur','Goomba Genius','Kamek 3000',
+    'Wario Stockfish','Boo DeepThink','Peach Engine','Donkey Kong.exe','Luigi Logic','Bob-omb Brain'
+  ],
   pieces: {
   "w": {
     "k": {
@@ -62,5 +67,3 @@ export const marioTheme = Object.freeze({
   }
 });
 
-export const themes = Object.freeze({ mario: marioTheme });
-export function getTheme(id = 'mario') { return themes[id] || marioTheme; }
