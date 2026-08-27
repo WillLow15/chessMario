@@ -226,3 +226,14 @@ V75 - CORRECTIF CRÉATION PARTIE EN LIGNE
 - Attend réellement l’ouverture du Peer hôte avant de valider la salle.
 - Régénère le code automatiquement en cas de collision PeerJS.
 - Aucune migration Supabase nécessaire.
+
+
+V76 - CREATION DE PARTIE EN LIGNE STABLE
+-----------------------------------------
+- Suppression du timeout bloquant de 12 secondes introduit en v75.
+- Le code de salle est affiché immédiatement après sa génération.
+- Une réponse lente de PeerJS ne détruit plus la salle et n'affiche plus l'erreur rouge.
+- Le Peer en cours de connexion n'est plus détruit lors des tentatives de restauration mobile.
+- Les collisions rares de code régénèrent automatiquement une nouvelle salle.
+- La restauration mobile/localStorage de la v74/v75 est conservée.
+- Aucun changement Supabase nécessaire.
