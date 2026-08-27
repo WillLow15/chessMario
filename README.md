@@ -22,3 +22,4 @@ Le `netlify.toml` publie `dist/` et conserve les fonctions dans `netlify/functio
 Cette version est un **travail de thème uniquement**. Toute la mécanique existante (règles, IA, ELO, comptes, Supabase, PeerJS, parties différées, chronos, abandon/nulle, historique) reste issue de la base React précédente.
 
 Voir `DARK_FANTASY_V1.md` pour le détail du thème.
+testversion

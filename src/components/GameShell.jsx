@@ -127,14 +127,14 @@ export function GameShell({ theme }) {
     </div>
     <div className={"advantage-wrap sf-wrap"}>
       <div className={"sf-topline"}>
-        <span>Barres de vie des camps</span>
+        <span>{ui.lifeTitle || 'Barres de vie des camps'}</span>
         <span id={"advantageText"}>Début de partie</span>
       </div>
       <div className={"sf-bars"}>
         <div className={"sf-side white-side"}>
           <div className={"sf-player-label"}>
             <span className={"dot-team white"}></span>
-            Blancs
+            {ui.whiteCampLabel || 'Blancs'}
             <strong id={"whiteAdvNum"}>0</strong>
           </div>
           <div className={"sf-life white-life"}>
@@ -151,7 +151,7 @@ export function GameShell({ theme }) {
         <div className={"sf-side black-side"}>
           <div className={"sf-player-label right"}>
             <strong id={"blackAdvNum"}>0</strong>
-            Noirs
+            {ui.blackCampLabel || 'Noirs'}
             <span className={"dot-team black"}></span>
           </div>
           <div className={"sf-life black-life"}>
@@ -165,7 +165,7 @@ export function GameShell({ theme }) {
     </div>
     <div className={"wrap"}>
       <aside className={"panel"}>
-        <div className={"panel-head"}>Équipe Blancs</div>
+        <div className={"panel-head"}>{ui.whiteTeamTitle || 'Équipe Blancs'}</div>
         <div className={"section"}>
           <div className={"player-card"}>
             <div className={"avatar"}>
@@ -173,14 +173,14 @@ export function GameShell({ theme }) {
             </div>
             <div className={"team-player-info"}>
               <strong id={"whiteTeamName"}>Blancs</strong>
-              <div className={"sub"}>Pièces blanches</div>
+              <div className={"sub"}>{ui.whiteTeamSubtitle || 'Pièces blanches'}</div>
               <div className={"team-elo-line"} id={"whiteTeamElo"}>NON CLASSÉ</div>
             </div>
           </div>
         </div>
         <section className={"ongoing-games-block"} id={"ongoingGamesBlock"}>
           <div className={"ongoing-games-head"}>
-            <strong>Parties en cours</strong>
+            <strong>{ui.ongoingTitle || 'Parties en cours'}</strong>
             <span className={"ongoing-games-count"} id={"ongoingGamesCount"}>0</span>
           </div>
           <div className={"ongoing-games-list"} id={"ongoingGamesList"}>
@@ -188,17 +188,17 @@ export function GameShell({ theme }) {
           </div>
         </section>
         <div className={"section"}>
-          <strong className={"section-label-spaced"}>Pièces mangées</strong>
+          <strong className={"section-label-spaced"}>{ui.capturedTitle || 'Pièces mangées'}</strong>
           <div className={"captured"} id={"capturedByWhite"}></div>
         </div>
         <div className={"section"}>
-          <strong className={"section-label-spaced"}>Coups suggérés pour les Blancs</strong>
+          <strong className={"section-label-spaced"}>{ui.suggestedTitle || 'Coups suggérés pour les Blancs'}</strong>
           <div className={"hint-list"} id={"hintWhite"}></div>
         </div>
         <div className={"section"}>
           <div className={"buttons"}>
-            <button className={"btn-main"} id={"newGameBtn"}>Nouvelle partie</button>
-            <button className={"btn-yellow"} id={"flipBtn"}>Retourner l'échiquier</button>
+            <button className={"btn-main"} id={"newGameBtn"}>{ui.newGameLabel || 'Nouvelle partie'}</button>
+            <button className={"btn-yellow"} id={"flipBtn"}>{ui.flipBoardLabel || "Retourner l'échiquier"}</button>
           </div>
         </div>
       </aside>
@@ -214,7 +214,7 @@ export function GameShell({ theme }) {
         <div className={"footer-note"}></div>
       </main>
       <aside className={"panel"}>
-        <div className={"panel-head"}>Équipe Noirs</div>
+        <div className={"panel-head"}>{ui.blackTeamTitle || 'Équipe Noirs'}</div>
         <div className={"section"}>
           <div className={"player-card"}>
             <div className={"avatar"}>
@@ -222,17 +222,17 @@ export function GameShell({ theme }) {
             </div>
             <div className={"team-player-info"}>
               <strong id={"blackTeamName"}>Noirs</strong>
-              <div className={"sub"}>Pièces noires</div>
+              <div className={"sub"}>{ui.blackTeamSubtitle || 'Pièces noires'}</div>
               <div className={"team-elo-line"} id={"blackTeamElo"}>NON CLASSÉ</div>
             </div>
           </div>
         </div>
         <div className={"section"}>
-          <strong className={"section-label-spaced"}>Pièces mangées</strong>
+          <strong className={"section-label-spaced"}>{ui.capturedTitle || 'Pièces mangées'}</strong>
           <div className={"captured"} id={"capturedByBlack"}></div>
         </div>
         <div className={"section"}>
-          <strong className={"section-label-spaced"}>Historique des coups</strong>
+          <strong className={"section-label-spaced"}>{ui.moveHistoryTitle || 'Historique des coups'}</strong>
           <div className={"moves"} id={"movesBox"}></div>
         </div>
       </aside>

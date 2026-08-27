@@ -5860,3 +5860,464 @@ html[data-theme="dark-fantasy"] .shell-trail{
 .react-app-root[data-theme="dark-fantasy"] .sq.capture-hit{
   box-shadow:inset 0 0 0 999px rgba(151,47,39,.30),0 0 0 3px rgba(189,71,54,.34) !important;
 }
+
+/* ======================================================================
+   DARK FANTASY — THEME V2 · ASHEN CROWN
+   Visual-only refinement. Gameplay, clocks, network and rules untouched.
+   ====================================================================== */
+
+.react-app-root[data-theme="dark-fantasy"]{
+  --df-ink:#060708;
+  --df-panel:#0c0d0f;
+  --df-panel-2:#141416;
+  --df-panel-3:#1a1717;
+  --df-line:#68503a;
+  --df-line-soft:#302820;
+  --df-bronze:#9f7d50;
+  --df-bronze-light:#d2b67d;
+  --df-bone:#e3dbc9;
+  --df-bone-soft:#b9ad99;
+  --df-blood:#8f2722;
+  --df-blood-light:#d0523f;
+  --df-ember:#e0754f;
+  --df-ash:#c9c2b5;
+  --df-smoke:#716c67;
+}
+
+/* Clean original world art: no UI baked into the background. */
+.react-app-root[data-theme="dark-fantasy"] .world-bg::before{
+  inset:0 !important;
+  background:
+    linear-gradient(180deg,rgba(1,2,3,.08),rgba(3,3,4,.45) 54%,rgba(3,3,4,.82)),
+    url('/assets/dark-fantasy/v2/backdrop.svg') center top / cover no-repeat !important;
+  filter:none !important;
+  transform:none !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .world-bg::after{
+  background:
+    radial-gradient(circle at 78% 22%,rgba(161,48,37,.18),transparent 22%),
+    radial-gradient(circle at 18% 74%,rgba(167,105,66,.06),transparent 27%),
+    linear-gradient(90deg,rgba(0,0,0,.48),transparent 24%,transparent 76%,rgba(0,0,0,.52)),
+    repeating-linear-gradient(103deg,transparent 0 83px,rgba(220,198,157,.012) 84px 85px) !important;
+  box-shadow:inset 0 0 180px rgba(0,0,0,.78) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .world-vignette{
+  background:
+    radial-gradient(ellipse at center,transparent 34%,rgba(0,0,0,.18) 67%,rgba(0,0,0,.70) 100%),
+    linear-gradient(180deg,rgba(0,0,0,.02),rgba(0,0,0,.24)) !important;
+}
+
+/* More ceremonial title, still compact. */
+.react-app-root[data-theme="dark-fantasy"] .titlebar{
+  position:relative;
+  padding-top:8px !important;
+  padding-bottom:3px !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .titlebar::after{
+  content:"ASHEN CROWN";
+  display:block;
+  margin-top:-2px;
+  color:#77654f;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:.48rem;
+  font-weight:700;
+  letter-spacing:.34em;
+  text-align:center;
+  text-shadow:0 1px 0 #000;
+}
+.react-app-root[data-theme="dark-fantasy"] .logo{
+  color:#e8deca !important;
+  letter-spacing:.115em !important;
+  text-shadow:0 2px 1px #000,0 0 24px rgba(171,62,49,.16) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .logo::before,
+.react-app-root[data-theme="dark-fantasy"] .logo::after{
+  height:2px !important;
+  opacity:.7 !important;
+  background:linear-gradient(90deg,transparent,#73543b 20%,#c3a36f 50%,#73543b 80%,transparent) !important;
+}
+
+/* Main layout floats above the background instead of feeling boxed in. */
+.react-app-root[data-theme="dark-fantasy"] .wrap{
+  gap:14px !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .panel{
+  position:relative;
+  overflow:hidden;
+  border:1px solid #5f4936 !important;
+  background:
+    linear-gradient(180deg,rgba(21,20,21,.965),rgba(8,9,10,.975)) !important;
+  box-shadow:
+    0 16px 38px rgba(0,0,0,.48),
+    inset 0 1px 0 rgba(231,208,164,.045),
+    inset 0 0 42px rgba(0,0,0,.18) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .panel::before,
+.react-app-root[data-theme="dark-fantasy"] .panel::after{
+  content:"";
+  position:absolute;
+  width:76px;
+  height:76px;
+  pointer-events:none;
+  opacity:.42;
+  background:url('/assets/dark-fantasy/v2/corner-ornament.svg') center/contain no-repeat;
+  z-index:0;
+}
+.react-app-root[data-theme="dark-fantasy"] .panel::before{top:0;left:0;}
+.react-app-root[data-theme="dark-fantasy"] .panel::after{right:0;bottom:0;transform:rotate(180deg);}
+.react-app-root[data-theme="dark-fantasy"] .panel > *{position:relative;z-index:1;}
+.react-app-root[data-theme="dark-fantasy"] .panel-head{
+  color:#dccdb3 !important;
+  background:
+    linear-gradient(90deg,transparent,rgba(117,42,34,.13) 20% 80%,transparent),
+    linear-gradient(180deg,#1b191a,#0d0d0f) !important;
+  border-bottom:1px solid #55402f !important;
+  font-family:Georgia,"Times New Roman",serif !important;
+  font-size:.78rem !important;
+  letter-spacing:.12em !important;
+  text-transform:uppercase;
+}
+.react-app-root[data-theme="dark-fantasy"] .section{
+  border-color:#2f2923 !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .section-label-spaced{
+  position:relative;
+  padding-left:14px;
+  letter-spacing:.045em;
+}
+.react-app-root[data-theme="dark-fantasy"] .section-label-spaced::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:50%;
+  width:7px;
+  height:7px;
+  transform:translateY(-50%) rotate(45deg);
+  border:1px solid #9b724c;
+  background:#7f2622;
+  box-shadow:0 0 8px rgba(176,52,42,.22);
+}
+
+/* Player identities have distinct factions. */
+.react-app-root[data-theme="dark-fantasy"] .player-card{
+  border:1px solid #302820 !important;
+  background:linear-gradient(135deg,rgba(231,219,193,.025),rgba(0,0,0,.12)) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .avatar{
+  position:relative;
+  border-color:#71563d !important;
+  background:
+    radial-gradient(circle at 50% 44%,rgba(158,48,40,.20),transparent 48%),
+    linear-gradient(180deg,#1b1a1b,#070809) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .avatar::after{
+  content:"";
+  position:absolute;
+  inset:-4px;
+  pointer-events:none;
+  border:1px solid rgba(197,161,104,.18);
+  clip-path:polygon(0 0,34% 0,40% 4%,60% 4%,66% 0,100% 0,100% 34%,96% 40%,96% 60%,100% 66%,100% 100%,66% 100%,60% 96%,40% 96%,34% 100%,0 100%,0 66%,4% 60%,4% 40%,0 34%);
+}
+.react-app-root[data-theme="dark-fantasy"] .team-elo-line{
+  color:#b49562 !important;
+  letter-spacing:.08em;
+}
+
+/* Clocks: active side gets a restrained ember line instead of a big glow. */
+.react-app-root[data-theme="dark-fantasy"] .chess-clocks{
+  width:min(760px,calc(100% - 24px)) !important;
+  gap:8px !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .chess-clock{
+  position:relative;
+  overflow:hidden;
+  border-width:1px !important;
+  border-color:#584432 !important;
+  background:linear-gradient(180deg,rgba(25,24,26,.97),rgba(8,9,10,.98)) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .chess-clock::after{
+  content:"";
+  position:absolute;
+  left:12%;right:12%;bottom:0;height:2px;
+  opacity:0;
+  background:linear-gradient(90deg,transparent,#8f2722,#e0754f,#8f2722,transparent);
+  box-shadow:0 0 10px rgba(208,82,63,.4);
+  transition:opacity .2s ease;
+}
+.react-app-root[data-theme="dark-fantasy"] .chess-clock.active::after{opacity:.9;}
+.react-app-root[data-theme="dark-fantasy"] .chess-clock.active{
+  transform:none !important;
+  border-color:#7f4335 !important;
+  box-shadow:0 8px 24px rgba(0,0,0,.46),inset 0 1px 0 rgba(255,255,255,.04) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .clock-center{
+  border-width:1px !important;
+  color:#cbbca2 !important;
+  background:#0b0b0d !important;
+}
+
+/* Life panel resembles a battlefield status plaque. */
+.react-app-root[data-theme="dark-fantasy"] .advantage-wrap.sf-wrap{
+  position:relative;
+  overflow:hidden;
+  border:1px solid #5b4633 !important;
+  background:linear-gradient(180deg,rgba(17,17,18,.965),rgba(7,8,9,.975)) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .advantage-wrap.sf-wrap::before{
+  content:"";
+  position:absolute;
+  width:125px;height:125px;
+  left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  background:url('/assets/dark-fantasy/v2/rune.svg') center/contain no-repeat;
+  opacity:.035;
+  pointer-events:none;
+}
+.react-app-root[data-theme="dark-fantasy"] .sf-bars,
+.react-app-root[data-theme="dark-fantasy"] .sf-topline{position:relative;z-index:1;}
+.react-app-root[data-theme="dark-fantasy"] .sf-player-label{
+  font-family:Georgia,"Times New Roman",serif !important;
+  letter-spacing:.04em;
+}
+.react-app-root[data-theme="dark-fantasy"] .sf-life{
+  box-shadow:0 4px 12px rgba(0,0,0,.34) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .white-fill{
+  background:linear-gradient(90deg,#f1eadb 0%,#c9bda8 46%,#887a68 100%) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .black-fill{
+  background:linear-gradient(270deg,#d95a46 0%,#982c27 48%,#451416 100%) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .vs-badge{
+  border-width:1px !important;
+  background:
+    radial-gradient(circle at 50% 35%,#7e2b25,#241213 60%,#09090a 100%) !important;
+}
+
+/* Board: stone / obsidian, sharper and more readable. */
+.react-app-root[data-theme="dark-fantasy"] .board-area{
+  position:relative;
+}
+.react-app-root[data-theme="dark-fantasy"] .board-area::before,
+.react-app-root[data-theme="dark-fantasy"] .board-area::after{
+  content:"";
+  position:absolute;
+  width:82px;height:82px;
+  pointer-events:none;
+  z-index:4;
+  opacity:.62;
+  background:url('/assets/dark-fantasy/v2/corner-ornament.svg') center/contain no-repeat;
+}
+.react-app-root[data-theme="dark-fantasy"] .board-area::before{left:-14px;top:36px;}
+.react-app-root[data-theme="dark-fantasy"] .board-area::after{right:-14px;bottom:-14px;transform:rotate(180deg);}
+.react-app-root[data-theme="dark-fantasy"] .turn-badge{
+  border-color:#614935 !important;
+  background:linear-gradient(180deg,#191718,#090a0b) !important;
+  box-shadow:0 5px 15px rgba(0,0,0,.38) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .board{
+  position:relative;
+  border:5px solid #111113 !important;
+  outline:1px solid #856647 !important;
+  outline-offset:2px !important;
+  box-shadow:
+    0 22px 54px rgba(0,0,0,.63),
+    0 0 0 3px rgba(25,22,20,.78),
+    0 0 0 4px rgba(150,113,72,.16),
+    inset 0 0 28px rgba(0,0,0,.24) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .sq{
+  border:1px solid rgba(0,0,0,.055);
+}
+.react-app-root[data-theme="dark-fantasy"] .sq.light{
+  background:
+    radial-gradient(circle at 24% 22%,rgba(255,255,255,.12),transparent 22%),
+    radial-gradient(circle at 72% 76%,rgba(75,62,49,.12),transparent 28%),
+    repeating-linear-gradient(18deg,rgba(255,255,255,.025) 0 1px,transparent 1px 13px),
+    linear-gradient(145deg,#c3b9a7,#968f82 56%,#aaa18f) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .sq.dark{
+  background:
+    radial-gradient(circle at 70% 24%,rgba(143,58,46,.07),transparent 24%),
+    repeating-linear-gradient(116deg,rgba(255,255,255,.018) 0 1px,transparent 1px 14px),
+    linear-gradient(145deg,#29292a,#111214 58%,#211f20) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .sq::before{
+  opacity:.11 !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .sq.selected{
+  box-shadow:
+    inset 0 0 0 3px rgba(211,177,106,.88),
+    inset 0 0 24px rgba(211,177,106,.18) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .sq.last{
+  box-shadow:inset 0 0 0 999px rgba(137,79,60,.18) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .sq.check{
+  box-shadow:
+    inset 0 0 0 999px rgba(145,31,29,.31),
+    inset 0 0 30px rgba(223,66,49,.32) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .dot{
+  width:18% !important;
+  height:18% !important;
+  min-width:8px !important;
+  min-height:8px !important;
+  background:#b89a59 !important;
+  border:1px solid #392b1e !important;
+  box-shadow:0 0 9px rgba(205,167,87,.24) !important;
+}
+
+/* Piece silhouettes: separate the two armies without changing the SVG art. */
+.react-app-root[data-theme="dark-fantasy"] .piece{
+  width:94% !important;
+  height:94% !important;
+  filter:none !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .piece.white .piece-img{
+  filter:
+    drop-shadow(0 5px 3px rgba(0,0,0,.55))
+    drop-shadow(0 0 3px rgba(237,222,191,.12));
+}
+.react-app-root[data-theme="dark-fantasy"] .piece.black .piece-img{
+  filter:
+    drop-shadow(0 6px 4px rgba(0,0,0,.64))
+    drop-shadow(0 0 4px rgba(153,45,38,.15));
+}
+.react-app-root[data-theme="dark-fantasy"] .piece.capture-threat .piece-img{
+  filter:drop-shadow(0 0 7px rgba(224,73,55,.9)) drop-shadow(0 5px 4px rgba(0,0,0,.6)) !important;
+}
+
+/* Ongoing games read as compact duels. */
+.react-app-root[data-theme="dark-fantasy"] .ongoing-games-block{
+  border:1px solid #423329 !important;
+  background:linear-gradient(180deg,rgba(16,16,17,.9),rgba(7,8,9,.92)) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .ongoing-games-head{
+  color:#cdbda3 !important;
+  font-family:Georgia,"Times New Roman",serif;
+  letter-spacing:.04em;
+}
+.react-app-root[data-theme="dark-fantasy"] .ongoing-game-card,
+.react-app-root[data-theme="dark-fantasy"] .correspondence-item{
+  border-color:#352b24 !important;
+  background:linear-gradient(180deg,#131315,#090a0b) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .ongoing-game-card:hover,
+.react-app-root[data-theme="dark-fantasy"] .correspondence-item:hover{
+  border-color:#7b5940 !important;
+  background:linear-gradient(180deg,#1a1718,#0c0b0c) !important;
+}
+
+/* Buttons: iron by default, blood-red only for primary action. */
+.react-app-root[data-theme="dark-fantasy"] .btn-main,
+.react-app-root[data-theme="dark-fantasy"] .remote-main-btn,
+.react-app-root[data-theme="dark-fantasy"] .profile-save,
+.react-app-root[data-theme="dark-fantasy"] .guest-login-btn,
+.react-app-root[data-theme="dark-fantasy"] .mate-replay,
+.react-app-root[data-theme="dark-fantasy"] .correspondence-create-btn{
+  border-color:#9a4938 !important;
+  background:
+    linear-gradient(180deg,rgba(214,82,61,.12),transparent 42%),
+    linear-gradient(180deg,#7d2924,#471617) !important;
+  box-shadow:0 3px 0 #210a0b,0 7px 14px rgba(0,0,0,.26) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .btn-main:hover,
+.react-app-root[data-theme="dark-fantasy"] .remote-main-btn:hover,
+.react-app-root[data-theme="dark-fantasy"] .profile-save:hover,
+.react-app-root[data-theme="dark-fantasy"] .guest-login-btn:hover{
+  filter:brightness(1.08);
+}
+.react-app-root[data-theme="dark-fantasy"] .btn-yellow,
+.react-app-root[data-theme="dark-fantasy"] .secondary,
+.react-app-root[data-theme="dark-fantasy"] .mode-back,
+.react-app-root[data-theme="dark-fantasy"] .auth-refresh{
+  border-color:#554333 !important;
+  background:linear-gradient(180deg,#222123,#101112) !important;
+}
+
+/* Modals / sheets: less blur, stronger framing, easier text reading. */
+.react-app-root[data-theme="dark-fantasy"] .mode-overlay,
+.react-app-root[data-theme="dark-fantasy"] .profile-overlay,
+.react-app-root[data-theme="dark-fantasy"] .app-sheet-overlay,
+.react-app-root[data-theme="dark-fantasy"] .profile-dashboard-overlay,
+.react-app-root[data-theme="dark-fantasy"] .correspondence-overlay,
+.react-app-root[data-theme="dark-fantasy"] .camp-overlay,
+.react-app-root[data-theme="dark-fantasy"] .game-action-overlay,
+.react-app-root[data-theme="dark-fantasy"] .mate-overlay{
+  background:rgba(2,3,4,.78) !important;
+  backdrop-filter:blur(4px) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .mode-card,
+.react-app-root[data-theme="dark-fantasy"] .profile-card,
+.react-app-root[data-theme="dark-fantasy"] .app-sheet,
+.react-app-root[data-theme="dark-fantasy"] .profile-dashboard,
+.react-app-root[data-theme="dark-fantasy"] .correspondence-sheet,
+.react-app-root[data-theme="dark-fantasy"] .camp-card,
+.react-app-root[data-theme="dark-fantasy"] .game-action-dialog{
+  position:relative;
+  border:1px solid #76583e !important;
+  background:
+    radial-gradient(circle at 50% 0,rgba(132,41,34,.12),transparent 34%),
+    linear-gradient(180deg,#19191b,#08090a 78%) !important;
+}
+
+/* Bottom navigation as an iron command bar. */
+.react-app-root[data-theme="dark-fantasy"] .bottom-app-nav{
+  border:1px solid #604932 !important;
+  background:rgba(8,9,10,.965) !important;
+  box-shadow:0 14px 34px rgba(0,0,0,.56),inset 0 1px 0 rgba(226,197,145,.045) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .bottom-nav-btn{
+  border-color:#3f3329 !important;
+  background:linear-gradient(180deg,#1c1b1d,#0d0e0f) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .bottom-nav-btn.play{
+  border-color:#8e4033 !important;
+  background:linear-gradient(180deg,#792821,#431315) !important;
+}
+
+/* Result screen: herald appears from darkness, not a bright arcade panel. */
+.react-app-root[data-theme="dark-fantasy"] .mate-character img{
+  filter:drop-shadow(0 24px 24px rgba(0,0,0,.78)) drop-shadow(0 0 22px rgba(173,50,40,.13)) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .mate-sign{
+  border:1px solid #78593e !important;
+  background:
+    radial-gradient(circle at 50% 0,rgba(143,42,34,.14),transparent 42%),
+    linear-gradient(180deg,#1b1a1c,#08090a) !important;
+}
+.react-app-root[data-theme="dark-fantasy"] .mate-sign-name{
+  color:#cf5946 !important;
+  text-shadow:0 0 16px rgba(183,55,44,.18);
+}
+
+/* Mobile: keep ornate details out of the way. */
+@media (max-width:760px){
+  .react-app-root[data-theme="dark-fantasy"] .titlebar::after{
+    font-size:.42rem;
+    letter-spacing:.24em;
+  }
+  .react-app-root[data-theme="dark-fantasy"] .panel::before,
+  .react-app-root[data-theme="dark-fantasy"] .panel::after{
+    width:52px;height:52px;opacity:.26;
+  }
+  .react-app-root[data-theme="dark-fantasy"] .board-area::before,
+  .react-app-root[data-theme="dark-fantasy"] .board-area::after{
+    display:none;
+  }
+  .react-app-root[data-theme="dark-fantasy"] .board{
+    border-width:4px !important;
+    outline-offset:1px !important;
+  }
+}
+
+@media (hover:hover) and (pointer:fine){
+  .react-app-root[data-theme="dark-fantasy"] button:not(:disabled){
+    transition:filter .14s ease,border-color .14s ease,background-color .14s ease;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .react-app-root[data-theme="dark-fantasy"] .chess-clock::after{transition:none;}
+}

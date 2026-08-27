@@ -1,8 +1,8 @@
 export const darkFantasyTheme = Object.freeze({
   id: 'dark-fantasy',
-  label: 'Dark Fantasy',
-  documentTitle: 'Échecs des Ténèbres',
-  shareTitle: 'Échecs des Ténèbres',
+  label: 'Dark Fantasy · Ashen Crown',
+  documentTitle: 'Échecs des Ténèbres · Ashen Crown',
+  shareTitle: 'Échecs des Ténèbres · Ashen Crown',
   aiNames: [
     'Oracle des Cendres',
     'Le Veilleur Noir',
@@ -28,7 +28,20 @@ export const darkFantasyTheme = Object.freeze({
     whiteAvatar: '/assets/dark-fantasy/pieces/white-king.svg',
     blackAvatar: '/assets/dark-fantasy/pieces/black-king.svg',
     whiteAvatarAlt: 'Roi des Cendres',
-    blackAvatarAlt: 'Roi Sans Nom'
+    blackAvatarAlt: 'Roi Sans Nom',
+    whiteTeamTitle: 'Ordre d’Ivoire',
+    blackTeamTitle: 'Légion Noire',
+    whiteTeamSubtitle: 'Cour des Cendres',
+    blackTeamSubtitle: 'Cour du Voile',
+    lifeTitle: 'Souffle des armées',
+    whiteCampLabel: 'Ivoire',
+    blackCampLabel: 'Ombre',
+    ongoingTitle: 'Duels en cours',
+    capturedTitle: 'Âmes capturées',
+    suggestedTitle: 'Présages pour l’Ivoire',
+    moveHistoryTitle: 'Chronique des coups',
+    newGameLabel: 'Nouveau duel',
+    flipBoardLabel: 'Retourner le champ'
   },
   pieces: {
     w: {
