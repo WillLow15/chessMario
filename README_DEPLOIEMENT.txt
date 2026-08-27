@@ -193,3 +193,15 @@ V72 - ABANDON / NULLE PAR ACCORD
 - Parties différées : proposition de nulle persistante en BDD et pénalité d'abandon appliquée côté serveur.
 - La section Parties en cours est maintenant sous la section Joueur/Équipe Blancs.
 - IMPORTANT : exécuter SUPABASE_SETUP.sql une fois pour ajouter draw_offer_player_id.
+
+
+V73 - REPRISE MOBILE DES PARTIES ENTRE AMIS
+--------------------------------------------
+- Le code d’une salle PeerJS est conservé en session pendant un changement d’app/rechargement mobile.
+- Au retour sur la page, la salle est automatiquement restaurée et PeerJS tente de se reconnecter.
+- Si une connexion active est coupée par la suspension iOS/Android, l’hôte et l’invité tentent automatiquement de se reconnecter.
+- L’hôte conserve le même code de salle.
+- L’état principal de la partie distante est sauvegardé dans sessionStorage pour permettre une reprise après rechargement de l’onglet.
+- Nouveau bouton Partager utilisant la feuille de partage native iOS/Android quand disponible.
+- Le lien partagé contient aussi ?room=CODE : chez l’ami le code est pré-rempli automatiquement.
+- Aucune modification Supabase n’est nécessaire pour cette version.

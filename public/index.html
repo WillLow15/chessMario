@@ -20,7 +20,7 @@
   <meta name="apple-mobile-web-app-title" content="Mario Chess">
   <meta name="mobile-web-app-capable" content="yes">
 
-  <meta name="mario-chess-build" content="netlify-supabase-v72">
+  <meta name="mario-chess-build" content="netlify-supabase-v73">
 
   <link rel="preload" href="/fonts/nunito-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/outfit-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -306,7 +306,10 @@
         <div class="access-code-box hidden" id="accessCodeBox">
           <span>CODE D'ACCÈS</span>
           <strong id="accessCode">------</strong>
-          <button id="copyCodeBtn" type="button">Copier le code</button>
+          <div class="access-code-actions">
+            <button id="copyCodeBtn" type="button">Copier</button>
+            <button class="share-code-btn" id="shareCodeBtn" type="button">Partager</button>
+          </div>
         </div>
       </div>
 
@@ -597,6 +600,10 @@ let peerScriptPromise=null;
 let remoteReady=false;
 let remoteIsHost=false;
 let remoteRoomCode='';
+let remoteReconnectTimer=null;
+let remoteReconnectInProgress=false;
+let remoteConnectionGeneration=0;
+const REMOTE_SESSION_STORAGE_KEY='marioChessRemoteSessionV1';
 
 let correspondenceGameId=null;
 let correspondenceVersion=0;
@@ -1326,6 +1333,7 @@ function finishResignation(winnerColor,{penalizeMe=false,opponentResigned=false}
 }
 function finishAgreedDraw(){
   if(manualGameFinished)return;
+  if(gameMode==='remote')clearRemoteSession();
   manualGameFinished=true;manualGameResult='draw';manualGameReason='agreement';
   remoteDrawOfferByMe=false;remoteDrawOfferIncoming=false;
   stopClock();selected=null;targets=[];
@@ -2148,16 +2156,87 @@ function makeRoomCode(){
   for(let i=0;i<6;i++)out+=chars[Math.floor(Math.random()*chars.length)];
   return out;
 }
-function destroyRemote(){
+function readRemoteSession(){
+  try{
+    const raw=sessionStorage.getItem(REMOTE_SESSION_STORAGE_KEY);
+    if(!raw)return null;
+    const data=JSON.parse(raw);
+    const code=cleanCode(data&&data.code);
+    if(code.length!==6||!['host','guest'].includes(data&&data.role))return null;
+    return {...data,code};
+  }catch(e){return null;}
+}
+function clearRemoteSession(){
+  try{sessionStorage.removeItem(REMOTE_SESSION_STORAGE_KEY);}catch(e){}
+}
+function saveRemoteSession(extra={}){
+  if(gameMode!=='remote'||!remoteRoomCode)return;
+  const existing=readRemoteSession()||{};
+  const snapshot={
+    ...existing,
+    role:remoteIsHost?'host':'guest',
+    code:remoteRoomCode,
+    active:!!remoteReady,
+    fen:chess?chess.fen():existing.fen,
+    clocks:{w:Number(clockState&&clockState.w)||INITIAL_CLOCK_MS,b:Number(clockState&&clockState.b)||INITIAL_CLOCK_MS},
+    clockStarted:!!clockStarted,
+    timeControlKey:selectedTimeControlKey,
+    timeControlLabel:TIME_CONTROL_LABEL,
+    initialClockMs:INITIAL_CLOCK_MS,
+    incrementMs:CLOCK_INCREMENT_MS,
+    playerCamp:playerCamp||existing.playerCamp||null,
+    flipped:!!flipped,
+    opponentElo:Number(opponentElo)||null,
+    opponentName:remoteOpponentName||'',
+    opponentGuest:!!remoteOpponentGuest,
+    capturedByWhite:Array.isArray(capturedByWhite)?capturedByWhite:[],
+    capturedByBlack:Array.isArray(capturedByBlack)?capturedByBlack:[],
+    updatedAt:Date.now(),
+    ...extra
+  };
+  try{sessionStorage.setItem(REMOTE_SESSION_STORAGE_KEY,JSON.stringify(snapshot));}catch(e){}
+}
+function restoreRemoteSnapshot(session){
+  if(!session)return;
+  gameMode='remote';
+  remoteRoomCode=session.code;
+  remoteIsHost=session.role==='host';
+  if(session.timeControlKey&&TIME_CONTROLS[session.timeControlKey])configureTimeControl(session.timeControlKey);
+  else applyRemoteTimeControl(session);
+  try{if(session.fen&&chess)chess.load(session.fen);}catch(e){}
+  playerCamp=session.playerCamp||(remoteIsHost?'w':'b');
+  flipped=typeof session.flipped==='boolean'?session.flipped:playerCamp==='b';
+  opponentElo=Number(session.opponentElo)||null;
+  remoteOpponentName=cleanPlayerName(session.opponentName)||'';
+  remoteOpponentGuest=!!session.opponentGuest;
+  if(Array.isArray(session.capturedByWhite))capturedByWhite=session.capturedByWhite;
+  if(Array.isArray(session.capturedByBlack))capturedByBlack=session.capturedByBlack;
+  if(session.clocks){
+    clockState={
+      w:Number(session.clocks.w)||INITIAL_CLOCK_MS,
+      b:Number(session.clocks.b)||INITIAL_CLOCK_MS
+    };
+  }
+  clockStarted=!!session.clockStarted;
+  clockRunning=clockStarted;
+  clockLastTick=clockStarted?performance.now():0;
+  if(clockStarted&&!clockInterval)clockInterval=setInterval(clockTick,200);
+  renderAll();
+}
+function destroyRemote({clearSession=true}={}){
+  remoteConnectionGeneration++;
   remoteReady=false;
   remoteIsHost=false;
   remoteRoomCode='';
   remoteDrawOfferByMe=false;
   remoteDrawOfferIncoming=false;
+  remoteReconnectInProgress=false;
+  if(remoteReconnectTimer){clearTimeout(remoteReconnectTimer);remoteReconnectTimer=null;}
   try{if(peerConn)peerConn.close();}catch(e){}
   try{if(peer)peer.destroy();}catch(e){}
   peerConn=null;
   peer=null;
+  if(clearSession)clearRemoteSession();
 }
 function loadPeerJS(){
   if(window.Peer)return Promise.resolve();
@@ -2189,16 +2268,133 @@ function resetBoardForRemote(){
   renderElo();
   renderAll();
 }
+function scheduleRemoteReconnect(delay=900){
+  if(gameMode!=='remote'||!remoteRoomCode||manualGameFinished)return;
+  if(remoteReconnectTimer)return;
+  remoteReconnectTimer=setTimeout(()=>{
+    remoteReconnectTimer=null;
+    if(document.hidden){scheduleRemoteReconnect(1200);return;}
+    resumeRemoteConnection().catch(err=>{
+      console.warn('Reconnexion distante:',err);
+      scheduleRemoteReconnect(1800);
+    });
+  },delay);
+}
 function attachPeerErrors(p){
   p.on('error',err=>{
     console.error('PeerJS',err);
-    const msg=err&&err.type==='peer-unavailable'
-      ? "Code introuvable ou partie indisponible."
-      : err&&err.type==='unavailable-id'
-        ? "Ce code vient d'être utilisé. Clique à nouveau sur Créer une partie."
-        : "Connexion impossible. Vérifie Internet et réessaie.";
-    setRemoteStatus(msg,'error');
+    if(gameMode!=='remote')return;
+    if(err&&err.type==='peer-unavailable'){
+      setRemoteStatus(remoteIsHost?'En attente de ton ami…':'Ton ami n’est pas encore reconnecté. Nouvelle tentative…','wait');
+      scheduleRemoteReconnect(1600);
+      return;
+    }
+    if(err&&err.type==='unavailable-id'&&remoteIsHost){
+      // The signaling server may still hold our ID briefly after a mobile suspension.
+      setRemoteStatus('Récupération de la salle '+remoteRoomCode+'…','wait');
+      scheduleRemoteReconnect(1800);
+      return;
+    }
+    setRemoteStatus('Connexion interrompue. Reconnexion automatique…','wait');
+    scheduleRemoteReconnect(1200);
   });
+  p.on('disconnected',()=>{
+    if(gameMode!=='remote'||document.hidden)return;
+    try{if(!p.destroyed)p.reconnect();}catch(e){scheduleRemoteReconnect(700);}
+  });
+  p.on('close',()=>{
+    if(gameMode==='remote'&&remoteRoomCode)scheduleRemoteReconnect(700);
+  });
+}
+async function createHostPeerForCode(code){
+  await loadPeerJS();
+  const generation=++remoteConnectionGeneration;
+  try{if(peer&&!peer.destroyed)peer.destroy();}catch(e){}
+  peer=null;
+  const id='mariochess-'+code.toLowerCase();
+  const p=new Peer(id);
+  peer=p;
+  attachPeerErrors(p);
+  p.on('open',()=>{
+    if(generation!==remoteConnectionGeneration||gameMode!=='remote')return;
+    remoteReconnectInProgress=false;
+    remoteIsHost=true;
+    remoteRoomCode=code;
+    $('accessCode').textContent=code;
+    $('accessCodeBox').classList.remove('hidden');
+    setRemoteStatus(peerConn&&peerConn.open?'Reconnecté à ton ami.':"Partage ce code. Tu peux changer d’app puis revenir : la salle sera restaurée.",'wait');
+    saveRemoteSession({role:'host',code});
+  });
+  p.on('connection',conn=>{
+    if(generation!==remoteConnectionGeneration){try{conn.close();}catch(e){};return;}
+    if(peerConn&&peerConn.open){try{peerConn.close();}catch(e){}}
+    setupRemoteConnection(conn,true);
+  });
+  return p;
+}
+async function createGuestPeerForCode(code){
+  await loadPeerJS();
+  const generation=++remoteConnectionGeneration;
+  try{if(peer&&!peer.destroyed)peer.destroy();}catch(e){}
+  peer=null;
+  const p=new Peer();
+  peer=p;
+  attachPeerErrors(p);
+  p.on('open',()=>{
+    if(generation!==remoteConnectionGeneration||gameMode!=='remote')return;
+    const conn=p.connect('mariochess-'+code.toLowerCase(),{reliable:true});
+    setupRemoteConnection(conn,false);
+  });
+  return p;
+}
+async function resumeRemoteConnection(){
+  if(remoteReconnectInProgress||document.hidden)return;
+  const session=readRemoteSession();
+  if(!session)return;
+  if(gameMode!=='remote'||!remoteRoomCode)restoreRemoteSnapshot(session);
+  remoteReconnectInProgress=true;
+  remoteRoomCode=session.code;
+  remoteIsHost=session.role==='host';
+
+  if(peerConn&&peerConn.open){
+    remoteReady=true;
+    remoteReconnectInProgress=false;
+    saveRemoteSession({active:true});
+    return;
+  }
+
+  if(peer&&!peer.destroyed&&peer.disconnected){
+    try{
+      peer.reconnect();
+      remoteReconnectInProgress=false;
+      setRemoteStatus('Reconnexion de la salle…','wait');
+      setTimeout(()=>{
+        if(gameMode==='remote'&&(!peerConn||!peerConn.open))scheduleRemoteReconnect(500);
+      },900);
+      return;
+    }catch(e){}
+  }
+
+  setRemoteStatus(remoteIsHost?'Restauration de ta salle '+session.code+'…':'Reconnexion à la salle '+session.code+'…','wait');
+  try{
+    if(remoteIsHost)await createHostPeerForCode(session.code);
+    else await createGuestPeerForCode(session.code);
+  }finally{
+    remoteReconnectInProgress=false;
+  }
+}
+async function restoreRemoteSessionOnBoot(){
+  const session=readRemoteSession();
+  if(!session)return false;
+  restoreRemoteSnapshot(session);
+  remoteReady=false;
+  $('accessCode').textContent=session.code;
+  if(session.role==='host')$('accessCodeBox').classList.remove('hidden');
+  else $('accessCodeBox').classList.add('hidden');
+  showModeOverlay('remote');
+  setRemoteStatus(session.role==='host'?'Restauration de ta salle '+session.code+'…':'Reconnexion à la salle '+session.code+'…','wait');
+  await resumeRemoteConnection();
+  return true;
 }
 function setupRemoteConnection(conn,isHost){
   peerConn=conn;
@@ -2207,6 +2403,9 @@ function setupRemoteConnection(conn,isHost){
 
   conn.on('open',()=>{
     remoteReady=true;
+    remoteReconnectInProgress=false;
+    remoteRoomCode=remoteRoomCode||cleanCode(readRemoteSession()?.code);
+    saveRemoteSession({active:true,role:isHost?'host':'guest'});
     if(isHost){
       playerCamp='w';
       flipped=false;
@@ -2226,8 +2425,9 @@ function setupRemoteConnection(conn,isHost){
         isGuest:isGuest
       });
       hideModeOverlay();
-      resetClock();
+      if(!clockStarted&&chess.history().length===0)resetClock();
       renderAll();
+      saveRemoteSession({active:true});
     }
   });
 
@@ -2261,6 +2461,7 @@ function setupRemoteConnection(conn,isHost){
       remoteReady=true;
       hideModeOverlay();
       renderAll();
+      saveRemoteSession({active:true,role:'guest'});
       return;
     }
     if(data.type==='elo'){
@@ -2269,6 +2470,7 @@ function setupRemoteConnection(conn,isHost){
       remoteOpponentGuest=!!data.isGuest;
       renderElo();
       renderTeamNames();
+      saveRemoteSession({active:true});
       return;
     }
     if(data.type==='move'){
@@ -2284,6 +2486,7 @@ function setupRemoteConnection(conn,isHost){
       clockLastTick=clockStarted?performance.now():0;
       if(clockStarted&&!clockInterval)clockInterval=setInterval(clockTick,200);
       playMove(data.from,data.to,'remote');
+      setTimeout(()=>saveRemoteSession({active:true}),620);
       return;
     }
     if(data.type==='draw_offer'){
@@ -2312,6 +2515,7 @@ function setupRemoteConnection(conn,isHost){
       return;
     }
     if(data.type==='timeout'){
+      clearRemoteSession();
       timeoutWinner=data.winner;
       clockRunning=false;
       renderAll();
@@ -2321,11 +2525,12 @@ function setupRemoteConnection(conn,isHost){
   });
 
   conn.on('close',()=>{
-    if(gameMode==='remote'){
+    if(gameMode==='remote'&&remoteRoomCode){
       remoteReady=false;
-      stopClock();
-      setRemoteStatus("Connexion avec l'ami interrompue.",'error');
-      showModeOverlay('remote');
+      saveRemoteSession({active:false});
+      setRemoteStatus("Connexion avec l'ami interrompue. Reconnexion automatique…",'wait');
+      renderGameActions();
+      scheduleRemoteReconnect(document.hidden?1200:450);
     }
   });
 }
@@ -2336,48 +2541,63 @@ async function createRemoteRoom(){
   setRemoteStatus('Création du code…','wait');
   $('accessCodeBox').classList.add('hidden');
   try{
-    await loadPeerJS();
     const code=makeRoomCode();
     remoteRoomCode=code;
-    const id='mariochess-'+code.toLowerCase();
-    peer=new Peer(id);
-    attachPeerErrors(peer);
-    peer.on('open',()=>{
-      $('accessCode').textContent=code;
-      $('accessCodeBox').classList.remove('hidden');
-      setRemoteStatus("Partage ce code. En attente de ton ami…",'wait');
-    });
-    peer.on('connection',conn=>{
-      if(peerConn&&peerConn.open){try{conn.close();}catch(e){}return;}
-      setupRemoteConnection(conn,true);
-    });
+    remoteIsHost=true;
+    saveRemoteSession({role:'host',code,active:false});
+    await createHostPeerForCode(code);
   }catch(err){
     console.error(err);
-    setRemoteStatus("Impossible de charger le mode en ligne.",'error');
+    setRemoteStatus('Impossible de charger le mode en ligne.','error');
   }
 }
 async function joinRemoteRoom(){
   const code=cleanCode($('roomCodeInput').value);
   $('roomCodeInput').value=code;
   if(code.length!==6){
-    setRemoteStatus("Entre un code de 6 caractères.",'error');
+    setRemoteStatus('Entre un code de 6 caractères.','error');
     return;
   }
   destroyRemote();
   gameMode='remote';
   resetBoardForRemote();
+  remoteRoomCode=code;
+  remoteIsHost=false;
+  saveRemoteSession({role:'guest',code,active:false});
   setRemoteStatus('Connexion au code '+code+'…','wait');
   try{
-    await loadPeerJS();
-    peer=new Peer();
-    attachPeerErrors(peer);
-    peer.on('open',()=>{
-      const conn=peer.connect('mariochess-'+code.toLowerCase(),{reliable:true});
-      setupRemoteConnection(conn,false);
-    });
+    await createGuestPeerForCode(code);
   }catch(err){
     console.error(err);
-    setRemoteStatus("Impossible de charger le mode en ligne.",'error');
+    setRemoteStatus('Impossible de charger le mode en ligne.','error');
+  }
+}
+function remoteShareUrl(code){
+  const url=new URL(window.location.href);
+  url.searchParams.set('room',code);
+  url.hash='';
+  return url.toString();
+}
+async function shareRemoteCode(){
+  const code=cleanCode($('accessCode')?.textContent);
+  if(code.length!==6)return;
+  const url=remoteShareUrl(code);
+  const text='Rejoins ma partie Mario Bros Chess avec le code '+code+'.';
+  saveRemoteSession({role:'host',code,active:!!remoteReady});
+  try{
+    if(navigator.share){
+      await navigator.share({title:'Mario Bros Chess',text,url});
+      setRemoteStatus('Code partagé. La salle reste active pendant ton retour dans le jeu.','ok');
+      return;
+    }
+  }catch(err){
+    if(err&&err.name==='AbortError')return;
+  }
+  try{
+    await navigator.clipboard.writeText(text+' '+url);
+    setRemoteStatus('Code et lien copiés. La salle sera restaurée quand tu reviens.','ok');
+  }catch(e){
+    setRemoteStatus('Code : '+code+' — la salle sera restaurée quand tu reviens.','ok');
   }
 }
 function sendRemoteMove(move){
@@ -2392,6 +2612,7 @@ function sendRemoteMove(move){
     clocks:{w:clockState.w,b:clockState.b},
     clockStarted:clockStarted
   });
+  setTimeout(()=>saveRemoteSession({active:true}),620);
 }
 function canLocalMove(){
   if(manualGameFinished)return false;
@@ -3159,10 +3380,19 @@ async function boot(){
     $('correspondenceCodeInput').addEventListener('keydown',e=>{if(e.key==='Enter')joinCorrespondenceGame();});
     $('correspondenceOverlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeCorrespondenceMenu();});
     document.addEventListener('visibilitychange',()=>{
-      if(!document.hidden){
-        refreshCurrentCorrespondenceGame(true);
-        loadOngoingCorrespondenceSidebar(true);
+      if(document.hidden){
+        if(gameMode==='remote'&&remoteRoomCode){
+          commitClock();
+          saveRemoteSession({active:!!remoteReady});
+        }
+        return;
       }
+      refreshCurrentCorrespondenceGame(true);
+      loadOngoingCorrespondenceSidebar(true);
+      if(readRemoteSession())resumeRemoteConnection();
+    });
+    window.addEventListener('pageshow',()=>{
+      if(readRemoteSession())resumeRemoteConnection();
     });
     startOngoingGamesPolling();
     configureTimeControl(selectedTimeControlKey);
@@ -3209,14 +3439,16 @@ async function boot(){
     $('roomCodeInput').addEventListener('input',e=>{e.target.value=cleanCode(e.target.value)});
     $('roomCodeInput').addEventListener('keydown',e=>{if(e.key==='Enter')joinRemoteRoom()});
     $('copyCodeBtn').addEventListener('click',async()=>{
-      const code=$('accessCode').textContent.trim();
+      const code=cleanCode($('accessCode').textContent);
+      saveRemoteSession({role:'host',code,active:!!remoteReady});
       try{
         await navigator.clipboard.writeText(code);
-        setRemoteStatus('Code '+code+' copié. En attente de ton ami…','ok');
+        setRemoteStatus('Code '+code+' copié. Tu peux changer d’app : la salle sera restaurée à ton retour.','ok');
       }catch(e){
-        setRemoteStatus('Code : '+code+' — copie-le et envoie-le à ton ami.','ok');
+        setRemoteStatus('Code : '+code+' — la salle sera restaurée à ton retour.','ok');
       }
     });
+    $('shareCodeBtn').addEventListener('click',shareRemoteCode);
 
     prepareModeChoice();
     renderAll();
@@ -3225,6 +3457,16 @@ async function boot(){
 
     setLoaderProgress(82,'Connexion au profil joueur…');
     await bootstrapPlayerProfile();
+
+    const restoredRemote=await restoreRemoteSessionOnBoot();
+    if(!restoredRemote){
+      const sharedCode=cleanCode(new URL(window.location.href).searchParams.get('room'));
+      if(sharedCode.length===6){
+        showModeOverlay('remote');
+        $('roomCodeInput').value=sharedCode;
+        setRemoteStatus('Code '+sharedCode+' reçu. Appuie sur Rejoindre.','ok');
+      }
+    }
 
     setLoaderProgress(84,'Finalisation des images…');
     await waitForRenderedImages((done,total)=>{

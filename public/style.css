@@ -4950,3 +4950,55 @@ button.ongoing-games-empty,
 .game-action-dialog-actions .primary.danger{background:linear-gradient(180deg,#e45b47,#bb2d24);border-color:#8f241d}
 @media(max-width:760px){.game-actions{gap:6px;padding-top:8px}.game-action-btn{min-height:40px;padding:7px 9px;border-radius:11px;font-size:.66rem}.game-action-overlay{padding:11px}.game-action-dialog{padding:18px 12px 14px;border-width:3px;border-radius:18px}}
 @media(max-width:360px){.game-action-icon{display:none}}
+
+
+/* =========================================================
+   PARTAGE / REPRISE MOBILE DES PARTIES ENTRE AMIS — v73
+   ========================================================= */
+.access-code-box .access-code-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+  min-width: 0;
+}
+
+.access-code-box .access-code-actions button {
+  width: 100%;
+  min-width: 0;
+}
+
+.access-code-box .share-code-btn {
+  border-color: #247b3c !important;
+  color: #fff !important;
+  background: linear-gradient(180deg,#53d868,#25aa47) !important;
+}
+
+@media (max-width: 760px) {
+  .access-code-box {
+    grid-template-columns: minmax(0,1fr) !important;
+    text-align: center !important;
+  }
+
+  .access-code-box span,
+  .access-code-box strong,
+  .access-code-box .access-code-actions {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .access-code-box strong {
+    font-size: 1.45rem !important;
+    letter-spacing: .14em !important;
+  }
+
+  .access-code-box .access-code-actions {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 6px !important;
+  }
+
+  .access-code-box .access-code-actions button {
+    min-height: 42px !important;
+    font-size: .68rem !important;
+  }
+}
