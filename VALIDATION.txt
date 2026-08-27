@@ -1,0 +1,8 @@
+JS/JSX/TOML syntax: OK
+
+IDs queried by controller but not statically rendered (may be optional/dynamic):
+blackScore
+stateText
+status
+turnText
+whiteScore
