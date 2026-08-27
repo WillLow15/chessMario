@@ -5002,3 +5002,25 @@ button.ongoing-games-empty,
     font-size: .68rem !important;
   }
 }
+
+/* =========================================================
+   LAYOUT <= 1260PX — ÉCHIQUIER EN PREMIER, ÉQUIPES EN DESSOUS
+   ========================================================= */
+@media (max-width: 1260px) {
+  .wrap {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .wrap > .board-shell {
+    order: 1 !important;
+  }
+
+  .wrap > aside.panel:first-of-type {
+    order: 2 !important;
+  }
+
+  .wrap > aside.panel:last-of-type {
+    order: 3 !important;
+  }
+}
+
