@@ -216,3 +216,13 @@ V74 - RESTAURATION MOBILE PEERJS ROBUSTE
 - Synchronisation de position après reprise via resume_probe / sync_request.
 - Reprise déclenchée sur visibilitychange, pageshow, online, pagehide/freeze.
 - Aucun changement Supabase nécessaire.
+
+
+V75 - CORRECTIF CRÉATION PARTIE EN LIGNE
+------------------------------------------
+- Ignore les callbacks PeerJS provenant d’une ancienne salle.
+- Empêche la reconnexion automatique d’entrer en concurrence avec Créer une partie.
+- Verrouille le bouton Créer pendant l’initialisation.
+- Attend réellement l’ouverture du Peer hôte avant de valider la salle.
+- Régénère le code automatiquement en cas de collision PeerJS.
+- Aucune migration Supabase nécessaire.
