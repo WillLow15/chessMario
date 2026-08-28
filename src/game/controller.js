@@ -93,11 +93,11 @@ async function finishLoader(){
 setLoaderProgress(3,'Préparation du jeu…');
 
 const $=(id)=>document.getElementById(id);
-const PIECE_SKINS=activeTheme.pieces;
-const SHELL_GREEN_SRC=activeTheme.effects.shellGreen;
-const SHELL_RED_SRC=activeTheme.effects.shellRed;
-const MATE_CHARACTER_SRC=activeTheme.effects.resultCharacter;
-const PROJECTILE_ALT=activeTheme.effects.projectileAlt||'Projectile';
+let PIECE_SKINS=activeTheme.pieces;
+let SHELL_GREEN_SRC=activeTheme.effects.shellGreen;
+let SHELL_RED_SRC=activeTheme.effects.shellRed;
+let MATE_CHARACTER_SRC=activeTheme.effects.resultCharacter;
+let PROJECTILE_ALT=activeTheme.effects.projectileAlt||'Projectile';
 const PIECE_VALUE={p:1,n:3,b:3,r:5,q:9,k:0};
 function pieceData(color,type){return PIECE_SKINS[color][type];}
 function winnerColorFromLabel(winner){
@@ -572,7 +572,7 @@ function eloRankName(value){
 let playerElo=loadPlayerElo();
 let opponentElo=null;
 
-const AI_FUNNY_NAMES=Array.isArray(activeTheme.aiNames)&&activeTheme.aiNames.length
+let AI_FUNNY_NAMES=Array.isArray(activeTheme.aiNames)&&activeTheme.aiNames.length
   ? activeTheme.aiNames
   : ['Chess Engine'];
 let aiDisplayName='';
@@ -585,6 +585,42 @@ function randomAIName(){
 function ensureAIName(){
   if(!aiDisplayName)aiDisplayName=randomAIName();
   return aiDisplayName;
+}
+
+
+export function applyGameTheme(theme=activeTheme){
+  if(!theme||!theme.pieces)return false;
+
+  PIECE_SKINS=theme.pieces;
+  SHELL_GREEN_SRC=theme.effects?.shellGreen||SHELL_GREEN_SRC;
+  SHELL_RED_SRC=theme.effects?.shellRed||SHELL_RED_SRC;
+  MATE_CHARACTER_SRC=theme.effects?.resultCharacter||MATE_CHARACTER_SRC;
+  PROJECTILE_ALT=theme.effects?.projectileAlt||'Projectile';
+  AI_FUNNY_NAMES=Array.isArray(theme.aiNames)&&theme.aiNames.length
+    ? theme.aiNames
+    : ['Chess Engine'];
+
+  if(gameMode==='ai')aiDisplayName='';
+
+  const mateImg=$('mateCharacter');
+  if(mateImg){
+    const winnerColor=mateImg.dataset.winnerColor;
+    if(winnerColor&&PIECE_SKINS[winnerColor]?.k){
+      const king=PIECE_SKINS[winnerColor].k;
+      mateImg.src=king.src;
+      mateImg.alt=`${king.name} — vainqueur`;
+    }else{
+      mateImg.src=MATE_CHARACTER_SRC;
+      mateImg.alt='Résultat de la partie';
+    }
+  }
+
+  if(chess){
+    renderAll();
+    void preloadGameImages();
+  }
+
+  return true;
 }
 
 function renderTeamNames(){
@@ -2463,6 +2499,9 @@ async function joinRemoteRoom(){
 function remoteShareUrl(code){
   const url=new URL(window.location.href);
   url.searchParams.set('room',code);
+  // The visual theme is local to each player. Never force the host's
+  // temporary ?theme= override on the opponent through a room link.
+  url.searchParams.delete('theme');
   url.hash='';
   return url.toString();
 }
@@ -3063,7 +3102,127 @@ function animateSmoothMove(fromRect,toRect,color,type,targetSquare){
   },540);
 }
 
-function playShellCaptureRects(fromRect,toRect,color,type,attackerColor,targetSquare){if(!fromRect||!toRect)return;const startX=fromRect.left+fromRect.width/2;const startY=fromRect.top+fromRect.height/2;const endX=toRect.left+toRect.width/2;const endY=toRect.top+toRect.height/2;const dx=endX-startX;const dy=endY-startY;const distance=Math.hypot(dx,dy);const rot=((distance/9)+420)*(dx>=0?1:-1);const shell=document.createElement('div');shell.className='shell-shot '+(attackerColor==='w'?'green':'red');shell.style.left=startX+'px';shell.style.top=startY+'px';shell.style.setProperty('--dx',dx+'px');shell.style.setProperty('--dy',dy+'px');shell.style.setProperty('--rot',rot+'deg');const shellImg=document.createElement('img');shellImg.src=attackerColor==='w'?SHELL_GREEN_SRC:SHELL_RED_SRC;shellImg.alt=PROJECTILE_ALT;shell.appendChild(shellImg);document.body.appendChild(shell);const trailGlyphs=attackerColor==='w'?['✦','✧','᛭','✶']:['✦','✧','†','⛧'];for(let i=1;i<=12;i++){setTimeout(()=>{const t=i/12;const trail=document.createElement('div');trail.className='shell-trail '+(attackerColor==='w'?'white':'black');trail.style.left=(startX+dx*t)+'px';trail.style.top=(startY+dy*t)+'px';document.body.appendChild(trail);setTimeout(()=>trail.remove(),560);if(i%2===0){const rune=document.createElement('div');rune.className='shell-rune '+(attackerColor==='w'?'white':'black');rune.textContent=trailGlyphs[Math.floor(Math.random()*trailGlyphs.length)];rune.style.left=(startX+dx*t+(Math.random()*18-9))+'px';rune.style.top=(startY+dy*t+(Math.random()*18-9))+'px';document.body.appendChild(rune);setTimeout(()=>rune.remove(),680);}},i*34);}const boardShell=document.querySelector('.board-shell');shell.classList.add('launch');setTimeout(()=>{const targetEl=document.querySelector(`[data-sq="${targetSquare}"]`);if(targetEl){targetEl.classList.add('capture-hit');setTimeout(()=>targetEl.classList.remove('capture-hit'),560);}boardShell&&boardShell.classList.add('impact');setTimeout(()=>boardShell&&boardShell.classList.remove('impact'),420);spawnCaptureImpact(endX,endY,color,type,attackerColor);},470);setTimeout(()=>shell.remove(),760);}
+function currentCaptureThemeId(){
+  return document.documentElement.dataset.theme||activeTheme?.id||'dark-fantasy';
+}
+
+function playMarioCaptureRects(fromRect,toRect,color,type,attackerColor,targetSquare){
+  if(!fromRect||!toRect)return;
+  const startX=fromRect.left+fromRect.width/2;
+  const startY=fromRect.top+fromRect.height/2;
+  const endX=toRect.left+toRect.width/2;
+  const endY=toRect.top+toRect.height/2;
+  const dx=endX-startX;
+  const dy=endY-startY;
+  const distance=Math.hypot(dx,dy);
+  const rot=((distance/10)+360)*(dx>=0?1:-1);
+  const shell=document.createElement('div');
+  shell.className='shell-shot '+(attackerColor==='w'?'green':'red');
+  shell.style.left=startX+'px';
+  shell.style.top=startY+'px';
+  shell.style.setProperty('--dx',dx+'px');
+  shell.style.setProperty('--dy',dy+'px');
+  shell.style.setProperty('--rot',rot+'deg');
+  const shellImg=document.createElement('img');
+  shellImg.src=attackerColor==='w'?SHELL_GREEN_SRC:SHELL_RED_SRC;
+  shellImg.alt=PROJECTILE_ALT||'Carapace';
+  shell.appendChild(shellImg);
+  document.body.appendChild(shell);
+
+  for(let i=1;i<=6;i++){
+    setTimeout(()=>{
+      const t=i/6;
+      const trail=document.createElement('div');
+      trail.className='shell-trail';
+      trail.style.left=(startX+dx*t)+'px';
+      trail.style.top=(startY+dy*t)+'px';
+      document.body.appendChild(trail);
+      setTimeout(()=>trail.remove(),420);
+    },i*45);
+  }
+
+  const boardShell=document.querySelector('.board-shell');
+  shell.classList.add('launch');
+  setTimeout(()=>{
+    const targetEl=document.querySelector(`[data-sq="${targetSquare}"]`);
+    if(targetEl){
+      targetEl.classList.add('capture-hit');
+      setTimeout(()=>targetEl.classList.remove('capture-hit'),420);
+    }
+    boardShell&&boardShell.classList.add('impact');
+    setTimeout(()=>boardShell&&boardShell.classList.remove('impact'),420);
+    spawnCaptureImpact(endX,endY,color,type,attackerColor);
+  },430);
+  setTimeout(()=>shell.remove(),600);
+}
+
+function playDarkFantasyCaptureRects(fromRect,toRect,color,type,attackerColor,targetSquare){
+  if(!fromRect||!toRect)return;
+  const startX=fromRect.left+fromRect.width/2;
+  const startY=fromRect.top+fromRect.height/2;
+  const endX=toRect.left+toRect.width/2;
+  const endY=toRect.top+toRect.height/2;
+  const dx=endX-startX;
+  const dy=endY-startY;
+  const distance=Math.hypot(dx,dy);
+  const rot=((distance/9)+420)*(dx>=0?1:-1);
+  const shell=document.createElement('div');
+  shell.className='shell-shot '+(attackerColor==='w'?'green':'red');
+  shell.style.left=startX+'px';
+  shell.style.top=startY+'px';
+  shell.style.setProperty('--dx',dx+'px');
+  shell.style.setProperty('--dy',dy+'px');
+  shell.style.setProperty('--rot',rot+'deg');
+  const shellImg=document.createElement('img');
+  shellImg.src=attackerColor==='w'?SHELL_GREEN_SRC:SHELL_RED_SRC;
+  shellImg.alt=PROJECTILE_ALT;
+  shell.appendChild(shellImg);
+  document.body.appendChild(shell);
+
+  const trailGlyphs=attackerColor==='w'?['✦','✧','᛭','✶']:['✦','✧','†','⛧'];
+  for(let i=1;i<=12;i++){
+    setTimeout(()=>{
+      const t=i/12;
+      const trail=document.createElement('div');
+      trail.className='shell-trail '+(attackerColor==='w'?'white':'black');
+      trail.style.left=(startX+dx*t)+'px';
+      trail.style.top=(startY+dy*t)+'px';
+      document.body.appendChild(trail);
+      setTimeout(()=>trail.remove(),560);
+      if(i%2===0){
+        const rune=document.createElement('div');
+        rune.className='shell-rune '+(attackerColor==='w'?'white':'black');
+        rune.textContent=trailGlyphs[Math.floor(Math.random()*trailGlyphs.length)];
+        rune.style.left=(startX+dx*t+(Math.random()*18-9))+'px';
+        rune.style.top=(startY+dy*t+(Math.random()*18-9))+'px';
+        document.body.appendChild(rune);
+        setTimeout(()=>rune.remove(),680);
+      }
+    },i*34);
+  }
+
+  const boardShell=document.querySelector('.board-shell');
+  shell.classList.add('launch');
+  setTimeout(()=>{
+    const targetEl=document.querySelector(`[data-sq="${targetSquare}"]`);
+    if(targetEl){
+      targetEl.classList.add('capture-hit');
+      setTimeout(()=>targetEl.classList.remove('capture-hit'),560);
+    }
+    boardShell&&boardShell.classList.add('impact');
+    setTimeout(()=>boardShell&&boardShell.classList.remove('impact'),420);
+    spawnCaptureImpact(endX,endY,color,type,attackerColor);
+  },470);
+  setTimeout(()=>shell.remove(),760);
+}
+
+function playShellCaptureRects(fromRect,toRect,color,type,attackerColor,targetSquare){
+  if(currentCaptureThemeId()==='mario'){
+    playMarioCaptureRects(fromRect,toRect,color,type,attackerColor,targetSquare);
+    return;
+  }
+  playDarkFantasyCaptureRects(fromRect,toRect,color,type,attackerColor,targetSquare);
+}
 
 function playMove(from,to,source='local'){
   if(source==='local'&&gameMode==='correspondence'){
@@ -3137,7 +3296,193 @@ function playMove(from,to,source='local'){
   }
 }
 function playShellCapture(fromSquare,targetSquare,color,type,attackerColor){const fromEl=document.querySelector(`[data-sq="${fromSquare}"]`);const targetEl=document.querySelector(`[data-sq="${targetSquare}"]`);if(!fromEl||!targetEl)return;playShellCaptureRects(fromEl.getBoundingClientRect(),targetEl.getBoundingClientRect(),color,type,attackerColor,targetSquare);}
-function spawnCaptureImpact(x,y,color,type,attackerColor){const overlay=document.createElement('div');overlay.className='capture-overlay '+(attackerColor==='w'?'attacker-white':'attacker-black');overlay.style.left=x+'px';overlay.style.top=(y-8)+'px';const eclipse=document.createElement('div');eclipse.className='eclipse';overlay.appendChild(eclipse);for(let i=0;i<2;i++){const ring=document.createElement('div');ring.className='ringwave';ring.style.animationDelay=(i*0.08)+'s';overlay.appendChild(ring);}const flash=document.createElement('div');flash.className='flash';overlay.appendChild(flash);const slashA=document.createElement('div');slashA.className='slash slash-a';overlay.appendChild(slashA);const slashB=document.createElement('div');slashB.className='slash slash-b';overlay.appendChild(slashB);const victim=document.createElement('div');victim.className='victim';victim.appendChild(makePieceEl(color,type));overlay.appendChild(victim);const text=document.createElement('div');text.className='powtext';text.textContent=attackerColor==='w'?'PURIFIÉ' : 'ANÉANTI';overlay.appendChild(text);const embers=document.createElement('div');embers.className='embers';for(let i=0;i<18;i++){const e=document.createElement('div');e.className='ember';e.style.left=(92+Math.random()*56)+'px';e.style.top=(94+Math.random()*26)+'px';e.style.setProperty('--x',(-110+Math.random()*220)+'px');e.style.setProperty('--y',(-95+Math.random()*130)+'px');e.style.setProperty('--s',(0.7+Math.random()*1.4).toFixed(2));e.style.animationDelay=(Math.random()*0.12)+'s';embers.appendChild(e);}overlay.appendChild(embers);const ashes=document.createElement('div');ashes.className='ashes';for(let i=0;i<16;i++){const a=document.createElement('div');a.className='ash';a.style.left=(96+Math.random()*42)+'px';a.style.top=(104+Math.random()*18)+'px';a.style.setProperty('--x',(-90+Math.random()*180)+'px');a.style.setProperty('--y',(-70+Math.random()*100)+'px');a.style.setProperty('--s',(0.5+Math.random()*1.2).toFixed(2));a.style.animationDelay=(Math.random()*0.1)+'s';ashes.appendChild(a);}overlay.appendChild(ashes);const shards=document.createElement('div');shards.className='shards';for(let i=0;i<12;i++){const s=document.createElement('div');s.className='shard';s.style.left=(96+Math.random()*42)+'px';s.style.top=(98+Math.random()*24)+'px';s.style.setProperty('--x',(-118+Math.random()*236)+'px');s.style.setProperty('--y',(-90+Math.random()*140)+'px');s.style.setProperty('--r',(-220+Math.random()*440)+'deg');s.style.setProperty('--s',(0.65+Math.random()*1.1).toFixed(2));s.style.animationDelay=(Math.random()*0.09)+'s';shards.appendChild(s);}overlay.appendChild(shards);const runes=document.createElement('div');runes.className='runes';const runePool=attackerColor==='w'?['✦','✧','᛭','ᚱ','☽','†']:['⛧','†','☾','ᚦ','✶','✦'];for(let i=0;i<8;i++){const r=document.createElement('div');r.className='rune';r.textContent=runePool[Math.floor(Math.random()*runePool.length)];r.style.left=(88+Math.random()*54)+'px';r.style.top=(72+Math.random()*34)+'px';r.style.setProperty('--x',(-85+Math.random()*170)+'px');r.style.setProperty('--y',(-90+Math.random()*60)+'px');r.style.setProperty('--r',(-45+Math.random()*90)+'deg');r.style.animationDelay=(Math.random()*0.16)+'s';runes.appendChild(r);}overlay.appendChild(runes);document.body.appendChild(overlay);setTimeout(()=>overlay.remove(),1500);}
+function spawnMarioCaptureImpact(x,y,color,type,attackerColor){
+  const overlay=document.createElement('div');
+  overlay.className='capture-overlay';
+  overlay.style.left=x+'px';
+  overlay.style.top=(y-10)+'px';
+
+  const flash=document.createElement('div');
+  flash.className='flash';
+  overlay.appendChild(flash);
+
+  const ring=document.createElement('div');
+  ring.className='ringwave';
+  overlay.appendChild(ring);
+
+  const slash=document.createElement('div');
+  slash.className='slash';
+  overlay.appendChild(slash);
+
+  const victim=document.createElement('div');
+  victim.className='victim';
+  victim.appendChild(makePieceEl(color,type));
+  overlay.appendChild(victim);
+
+  const text=document.createElement('div');
+  text.className='powtext';
+  text.textContent=attackerColor==='w'?'SMASH!':'K.O.!';
+  overlay.appendChild(text);
+
+  const stars=document.createElement('div');
+  stars.className='stars';
+  for(let i=0;i<10;i++){
+    const star=document.createElement('div');
+    star.className='star';
+    star.textContent=i%3===0?'★':(i%2===0?'✦':'✸');
+    star.style.left=(62+Math.random()*56)+'px';
+    star.style.top=(48+Math.random()*40)+'px';
+    star.style.setProperty('--x',(-78+Math.random()*156)+'px');
+    star.style.setProperty('--y',(-66+Math.random()*84)+'px');
+    star.style.animationDelay=(Math.random()*0.12)+'s';
+    stars.appendChild(star);
+  }
+  overlay.appendChild(stars);
+
+  const smokes=document.createElement('div');
+  smokes.className='smokes';
+  for(let i=0;i<8;i++){
+    const smoke=document.createElement('div');
+    smoke.className='smoke';
+    smoke.style.left=(75+Math.random()*30)+'px';
+    smoke.style.top=(88+Math.random()*20)+'px';
+    smoke.style.setProperty('--sx',(-55+Math.random()*110)+'px');
+    smoke.style.setProperty('--sy',(-40-Math.random()*35)+'px');
+    smoke.style.animationDelay=(Math.random()*0.1)+'s';
+    smokes.appendChild(smoke);
+  }
+  overlay.appendChild(smokes);
+
+  const coins=document.createElement('div');
+  coins.className='coins';
+  for(let i=0;i<6;i++){
+    const coin=document.createElement('div');
+    coin.className='coinfx';
+    coin.style.left=(80+Math.random()*22)+'px';
+    coin.style.top=(86+Math.random()*14)+'px';
+    coin.style.setProperty('--cx',(-90+Math.random()*180)+'px');
+    coin.style.setProperty('--cy',(-45-Math.random()*60)+'px');
+    coin.style.animationDelay=(Math.random()*0.08)+'s';
+    coins.appendChild(coin);
+  }
+  overlay.appendChild(coins);
+
+  document.body.appendChild(overlay);
+  setTimeout(()=>overlay.remove(),1250);
+}
+
+function spawnDarkFantasyCaptureImpact(x,y,color,type,attackerColor){
+  const overlay=document.createElement('div');
+  overlay.className='capture-overlay '+(attackerColor==='w'?'attacker-white':'attacker-black');
+  overlay.style.left=x+'px';
+  overlay.style.top=(y-8)+'px';
+
+  const eclipse=document.createElement('div');
+  eclipse.className='eclipse';
+  overlay.appendChild(eclipse);
+
+  for(let i=0;i<2;i++){
+    const ring=document.createElement('div');
+    ring.className='ringwave';
+    ring.style.animationDelay=(i*0.08)+'s';
+    overlay.appendChild(ring);
+  }
+
+  const flash=document.createElement('div');
+  flash.className='flash';
+  overlay.appendChild(flash);
+
+  const slashA=document.createElement('div');
+  slashA.className='slash slash-a';
+  overlay.appendChild(slashA);
+  const slashB=document.createElement('div');
+  slashB.className='slash slash-b';
+  overlay.appendChild(slashB);
+
+  const victim=document.createElement('div');
+  victim.className='victim';
+  victim.appendChild(makePieceEl(color,type));
+  overlay.appendChild(victim);
+
+  const text=document.createElement('div');
+  text.className='powtext';
+  text.textContent=attackerColor==='w'?'PURIFIÉ':'ANÉANTI';
+  overlay.appendChild(text);
+
+  const embers=document.createElement('div');
+  embers.className='embers';
+  for(let i=0;i<18;i++){
+    const ember=document.createElement('div');
+    ember.className='ember';
+    ember.style.left=(92+Math.random()*56)+'px';
+    ember.style.top=(94+Math.random()*26)+'px';
+    ember.style.setProperty('--x',(-110+Math.random()*220)+'px');
+    ember.style.setProperty('--y',(-95+Math.random()*130)+'px');
+    ember.style.setProperty('--s',(0.7+Math.random()*1.4).toFixed(2));
+    ember.style.animationDelay=(Math.random()*0.12)+'s';
+    embers.appendChild(ember);
+  }
+  overlay.appendChild(embers);
+
+  const ashes=document.createElement('div');
+  ashes.className='ashes';
+  for(let i=0;i<16;i++){
+    const ash=document.createElement('div');
+    ash.className='ash';
+    ash.style.left=(96+Math.random()*42)+'px';
+    ash.style.top=(104+Math.random()*18)+'px';
+    ash.style.setProperty('--x',(-90+Math.random()*180)+'px');
+    ash.style.setProperty('--y',(-70+Math.random()*100)+'px');
+    ash.style.setProperty('--s',(0.5+Math.random()*1.2).toFixed(2));
+    ash.style.animationDelay=(Math.random()*0.1)+'s';
+    ashes.appendChild(ash);
+  }
+  overlay.appendChild(ashes);
+
+  const shards=document.createElement('div');
+  shards.className='shards';
+  for(let i=0;i<12;i++){
+    const shard=document.createElement('div');
+    shard.className='shard';
+    shard.style.left=(96+Math.random()*42)+'px';
+    shard.style.top=(98+Math.random()*24)+'px';
+    shard.style.setProperty('--x',(-118+Math.random()*236)+'px');
+    shard.style.setProperty('--y',(-90+Math.random()*140)+'px');
+    shard.style.setProperty('--r',(-220+Math.random()*440)+'deg');
+    shard.style.setProperty('--s',(0.65+Math.random()*1.1).toFixed(2));
+    shard.style.animationDelay=(Math.random()*0.09)+'s';
+    shards.appendChild(shard);
+  }
+  overlay.appendChild(shards);
+
+  const runes=document.createElement('div');
+  runes.className='runes';
+  const runePool=attackerColor==='w'?['✦','✧','᛭','ᚱ','☽','†']:['⛧','†','☾','ᚦ','✶','✦'];
+  for(let i=0;i<8;i++){
+    const rune=document.createElement('div');
+    rune.className='rune';
+    rune.textContent=runePool[Math.floor(Math.random()*runePool.length)];
+    rune.style.left=(88+Math.random()*54)+'px';
+    rune.style.top=(72+Math.random()*34)+'px';
+    rune.style.setProperty('--x',(-85+Math.random()*170)+'px');
+    rune.style.setProperty('--y',(-90+Math.random()*60)+'px');
+    rune.style.setProperty('--r',(-45+Math.random()*90)+'deg');
+    rune.style.animationDelay=(Math.random()*0.16)+'s';
+    runes.appendChild(rune);
+  }
+  overlay.appendChild(runes);
+
+  document.body.appendChild(overlay);
+  setTimeout(()=>overlay.remove(),1500);
+}
+
+function spawnCaptureImpact(x,y,color,type,attackerColor){
+  if(currentCaptureThemeId()==='mario'){
+    spawnMarioCaptureImpact(x,y,color,type,attackerColor);
+    return;
+  }
+  spawnDarkFantasyCaptureImpact(x,y,color,type,attackerColor);
+}
 function resetGame(){
   hideMateOverlay();
   hideCampOverlay();

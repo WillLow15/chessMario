@@ -1,6 +1,7 @@
 import React from 'react';
+import { themeChoices } from '../themes/index.js';
 
-export function Overlays() {
+export function Overlays({ themeId, onThemeChange }) {
   return (
     <>
     <div className={"game-action-overlay"} id={"gameActionOverlay"} aria-hidden={"true"}>
@@ -155,7 +156,35 @@ export function Overlays() {
         <div className={"app-sheet-handle"} aria-hidden={"true"}></div>
         <button className={"app-sheet-close"} id={"playMenuCloseBtn"} type={"button"} aria-label={"Fermer"}>×</button>
         <div className={"app-sheet-title"} id={"playMenuTitle"}>Nouvelle partie</div>
-        <div className={"app-sheet-sub"}>Choisis la cadence, puis le mode de jeu.</div>
+        <div className={"app-sheet-sub"}>Choisis ton univers, puis la cadence et le mode de jeu.</div>
+        <section className={"theme-picker"} aria-label={"Thème du jeu"}>
+          <div className={"theme-picker-head"}>
+            <strong>Univers de jeu</strong>
+            <span>Le choix est sauvegardé sur cet appareil.</span>
+          </div>
+          <div className={"theme-picker-grid"} role={"radiogroup"} aria-label={"Choisir l’univers"}>
+            {themeChoices.map(choice=>(
+              <button
+                key={choice.id}
+                className={"theme-picker-btn"+(themeId===choice.id?' active':'')}
+                data-theme-choice={choice.id}
+                type={"button"}
+                role={"radio"}
+                aria-checked={themeId===choice.id}
+                onClick={()=>onThemeChange?.(choice.id)}
+              >
+                <span className={"theme-picker-preview"} aria-hidden={"true"}>
+                  <img src={choice.preview} alt={""} />
+                </span>
+                <span className={"theme-picker-copy"}>
+                  <strong>{choice.label}</strong>
+                  <small>{choice.description}</small>
+                </span>
+                <span className={"theme-picker-check"} aria-hidden={"true"}>✓</span>
+              </button>
+            ))}
+          </div>
+        </section>
         <div className={"time-control-grid"}>
           <button className={"time-control-btn"} data-time-control={"bullet1"} type={"button"}>
             <strong>1 min</strong>
