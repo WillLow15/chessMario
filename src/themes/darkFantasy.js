@@ -1,8 +1,8 @@
 export const darkFantasyTheme = Object.freeze({
   id: 'dark-fantasy',
   label: 'Dark Fantasy · Ashen Crown',
-  documentTitle: 'Échecs des Ténèbres · Ashen Crown',
-  shareTitle: 'Échecs des Ténèbres · Ashen Crown',
+  documentTitle: 'Chess Worlds',
+  shareTitle: 'Chess Worlds',
   aiNames: [
     'Oracle des Cendres',
     'Le Veilleur Noir',
@@ -18,12 +18,11 @@ export const darkFantasyTheme = Object.freeze({
     'Archiviste Maudit'
   ],
   ui: {
-    loaderTitle: 'ÉCHECS DES TÉNÈBRES',
+    loaderTitle: 'CHESS WORLDS',
     loaderIcon: '/assets/dark-fantasy/dark-emblem.svg',
     titleParts: [
-      { text: 'Échecs', className: 'dark-title-main' },
-      { text: 'des', className: 'dark-title-mid' },
-      { text: 'Ténèbres', className: 'dark-title-main' }
+      { text: 'Chess', className: 'dark-title-main' },
+      { text: 'Worlds', className: 'dark-title-main' }
     ],
     whiteAvatar: '/assets/dark-fantasy/pieces/white-king.webp',
     blackAvatar: '/assets/dark-fantasy/pieces/black-king.webp',

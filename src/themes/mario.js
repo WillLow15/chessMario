@@ -1,7 +1,15 @@
 export const marioTheme = Object.freeze({
   id: 'mario',
   label: 'Mario Bros',
-  shareTitle: 'Mario Bros Chess',
+  documentTitle: 'Chess Worlds',
+  shareTitle: 'Chess Worlds',
+  ui: {
+    loaderTitle: 'CHESS WORLDS',
+    titleParts: [
+      { text: 'Chess', className: 'red' },
+      { text: 'Worlds', className: 'green' }
+    ]
+  },
   aiNames: [
     'BowserBot','ToadGPT','Koopa Kasparov','Yoshi Calculateur','Goomba Genius','Kamek 3000',
     'Wario Stockfish','Boo DeepThink','Peach Engine','Donkey Kong.exe','Luigi Logic','Bob-omb Brain'

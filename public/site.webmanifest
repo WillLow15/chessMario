@@ -1,6 +1,6 @@
 {
-  "name": "Échecs des Ténèbres",
-  "short_name": "Échecs Ténèbres",
+  "name": "Chess Worlds",
+  "short_name": "Chess Worlds",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#08090a",
