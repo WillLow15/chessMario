@@ -93,11 +93,11 @@ async function finishLoader(){
 setLoaderProgress(3,'Préparation du jeu…');
 
 const $=(id)=>document.getElementById(id);
-const PIECE_SKINS=activeTheme.pieces;
-const SHELL_GREEN_SRC=activeTheme.effects.shellGreen;
-const SHELL_RED_SRC=activeTheme.effects.shellRed;
-const MATE_CHARACTER_SRC=activeTheme.effects.resultCharacter;
-const PROJECTILE_ALT=activeTheme.effects.projectileAlt||'Projectile';
+let PIECE_SKINS=activeTheme.pieces;
+let SHELL_GREEN_SRC=activeTheme.effects.shellGreen;
+let SHELL_RED_SRC=activeTheme.effects.shellRed;
+let MATE_CHARACTER_SRC=activeTheme.effects.resultCharacter;
+let PROJECTILE_ALT=activeTheme.effects.projectileAlt||'Projectile';
 const PIECE_VALUE={p:1,n:3,b:3,r:5,q:9,k:0};
 function pieceData(color,type){return PIECE_SKINS[color][type];}
 function winnerColorFromLabel(winner){
@@ -572,7 +572,7 @@ function eloRankName(value){
 let playerElo=loadPlayerElo();
 let opponentElo=null;
 
-const AI_FUNNY_NAMES=Array.isArray(activeTheme.aiNames)&&activeTheme.aiNames.length
+let AI_FUNNY_NAMES=Array.isArray(activeTheme.aiNames)&&activeTheme.aiNames.length
   ? activeTheme.aiNames
   : ['Chess Engine'];
 let aiDisplayName='';
@@ -585,6 +585,42 @@ function randomAIName(){
 function ensureAIName(){
   if(!aiDisplayName)aiDisplayName=randomAIName();
   return aiDisplayName;
+}
+
+
+export function applyGameTheme(theme=activeTheme){
+  if(!theme||!theme.pieces)return false;
+
+  PIECE_SKINS=theme.pieces;
+  SHELL_GREEN_SRC=theme.effects?.shellGreen||SHELL_GREEN_SRC;
+  SHELL_RED_SRC=theme.effects?.shellRed||SHELL_RED_SRC;
+  MATE_CHARACTER_SRC=theme.effects?.resultCharacter||MATE_CHARACTER_SRC;
+  PROJECTILE_ALT=theme.effects?.projectileAlt||'Projectile';
+  AI_FUNNY_NAMES=Array.isArray(theme.aiNames)&&theme.aiNames.length
+    ? theme.aiNames
+    : ['Chess Engine'];
+
+  if(gameMode==='ai')aiDisplayName='';
+
+  const mateImg=$('mateCharacter');
+  if(mateImg){
+    const winnerColor=mateImg.dataset.winnerColor;
+    if(winnerColor&&PIECE_SKINS[winnerColor]?.k){
+      const king=PIECE_SKINS[winnerColor].k;
+      mateImg.src=king.src;
+      mateImg.alt=`${king.name} — vainqueur`;
+    }else{
+      mateImg.src=MATE_CHARACTER_SRC;
+      mateImg.alt='Résultat de la partie';
+    }
+  }
+
+  if(chess){
+    renderAll();
+    void preloadGameImages();
+  }
+
+  return true;
 }
 
 function renderTeamNames(){

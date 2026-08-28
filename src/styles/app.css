@@ -10468,3 +10468,222 @@ html[data-theme="dark-fantasy"]
     border-width: 1px !important;
   }
 }
+
+/* =========================================================
+   THEME SELECTOR — MARIO / DARK FANTASY
+   Couche visuelle uniquement. Aucun impact sur le moteur.
+   ========================================================= */
+
+.theme-picker{
+  margin:0 0 15px;
+  padding:12px;
+  border:2px solid rgba(96,51,26,.20);
+  border-radius:16px;
+  background:rgba(255,255,255,.28);
+}
+.theme-picker-head{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:10px;
+  margin:0 1px 9px;
+}
+.theme-picker-head strong{
+  color:#60331a;
+  font-size:.72rem;
+  font-weight:1000;
+  letter-spacing:.055em;
+  text-transform:uppercase;
+}
+.theme-picker-head span{
+  color:#8a674a;
+  font-size:.55rem;
+  font-weight:800;
+  text-align:right;
+}
+.theme-picker-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+}
+.theme-picker-btn{
+  position:relative;
+  min-width:0;
+  min-height:68px;
+  padding:8px 31px 8px 8px;
+  display:grid;
+  grid-template-columns:48px minmax(0,1fr);
+  align-items:center;
+  gap:9px;
+  text-align:left;
+  border:2px solid rgba(104,57,28,.30);
+  border-radius:13px;
+  color:#5d3119;
+  background:linear-gradient(180deg,rgba(255,255,255,.82),rgba(255,241,201,.70));
+  box-shadow:0 3px 0 rgba(93,48,19,.08);
+  transition:transform .12s ease,border-color .12s ease,box-shadow .12s ease,background .12s ease;
+}
+.theme-picker-preview{
+  width:48px;
+  height:48px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border-radius:11px;
+  background:rgba(255,255,255,.44);
+}
+.theme-picker-preview img{
+  display:block;
+  width:92%;
+  height:92%;
+  object-fit:contain;
+  pointer-events:none;
+}
+.theme-picker-copy{
+  min-width:0;
+  display:block;
+}
+.theme-picker-copy strong,
+.theme-picker-copy small{
+  display:block;
+}
+.theme-picker-copy strong{
+  font-size:.72rem;
+  font-weight:1000;
+  line-height:1.12;
+}
+.theme-picker-copy small{
+  margin-top:4px;
+  color:#866143;
+  font-size:.52rem;
+  font-weight:800;
+  line-height:1.18;
+}
+.theme-picker-check{
+  position:absolute;
+  top:8px;
+  right:8px;
+  width:18px;
+  height:18px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  color:transparent;
+  background:rgba(76,43,21,.08);
+  font-size:.66rem;
+  font-weight:1000;
+}
+.theme-picker-btn.active{
+  border-color:#cb7f24;
+  background:linear-gradient(180deg,#fff8d8,#ffe49a);
+  box-shadow:0 3px 0 rgba(128,72,18,.14),0 0 0 2px rgba(255,196,71,.13);
+}
+.theme-picker-btn.active .theme-picker-check{
+  color:#fff9e7;
+  background:#d94a31;
+}
+
+@media (hover:hover) and (pointer:fine){
+  .theme-picker-btn:hover{
+    transform:translateY(-1px);
+    border-color:#b76d26;
+  }
+}
+
+/* Dark Fantasy ------------------------------------------------------- */
+html[data-theme="dark-fantasy"] .react-app-root[data-theme="dark-fantasy"] .theme-picker{
+  border:1px solid #44352b !important;
+  border-radius:11px !important;
+  background:linear-gradient(180deg,rgba(18,17,18,.76),rgba(8,9,10,.84)) !important;
+  box-shadow:inset 0 1px 0 rgba(237,212,174,.025) !important;
+}
+html[data-theme="dark-fantasy"] .react-app-root[data-theme="dark-fantasy"] .theme-picker-head strong{
+  color:#d4c5ad !important;
+  font-family:Georgia,"Times New Roman",serif !important;
+  letter-spacing:.08em !important;
+}
+html[data-theme="dark-fantasy"] .react-app-root[data-theme="dark-fantasy"] .theme-picker-head span{
+  color:#897966 !important;
+}
+html[data-theme="dark-fantasy"] .react-app-root[data-theme="dark-fantasy"] .theme-picker-btn{
+  border:1px solid #4b3b30 !important;
+  border-radius:8px !important;
+  color:#d6cab7 !important;
+  background:linear-gradient(180deg,#1d1b1d,#0e0e10) !important;
+  box-shadow:inset 0 1px 0 rgba(255,235,200,.025),0 3px 9px rgba(0,0,0,.20) !important;
+}
+html[data-theme="dark-fantasy"] .react-app-root[data-theme="dark-fantasy"] .theme-picker-preview{
+  border:1px solid #49362c !important;
+  border-radius:7px !important;
+  background:radial-gradient(circle at 50% 35%,rgba(128,39,34,.13),transparent 58%),#0b0b0c !important;
+}
+html[data-theme="dark-fantasy"] .react-app-root[data-theme="dark-fantasy"] .theme-picker-copy strong{
+  color:#ded2bf !important;
+  font-family:Georgia,"Times New Roman",serif !important;
+  font-weight:700 !important;
+}
+html[data-theme="dark-fantasy"] .react-app-root[data-theme="dark-fantasy"] .theme-picker-copy small{
+  color:#8f8170 !important;
+}
+html[data-theme="dark-fantasy"] .react-app-root[data-theme="dark-fantasy"] .theme-picker-check{
+  color:transparent !important;
+  border:1px solid #423329 !important;
+  background:#111012 !important;
+}
+html[data-theme="dark-fantasy"] .react-app-root[data-theme="dark-fantasy"] .theme-picker-btn.active{
+  border-color:#8b6544 !important;
+  background:
+    radial-gradient(circle at 50% 0,rgba(148,51,39,.12),transparent 62%),
+    linear-gradient(180deg,#292123,#121113) !important;
+  box-shadow:inset 0 1px 0 rgba(255,230,190,.05),0 0 0 1px rgba(154,106,67,.08),0 4px 12px rgba(0,0,0,.28) !important;
+}
+html[data-theme="dark-fantasy"] .react-app-root[data-theme="dark-fantasy"] .theme-picker-btn.active .theme-picker-check{
+  color:#eadcc7 !important;
+  border-color:#874338 !important;
+  background:linear-gradient(180deg,#722a25,#411416) !important;
+}
+@media (hover:hover) and (pointer:fine){
+  html[data-theme="dark-fantasy"] .react-app-root[data-theme="dark-fantasy"] .theme-picker-btn:hover{
+    border-color:#7a5940 !important;
+    background:linear-gradient(180deg,#242022,#111012) !important;
+  }
+  html[data-theme="dark-fantasy"] .react-app-root[data-theme="dark-fantasy"] .theme-picker-btn.active:hover{
+    border-color:#9b704b !important;
+    background:radial-gradient(circle at 50% 0,rgba(157,53,41,.15),transparent 62%),linear-gradient(180deg,#302527,#151214) !important;
+  }
+}
+
+@media (max-width:430px){
+  .theme-picker{
+    padding:9px;
+    margin-bottom:11px;
+  }
+  .theme-picker-head{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:2px;
+    margin-bottom:7px;
+  }
+  .theme-picker-head span{text-align:left;}
+  .theme-picker-grid{gap:6px;}
+  .theme-picker-btn{
+    min-height:58px;
+    grid-template-columns:38px minmax(0,1fr);
+    gap:6px;
+    padding:6px 24px 6px 6px;
+  }
+  .theme-picker-preview{
+    width:38px;
+    height:38px;
+    border-radius:8px;
+  }
+  .theme-picker-copy strong{font-size:.61rem;}
+  .theme-picker-copy small{font-size:.46rem;}
+  .theme-picker-check{
+    top:6px;
+    right:5px;
+    width:15px;
+    height:15px;
+    font-size:.55rem;
+  }
+}
