@@ -9470,3 +9470,75 @@ html[data-theme="dark-fantasy"]
     font-size: 1.15rem !important;
   }
 }
+
+/* =========================================================
+   DARK FANTASY — SUPPRIME LE FILET FIN AUTOUR DE LA CARTE JOUEUR
+   ========================================================= */
+html[data-theme="dark-fantasy"] .react-app-root[data-theme="dark-fantasy"] .player-card,
+.react-app-root[data-theme="dark-fantasy"] .player-card {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: linear-gradient(135deg, rgba(231,219,193,.02), rgba(0,0,0,.10)) !important;
+}
+
+/* =========================================================
+   DARK FANTASY — BOUTON QUITTER PARFAITEMENT ROND
+   Victoire, défaite, temps écoulé ET partie nulle
+   ========================================================= */
+html[data-theme="dark-fantasy"] .mate-close,
+html[data-theme="dark-fantasy"] .react-app-root[data-theme="dark-fantasy"] .mate-close,
+.react-app-root[data-theme="dark-fantasy"] .mate-close {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+
+  width: 64px !important;
+  height: 64px !important;
+  min-width: 64px !important;
+  min-height: 64px !important;
+  max-width: 64px !important;
+  max-height: 64px !important;
+
+  aspect-ratio: 1 / 1 !important;
+  flex: 0 0 64px !important;
+
+  padding: 0 !important;
+  margin: 0 !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+
+  border: 1px solid #6b4c31 !important;
+  border-radius: 50% !important;
+
+  color: #ded1bd !important;
+  background: linear-gradient(180deg,#1d1c1e 0%,#101012 100%) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.04),
+    0 6px 18px rgba(0,0,0,.28) !important;
+
+  font-size: 1.35rem !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  text-indent: 0 !important;
+}
+
+@media (max-width: 640px) {
+  html[data-theme="dark-fantasy"] .mate-close,
+  html[data-theme="dark-fantasy"] .react-app-root[data-theme="dark-fantasy"] .mate-close,
+  .react-app-root[data-theme="dark-fantasy"] .mate-close {
+    width: 52px !important;
+    height: 52px !important;
+    min-width: 52px !important;
+    min-height: 52px !important;
+    max-width: 52px !important;
+    max-height: 52px !important;
+    flex-basis: 52px !important;
+  }
+}
