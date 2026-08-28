@@ -1,0 +1,20 @@
+{
+  "name": "Échecs des Ténèbres",
+  "short_name": "Échecs Ténèbres",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#08090a",
+  "theme_color": "#0b0b0d",
+  "icons": [
+    {
+      "src": "/assets/dark-fantasy/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/dark-fantasy/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

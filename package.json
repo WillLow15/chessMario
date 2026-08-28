@@ -1,14 +1,27 @@
 {
-  "name": "mario-chess-netlify-supabase",
+  "name": "dark-fantasy-chess-react",
   "private": true,
-  "version": "77.0.0",
+  "version": "2.1.0",
   "type": "module",
   "engines": {
     "node": ">=22.13.0"
   },
+  "scripts": {
+    "dev": "node scripts/prepare-fonts.mjs && vite",
+    "build": "node scripts/prepare-fonts.mjs && vite build",
+    "preview": "vite preview",
+    "push:patch": "node scripts/release-patch.mjs"
+  },
   "dependencies": {
     "@fontsource/nunito": "5.3.0",
     "@fontsource/outfit": "5.3.0",
-    "chess.js": "1.4.0"
+    "chess.js": "1.4.0",
+    "peerjs": "1.5.5",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "chess.js-legacy": "npm:chess.js@0.10.3"
+  },
+  "devDependencies": {
+    "vite": "6.4.3"
   }
 }

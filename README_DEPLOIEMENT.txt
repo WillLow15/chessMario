@@ -249,3 +249,13 @@ V77 - ACTIONS DE PARTIE DANS LA BARRE STICKY
 - Les règles ELO / accord de nulle existantes restent inchangées.
 - Conservation du layout <=1260px et des barres de vie centrées.
 - Aucun changement Supabase nécessaire.
+
+
+REACT V2
+========
+- Le dossier de publication Netlify est maintenant dist/ et non public/.
+- La commande de build est npm run build.
+- Netlify installe React/Vite/chess.js/PeerJS via package.json.
+- Les variables Supabase restent identiques.
+- Pour un Branch Deploy, vérifier que SUPABASE_URL et SUPABASE_SECRET_KEY sont disponibles dans ce contexte Netlify.
+- Aucune nouvelle migration SQL n'est requise uniquement pour React.
