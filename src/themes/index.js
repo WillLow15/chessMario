@@ -27,10 +27,18 @@ export function getTheme(id='dark-fantasy'){
   return themes[id]||darkFantasyTheme;
 }
 
-export function resolveThemeId(){
+export function getThemeUrlOverride(){
   try{
     const fromUrl=new URLSearchParams(window.location.search).get('theme');
-    if(fromUrl&&themes[fromUrl])return fromUrl;
+    return fromUrl&&themes[fromUrl]?fromUrl:null;
+  }catch{}
+  return null;
+}
+
+export function resolveThemeId(){
+  try{
+    const fromUrl=getThemeUrlOverride();
+    if(fromUrl)return fromUrl;
 
     const stored=localStorage.getItem(THEME_STORAGE_KEY);
     if(stored&&themes[stored])return stored;

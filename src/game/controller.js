@@ -2499,6 +2499,9 @@ async function joinRemoteRoom(){
 function remoteShareUrl(code){
   const url=new URL(window.location.href);
   url.searchParams.set('room',code);
+  // The visual theme is local to each player. Never force the host's
+  // temporary ?theme= override on the opponent through a room link.
+  url.searchParams.delete('theme');
   url.hash='';
   return url.toString();
 }

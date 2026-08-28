@@ -10687,3 +10687,102 @@ html[data-theme="dark-fantasy"] .react-app-root[data-theme="dark-fantasy"] .them
     font-size:.55rem;
   }
 }
+
+/* =========================================================
+   MARIO — BOTTOM NAV ACTIVE / ACCÈS AU SÉLECTEUR DE THÈME
+   En partie : Jouer | Nulle | Abandonner | Profil.
+   Correction de layout uniquement : aucun comportement de jeu modifié.
+   ========================================================= */
+
+html[data-theme="mario"]
+.react-app-root[data-theme="mario"]
+.bottom-app-nav.game-active {
+  width: min(980px, calc(100vw - 24px)) !important;
+  max-width: 980px !important;
+
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  align-items: stretch !important;
+  gap: 6px !important;
+}
+
+/* L'ancienne règle Mario masquait Jouer pendant une partie.
+   On le garde visible afin que le menu Nouvelle partie / thème
+   reste accessible à tout moment. */
+html[data-theme="mario"]
+.react-app-root[data-theme="mario"]
+.bottom-app-nav.game-active > #bottomPlayBtn {
+  display: flex !important;
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+/* Les deux actions deviennent deux cases directes de la grille. */
+html[data-theme="mario"]
+.react-app-root[data-theme="mario"]
+.bottom-app-nav.game-active > .game-actions {
+  position: static !important;
+  display: contents !important;
+  width: auto !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html[data-theme="mario"]
+.react-app-root[data-theme="mario"]
+.bottom-app-nav.game-active .game-action-btn.draw {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+}
+
+html[data-theme="mario"]
+.react-app-root[data-theme="mario"]
+.bottom-app-nav.game-active .game-action-btn.resign {
+  grid-column: 3 !important;
+  grid-row: 1 !important;
+}
+
+html[data-theme="mario"]
+.react-app-root[data-theme="mario"]
+.bottom-app-nav.game-active > #bottomProfileBtn {
+  grid-column: 4 !important;
+  grid-row: 1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+/* Le message d'action ne doit pas prendre une cinquième colonne. */
+html[data-theme="mario"]
+.react-app-root[data-theme="mario"]
+.bottom-app-nav.game-active .game-action-status {
+  position: absolute !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: calc(100% + 8px) !important;
+  transform: translateX(-50%) !important;
+  width: max-content !important;
+  max-width: calc(100vw - 24px) !important;
+}
+
+/* Mobile : les 4 commandes restent sur une seule ligne. */
+@media (max-width: 760px) {
+  html[data-theme="mario"]
+  .react-app-root[data-theme="mario"]
+  .bottom-app-nav.game-active {
+    width: calc(100% - 10px) !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 4px !important;
+  }
+}
+
+@media (max-width: 470px) {
+  html[data-theme="mario"]
+  .react-app-root[data-theme="mario"]
+  .bottom-app-nav.game-active {
+    width: calc(100% - 6px) !important;
+    gap: 3px !important;
+  }
+}
