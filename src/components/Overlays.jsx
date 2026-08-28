@@ -81,7 +81,7 @@ export function Overlays({ themeId, onThemeChange }) {
     </div>
       </div>
     </div>
-    <div className={"mode-overlay show"} id={"modeOverlay"} aria-hidden={"false"}>
+    <div className={"mode-overlay"} id={"modeOverlay"} aria-hidden={"true"}>
       <div className={"mode-card"}>
         <div className={"mode-panel"} id={"modeMainPanel"}>
           <div className={"mode-title"}>Mode de jeu</div>
@@ -156,11 +156,11 @@ export function Overlays({ themeId, onThemeChange }) {
         <div className={"app-sheet-handle"} aria-hidden={"true"}></div>
         <button className={"app-sheet-close"} id={"playMenuCloseBtn"} type={"button"} aria-label={"Fermer"}>×</button>
         <div className={"app-sheet-title"} id={"playMenuTitle"}>Nouvelle partie</div>
-        <div className={"app-sheet-sub"}>Choisis ton univers, puis la cadence et le mode de jeu.</div>
+        <div className={"app-sheet-sub"}>Choisis le thème de ta prochaine partie, puis la cadence et le mode de jeu.</div>
         <section className={"theme-picker"} aria-label={"Thème du jeu"}>
           <div className={"theme-picker-head"}>
             <strong>Univers de jeu</strong>
-            <span>Le choix est sauvegardé sur cet appareil.</span>
+            <span>Le thème sera appliqué au lancement de la partie.</span>
           </div>
           <div className={"theme-picker-grid"} role={"radiogroup"} aria-label={"Choisir l’univers"}>
             {themeChoices.map(choice=>(

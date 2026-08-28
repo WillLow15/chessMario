@@ -1449,9 +1449,16 @@ async function submitCorrespondenceMove(from,to){
   }
 }
 
+function notifyThemePickerOpen(){
+  try{window.dispatchEvent(new CustomEvent('chess:theme-picker-open'));}catch(e){}
+}
+function commitPendingThemeChoice(){
+  try{window.dispatchEvent(new CustomEvent('chess:commit-pending-theme'));}catch(e){}
+}
 function openPlayMenu(){
   const overlay=$('playMenuOverlay');
   if(!overlay)return;
+  notifyThemePickerOpen();
   renderTimeControlUI();
   overlay.classList.add('show');
   overlay.setAttribute('aria-hidden','false');
@@ -1464,6 +1471,11 @@ function closePlayMenu(){
 }
 function selectTimeControl(key){
   destroyCorrespondenceSession();
+
+  // Le thème choisi dans "Jouer" ne devient actif qu'ici,
+  // juste avant de démarrer le nouveau flux de partie.
+  commitPendingThemeChoice();
+
   configureTimeControl(key);
   closePlayMenu();
   resetGame();
@@ -1681,7 +1693,7 @@ function setRemoteStatus(msg,kind=''){
   el.textContent=msg;
   el.className='remote-status'+(kind?' '+kind:'');
 }
-function prepareModeChoice(){
+function prepareModeChoice({showOverlay=true}={}){
   stopClock();
   hideCampOverlay();
   hideMateOverlay();
@@ -1704,7 +1716,9 @@ function prepareModeChoice(){
   clockRunning=false;
   renderClocks();
   renderElo();
-  showModeOverlay('main');
+
+  if(showOverlay)showModeOverlay('main');
+  else hideModeOverlay();
 }
 function startLocalMode(){
   gameMode='local';
@@ -3513,11 +3527,11 @@ async function boot(){
 
     setLoaderProgress(79,'Préparation de l’échiquier…');
 
-    $('newGameBtn').addEventListener('click',resetGame);
+    $('newGameBtn').addEventListener('click',openPlayMenu);
     const mateClose=$('mateCloseBtn');
     if(mateClose)mateClose.addEventListener('click',hideMateOverlay);
     const mateReplay=$('mateReplayBtn');
-    if(mateReplay)mateReplay.addEventListener('click',resetGame);
+    if(mateReplay)mateReplay.addEventListener('click',()=>{hideMateOverlay();openPlayMenu();});
     $('flipBtn').addEventListener('click',()=>{flipped=!flipped;renderBoard();});
 
     $('offerDrawBtn').addEventListener('click',requestDraw);
@@ -3552,7 +3566,7 @@ async function boot(){
     document.querySelectorAll('[data-time-control]').forEach(btn=>{
       btn.addEventListener('click',()=>selectTimeControl(btn.dataset.timeControl));
     });
-    $('correspondenceTimeBtn').addEventListener('click',openCorrespondenceMenu);
+    $('correspondenceTimeBtn').addEventListener('click',()=>{commitPendingThemeChoice();openCorrespondenceMenu();});
     $('correspondenceCloseBtn').addEventListener('click',closeCorrespondenceMenu);
     $('correspondenceCreateBtn').addEventListener('click',createCorrespondenceGame);
     $('correspondenceJoinBtn').addEventListener('click',joinCorrespondenceGame);
@@ -3647,7 +3661,9 @@ async function boot(){
     });
     $('shareCodeBtn').addEventListener('click',shareRemoteCode);
 
-    prepareModeChoice();
+    // Au premier lancement, on initialise le jeu sans afficher
+    // directement le choix du mode. Le thème/cadence est la première étape.
+    prepareModeChoice({showOverlay:false});
     renderAll();
     renderElo();
     renderProfile();
@@ -3659,9 +3675,13 @@ async function boot(){
     if(!restoredRemote){
       const sharedCode=cleanCode(new URL(window.location.href).searchParams.get('room'));
       if(sharedCode.length===6){
+        // Un lien d'invitation conserve son accès direct au salon.
         showModeOverlay('remote');
         $('roomCodeInput').value=sharedCode;
         setRemoteStatus('Code '+sharedCode+' reçu. Appuie sur Rejoindre.','ok');
+      }else{
+        // Nouvelle partie normale : thème -> cadence -> mode -> camp.
+        openPlayMenu();
       }
     }
 

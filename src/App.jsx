@@ -9,8 +9,19 @@ import { getTheme, getThemeUrlOverride, resolveThemeId, setActiveTheme } from '.
 export default function App(){
   const initialUrlThemeRef=useRef(getThemeUrlOverride());
   const firstThemeApplyRef=useRef(true);
+
+  // themeId = thème réellement utilisé par la partie / l'interface.
+  // pendingThemeId = thème choisi dans "Jouer" pour la prochaine partie.
   const [themeId,setThemeId]=useState(()=>resolveThemeId());
+  const [pendingThemeId,setPendingThemeId]=useState(()=>resolveThemeId());
+  const pendingThemeIdRef=useRef(pendingThemeId);
+  const pendingThemeDirtyRef=useRef(false);
+
   const theme=useMemo(()=>getTheme(themeId),[themeId]);
+
+  useEffect(()=>{
+    pendingThemeIdRef.current=pendingThemeId;
+  },[pendingThemeId]);
 
   useEffect(()=>{
     const isInitialApply=firstThemeApplyRef.current;
@@ -29,17 +40,57 @@ export default function App(){
     void bootMarioChess();
   },[]);
 
+  useEffect(()=>{
+    const resetPendingTheme=()=>{
+      pendingThemeDirtyRef.current=false;
+      pendingThemeIdRef.current=themeId;
+      setPendingThemeId(themeId);
+    };
+
+    const commitPendingTheme=()=>{
+      const wanted=getTheme(pendingThemeIdRef.current).id;
+      const explicitChoice=pendingThemeDirtyRef.current;
+
+      // Le clic sur une cadence valide le thème de la prochaine partie.
+      // Un ?theme= de debug reste temporaire tant que le joueur
+      // n'a pas explicitement choisi un univers dans le sélecteur.
+      const nextTheme=setActiveTheme(wanted,{
+        persist:explicitChoice,
+        clearUrlOverride:explicitChoice
+      });
+
+      document.title=nextTheme.documentTitle || nextTheme.label || 'Chess';
+      document.documentElement.dataset.theme=nextTheme.id;
+      applyGameTheme(nextTheme);
+
+      pendingThemeDirtyRef.current=false;
+      pendingThemeIdRef.current=nextTheme.id;
+      setPendingThemeId(nextTheme.id);
+      setThemeId(nextTheme.id);
+    };
+
+    window.addEventListener('chess:theme-picker-open',resetPendingTheme);
+    window.addEventListener('chess:commit-pending-theme',commitPendingTheme);
+
+    return ()=>{
+      window.removeEventListener('chess:theme-picker-open',resetPendingTheme);
+      window.removeEventListener('chess:commit-pending-theme',commitPendingTheme);
+    };
+  },[themeId]);
+
   function handleThemeChange(nextThemeId){
-    // A real user choice always wins over a temporary URL override,
-    // even when the user clicks the theme that is already displayed.
-    const nextTheme=setActiveTheme(nextThemeId,{persist:true,clearUrlOverride:true});
-    if(nextTheme.id!==themeId)setThemeId(nextTheme.id);
+    // On prépare seulement la prochaine partie :
+    // aucune modification visuelle de la partie en cours ici.
+    const nextId=getTheme(nextThemeId).id;
+    pendingThemeDirtyRef.current=true;
+    pendingThemeIdRef.current=nextId;
+    setPendingThemeId(nextId);
   }
 
   return (
     <div className="react-app-root" data-theme={theme.id}>
       <GameShell theme={theme} />
-      <Overlays themeId={theme.id} onThemeChange={handleThemeChange} />
+      <Overlays themeId={pendingThemeId} onThemeChange={handleThemeChange} />
       <BottomNavigation />
       <EloToast />
     </div>
