@@ -10326,3 +10326,82 @@ html[data-theme="dark-fantasy"]
 
   opacity: .88 !important;
 }
+
+/* =========================================================
+   DARK FANTASY — ÉTAT DE LA PARTIE
+   Badge "Début de partie" / état courant intégré au thème.
+   ========================================================= */
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] #advantageText {
+  width: max-content !important;
+  max-width: calc(100% - 16px) !important;
+
+  margin-left: auto !important;
+  margin-right: auto !important;
+
+  padding: 5px 11px !important;
+
+  border: 1px solid #6a5139 !important;
+  border-radius: 7px !important;
+
+  color: #cfbea2 !important;
+
+  background:
+    radial-gradient(
+      circle at 50% 0,
+      rgba(161, 102, 59, .10),
+      transparent 60%
+    ),
+    linear-gradient(
+      180deg,
+      #211d1b 0%,
+      #111012 100%
+    ) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(239, 215, 180, .045),
+    0 3px 9px rgba(0, 0, 0, .22) !important;
+
+  font-family: "Outfit", "Nunito", sans-serif !important;
+  font-size: .67rem !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+
+  letter-spacing: .04em !important;
+
+  text-align: center !important;
+  text-shadow: 0 1px 0 rgba(0,0,0,.65) !important;
+
+  opacity: 1 !important;
+}
+
+
+/* État actif : très légère lueur bronze, sans effet arcade */
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] #advantageText:not(:empty) {
+  border-color: #76583e !important;
+
+  background:
+    radial-gradient(
+      circle at 50% 0,
+      rgba(170, 106, 61, .12),
+      transparent 62%
+    ),
+    linear-gradient(
+      180deg,
+      #251f1c 0%,
+      #121011 100%
+    ) !important;
+}
+
+
+/* Mobile */
+@media (max-width: 640px) {
+  html[data-theme="dark-fantasy"]
+  .react-app-root[data-theme="dark-fantasy"] #advantageText {
+    padding: 4px 9px !important;
+    font-size: .62rem !important;
+    border-radius: 6px !important;
+  }
+}
