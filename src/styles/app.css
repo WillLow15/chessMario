@@ -9376,3 +9376,97 @@ html[data-theme="dark-fantasy"]
     height: 50px !important;
   }
 }
+
+/* =========================================================
+   DARK FANTASY — BOUTON QUITTER / FERMER PARFAITEMENT ROND
+   Écran de victoire / temps écoulé / échec et mat
+   ========================================================= */
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .mate-close {
+  width: 66px !important;
+  height: 66px !important;
+  min-width: 66px !important;
+  min-height: 66px !important;
+  max-width: 66px !important;
+  max-height: 66px !important;
+
+  aspect-ratio: 1 / 1 !important;
+
+  padding: 0 !important;
+  margin: 0 !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  box-sizing: border-box !important;
+
+  border: 1px solid #6b4c31 !important;
+  border-radius: 50% !important;
+
+  color: #ded1bd !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #1d1c1e 0%,
+      #101012 100%
+    ) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.04),
+    0 6px 18px rgba(0,0,0,.28) !important;
+
+  font-size: 1.45rem !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+
+  flex: 0 0 66px !important;
+
+  transform: none !important;
+}
+
+/* Centre parfaitement le X */
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .mate-close::before,
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .mate-close::after {
+  box-sizing: border-box !important;
+}
+
+/* Hover sobre */
+@media (hover:hover) and (pointer:fine) {
+  html[data-theme="dark-fantasy"]
+  .react-app-root[data-theme="dark-fantasy"] .mate-close:hover {
+    border-color: #8a6240 !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        #272426 0%,
+        #151416 100%
+      ) !important;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.055),
+      0 7px 20px rgba(0,0,0,.34) !important;
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  html[data-theme="dark-fantasy"]
+  .react-app-root[data-theme="dark-fantasy"] .mate-close {
+    width: 52px !important;
+    height: 52px !important;
+    min-width: 52px !important;
+    min-height: 52px !important;
+    max-width: 52px !important;
+    max-height: 52px !important;
+
+    flex-basis: 52px !important;
+
+    font-size: 1.15rem !important;
+  }
+}
