@@ -8640,327 +8640,739 @@ html[data-theme="dark-fantasy"]
 }
 
 /* =========================================================
-   DARK FANTASY — CONFIRMATION D'ABANDON UNIQUEMENT
-   Ne modifie aucun autre dialogue ni élément du jeu.
+   DARK FANTASY — PANNEAUX PROFIL + NULLE
+   Référence visuelle : panneau "Abandonner la partie ?"
    ========================================================= */
 
+/* ---------------------------------------------------------
+   BASE COMMUNE DES OVERLAYS
+   --------------------------------------------------------- */
+
 html[data-theme="dark-fantasy"]
-.react-app-root[data-theme="dark-fantasy"]
-.game-action-dialog:has(.game-action-dialog-actions .primary.danger) {
-  border: 1px solid #6c4d37 !important;
-  border-radius: 14px !important;
+.react-app-root[data-theme="dark-fantasy"] .game-action-overlay,
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-dashboard-overlay,
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-overlay {
+  align-items: center !important;
+  justify-content: center !important;
+
+  padding: 18px !important;
+
   background:
-    radial-gradient(circle at 50% 0%, rgba(124, 33, 29, .16), transparent 38%),
-    linear-gradient(180deg, #181719 0%, #090a0b 78%, #060708 100%) !important;
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(103, 28, 29, .08),
+      transparent 36%
+    ),
+    rgba(2, 3, 4, .76) !important;
+
+  backdrop-filter: blur(5px) !important;
+  -webkit-backdrop-filter: blur(5px) !important;
+}
+
+
+/* ---------------------------------------------------------
+   PANNEAU NULLE / ABANDON — MÊME CARTE
+   --------------------------------------------------------- */
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .game-action-dialog {
+  width: min(630px, calc(100vw - 36px)) !important;
+
+  padding: 30px 28px 26px !important;
+
+  border: 1px solid #76583e !important;
+  border-radius: 22px !important;
+
+  background:
+    radial-gradient(
+      ellipse at 50% -12%,
+      rgba(128, 39, 33, .11),
+      transparent 42%
+    ),
+    linear-gradient(
+      180deg,
+      #171618 0%,
+      #0d0d0f 64%,
+      #090a0b 100%
+    ) !important;
+
   box-shadow:
-    0 24px 60px rgba(0, 0, 0, .68),
-    inset 0 1px 0 rgba(231, 207, 166, .05) !important;
+    0 24px 56px rgba(0, 0, 0, .62),
+    inset 0 1px 0 rgba(235, 211, 172, .045) !important;
+
+  text-align: center !important;
+}
+
+
+/* Croix identique à Abandonner */
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .game-action-dialog-close,
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-dashboard-close {
+  width: 72px !important;
+  height: 72px !important;
+
+  padding: 0 !important;
+
+  border: 1px solid #5d4634 !important;
+  border-radius: 50% !important;
+
+  color: #d8cbb7 !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #232224,
+      #141416
+    ) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .035),
+    0 6px 18px rgba(0, 0, 0, .24) !important;
+
+  font-size: 1.35rem !important;
+  line-height: 1 !important;
 }
 
 html[data-theme="dark-fantasy"]
-.react-app-root[data-theme="dark-fantasy"]
-.game-action-dialog:has(.game-action-dialog-actions .primary.danger)
-.game-action-dialog-icon {
-  color: #e5d5bd !important;
-  border: 1px solid #774237 !important;
-  border-radius: 12px !important;
-  background:
-    radial-gradient(circle at 50% 32%, rgba(179, 61, 48, .20), transparent 52%),
-    linear-gradient(180deg, #331b1c, #160e10) !important;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 220, 190, .06),
-    0 8px 18px rgba(0, 0, 0, .36) !important;
-  text-shadow: 0 0 10px rgba(178, 58, 46, .18) !important;
+.react-app-root[data-theme="dark-fantasy"] .game-action-dialog-close {
+  top: 16px !important;
+  right: 16px !important;
 }
 
+
+/* Icône : plus de jaune */
+
 html[data-theme="dark-fantasy"]
-.react-app-root[data-theme="dark-fantasy"]
-.game-action-dialog:has(.game-action-dialog-actions .primary.danger)
-.game-action-dialog-title {
-  color: #e7dac5 !important;
+.react-app-root[data-theme="dark-fantasy"] .game-action-dialog-icon {
+  width: 78px !important;
+  height: 78px !important;
+
+  margin: 0 auto 14px !important;
+
+  border: 1px solid #834438 !important;
+  border-radius: 18px !important;
+
+  color: #ead8cb !important;
+
+  background:
+    radial-gradient(
+      circle at 50% 0,
+      rgba(205, 84, 68, .13),
+      transparent 56%
+    ),
+    linear-gradient(
+      180deg,
+      #411c1b,
+      #1e0d0f
+    ) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 194, 174, .06),
+    0 8px 20px rgba(0, 0, 0, .28) !important;
+
+  font-size: 1.65rem !important;
+}
+
+
+/* Titre et texte */
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .game-action-dialog-title {
+  color: #eadfcd !important;
+
   font-family: Georgia, "Times New Roman", serif !important;
-  letter-spacing: .035em !important;
+  font-size: clamp(1.35rem, 3vw, 1.8rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: .025em !important;
+
   text-shadow: 0 2px 0 #000 !important;
 }
 
 html[data-theme="dark-fantasy"]
-.react-app-root[data-theme="dark-fantasy"]
-.game-action-dialog:has(.game-action-dialog-actions .primary.danger)
-.game-action-dialog-text {
-  color: #b6a894 !important;
-}
+.react-app-root[data-theme="dark-fantasy"] .game-action-dialog-text {
+  max-width: 480px !important;
 
-html[data-theme="dark-fantasy"]
-.react-app-root[data-theme="dark-fantasy"]
-.game-action-dialog:has(.game-action-dialog-actions .primary.danger)
-.game-action-dialog-close {
-  color: #cdbda7 !important;
-  border: 1px solid #514238 !important;
-  background: linear-gradient(180deg, #242326, #121315) !important;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.05),
-    0 5px 14px rgba(0,0,0,.34) !important;
-}
+  margin: 9px auto 24px !important;
 
-html[data-theme="dark-fantasy"]
-.react-app-root[data-theme="dark-fantasy"]
-.game-action-dialog:has(.game-action-dialog-actions .primary.danger)
-.game-action-dialog-actions .secondary {
-  color: #ded1bd !important;
-  border: 1px solid #594536 !important;
-  background: linear-gradient(180deg, #242224, #111214) !important;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.04),
-    0 4px 10px rgba(0,0,0,.26) !important;
-}
+  color: #b9aa94 !important;
 
-html[data-theme="dark-fantasy"]
-.react-app-root[data-theme="dark-fantasy"]
-.game-action-dialog:has(.game-action-dialog-actions .primary.danger)
-.game-action-dialog-actions .primary.danger {
-  color: #f2ded5 !important;
-  border: 1px solid #91463b !important;
-  background:
-    radial-gradient(circle at 50% 0%, rgba(222, 93, 72, .14), transparent 50%),
-    linear-gradient(180deg, #70251f, #421416 58%, #260c0e) !important;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 205, 185, .06),
-    0 4px 12px rgba(0,0,0,.32) !important;
-}
-
-@media (hover:hover) and (pointer:fine) {
-  html[data-theme="dark-fantasy"]
-  .react-app-root[data-theme="dark-fantasy"]
-  .game-action-dialog:has(.game-action-dialog-actions .primary.danger)
-  .game-action-dialog-actions .primary.danger:hover {
-    border-color: #ac5a4b !important;
-    background:
-      radial-gradient(circle at 50% 0%, rgba(232, 102, 78, .17), transparent 52%),
-      linear-gradient(180deg, #812d25, #4c1718 58%, #2a0d0f) !important;
-  }
-
-  html[data-theme="dark-fantasy"]
-  .react-app-root[data-theme="dark-fantasy"]
-  .game-action-dialog:has(.game-action-dialog-actions .primary.danger)
-  .game-action-dialog-actions .secondary:hover {
-    border-color: #765a42 !important;
-    background: linear-gradient(180deg, #2d292a, #151517) !important;
-  }
-}
-
-/* =========================================================
-   DARK FANTASY — ABANDON : RADIUS UNIFIÉS
-   ========================================================= */
-
-html[data-theme="dark-fantasy"]
-.react-app-root[data-theme="dark-fantasy"]
-.game-action-dialog:has(.game-action-dialog-actions .primary.danger)
-.game-action-dialog-close {
-  width: 48px !important;
-  height: 48px !important;
-  min-width: 48px !important;
-  min-height: 48px !important;
-  padding: 0 !important;
-
-  display: grid !important;
-  place-items: center !important;
-
-  border-radius: 50% !important;
-  aspect-ratio: 1 / 1 !important;
-  line-height: 1 !important;
-}
-
-html[data-theme="dark-fantasy"]
-.react-app-root[data-theme="dark-fantasy"]
-.game-action-dialog:has(.game-action-dialog-actions .primary.danger)
-.game-action-dialog-actions .secondary,
-
-html[data-theme="dark-fantasy"]
-.react-app-root[data-theme="dark-fantasy"]
-.game-action-dialog:has(.game-action-dialog-actions .primary.danger)
-.game-action-dialog-actions .primary.danger {
-  border-radius: 12px !important;
-}
-
-/* =========================================================
-   DARK FANTASY — TOUS LES BOUTONS FERMER PARFAITEMENT RONDS
-   Couvre victoire, abandon, menus, profil, correspondance, etc.
-   ========================================================= */
-
-html[data-theme="dark-fantasy"]
-.react-app-root[data-theme="dark-fantasy"]
-button[aria-label="Fermer"] {
-  width: 48px !important;
-  height: 48px !important;
-
-  min-width: 48px !important;
-  min-height: 48px !important;
-
-  max-width: 48px !important;
-  max-height: 48px !important;
-
-  flex: 0 0 48px !important;
-
-  padding: 0 !important;
-  margin: 0 !important;
-
-  display: grid !important;
-  place-items: center !important;
-
-  box-sizing: border-box !important;
-  aspect-ratio: 1 / 1 !important;
-
-  border-radius: 50% !important;
-
-  line-height: 1 !important;
-  text-align: center !important;
-
-  overflow: hidden !important;
+  font-size: .84rem !important;
+  font-weight: 750 !important;
+  line-height: 1.45 !important;
 }
 
 
-/* Empêche les règles mobiles génériques d'étirer les boutons fermer */
+/* Boutons Nulle : exactement la même famille visuelle
+   que le panneau Abandonner, sans vert / jaune */
 
-@media (max-width: 760px) {
-  html[data-theme="dark-fantasy"]
-  .react-app-root[data-theme="dark-fantasy"]
-  button[aria-label="Fermer"] {
-    width: 44px !important;
-    height: 44px !important;
-
-    min-width: 44px !important;
-    min-height: 44px !important;
-
-    max-width: 44px !important;
-    max-height: 44px !important;
-
-    flex-basis: 44px !important;
-  }
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .game-action-dialog-actions {
+  gap: 12px !important;
 }
 
-/* =========================================================
-   DARK FANTASY — BADGES ELO + ÉTAT DES ARMÉES
-   Harmonise "NON CLASSÉ" et "Blancs résistent mieux".
-   ========================================================= */
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .game-action-dialog-actions button {
+  min-height: 62px !important;
 
-/* Badge ELO / NON CLASSÉ */
-html[data-theme="dark-fantasy"]
-.react-app-root[data-theme="dark-fantasy"] .team-elo-line,
-html[data-theme="dark-fantasy"]
-.react-app-root[data-theme="dark-fantasy"] .team-elo-line.player,
-html[data-theme="dark-fantasy"]
-.react-app-root[data-theme="dark-fantasy"] .team-elo-line.opponent,
-html[data-theme="dark-fantasy"]
-.react-app-root[data-theme="dark-fantasy"] .team-elo-line.unranked {
-  width: max-content !important;
-  max-width: 100% !important;
-  margin-top: 7px !important;
-  padding: 5px 10px !important;
+  padding: 12px 16px !important;
 
-  border: 1px solid #66503b !important;
-  border-radius: 999px !important;
+  border: 1px solid #5e4837 !important;
+  border-radius: 14px !important;
+
+  color: #ded2c0 !important;
 
   background:
-    linear-gradient(180deg, #252224 0%, #151416 58%, #0d0e0f 100%) !important;
-
-  color: #bfa98a !important;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255, 235, 205, .055),
-    0 3px 8px rgba(0, 0, 0, .24) !important;
-
-  font-size: .66rem !important;
-  font-weight: 900 !important;
-  line-height: 1 !important;
-  letter-spacing: .075em !important;
-  text-transform: uppercase !important;
-  opacity: 1 !important;
-}
-
-/* Unranked : légèrement plus éteint mais toujours lisible */
-html[data-theme="dark-fantasy"]
-.react-app-root[data-theme="dark-fantasy"] .team-elo-line.unranked {
-  color: #aa9678 !important;
-  border-color: #554536 !important;
-  background:
-    linear-gradient(180deg, #211f20 0%, #131315 60%, #0b0c0d 100%) !important;
-}
-
-/* Statut de l'avantage / résistance des armées */
-html[data-theme="dark-fantasy"]
-.react-app-root[data-theme="dark-fantasy"] #advantageText {
-  margin: 0 auto !important;
-  padding: 5px 11px !important;
-  max-width: calc(100% - 16px) !important;
-
-  border: 1px solid #654a35 !important;
-  border-radius: 999px !important;
-
-  background:
-    radial-gradient(circle at 50% 0%, rgba(132, 42, 34, .11), transparent 60%),
-    linear-gradient(180deg, #211f20 0%, #121315 62%, #090a0b 100%) !important;
-
-  color: #d7c8b2 !important;
+    linear-gradient(
+      180deg,
+      #242123,
+      #151416
+    ) !important;
 
   box-shadow:
-    inset 0 1px 0 rgba(255, 235, 205, .05),
-    0 3px 8px rgba(0, 0, 0, .26) !important;
+    inset 0 1px 0 rgba(255,255,255,.035),
+    0 5px 14px rgba(0,0,0,.24) !important;
 
   font-family: "Outfit", "Nunito", sans-serif !important;
-  font-size: .66rem !important;
-  font-weight: 850 !important;
-  line-height: 1.1 !important;
-  letter-spacing: .025em !important;
-  text-shadow: none !important;
-  white-space: nowrap !important;
+  font-size: .78rem !important;
+  font-weight: 900 !important;
 }
 
-@media (max-width: 600px) {
+
+/* Accepter la nulle : bordeaux sombre au lieu du vert */
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"]
+.game-action-dialog-actions .primary {
+  color: #f1dfd6 !important;
+
+  border-color: #8d493c !important;
+
+  background:
+    radial-gradient(
+      circle at 50% 0,
+      rgba(218, 89, 70, .13),
+      transparent 54%
+    ),
+    linear-gradient(
+      180deg,
+      #722a25,
+      #431516
+    ) !important;
+}
+
+
+/* Abandonner conserve la même logique mais un peu plus profond */
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"]
+.game-action-dialog-actions .primary.danger {
+  color: #f3ded5 !important;
+
+  border-color: #9d4a3c !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #792923,
+      #451315
+    ) !important;
+}
+
+
+/* ---------------------------------------------------------
+   PROFIL — MÊME PANNEAU QUE ABANDONNER
+   --------------------------------------------------------- */
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-dashboard {
+  width: min(630px, calc(100vw - 36px)) !important;
+  max-height: min(86vh, 820px) !important;
+
+  padding: 20px !important;
+
+  border: 1px solid #76583e !important;
+  border-radius: 22px !important;
+
+  background:
+    radial-gradient(
+      ellipse at 50% -12%,
+      rgba(128, 39, 33, .10),
+      transparent 42%
+    ),
+    linear-gradient(
+      180deg,
+      #171618 0%,
+      #0d0d0f 64%,
+      #090a0b 100%
+    ) !important;
+
+  box-shadow:
+    0 24px 56px rgba(0, 0, 0, .62),
+    inset 0 1px 0 rgba(235, 211, 172, .045) !important;
+
+  color: #d8ccba !important;
+}
+
+
+/* En-tête Profil */
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-dashboard-head {
+  grid-template-columns: 62px minmax(0,1fr) auto 72px !important;
+
+  gap: 12px !important;
+
+  padding: 4px 0 17px !important;
+
+  border-bottom: 1px solid #342b25 !important;
+}
+
+
+/* Avatar profil sombre / rouge */
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-dashboard-avatar {
+  width: 62px !important;
+  height: 62px !important;
+
+  border: 1px solid #824438 !important;
+  border-radius: 16px !important;
+
+  color: #e7d6c8 !important;
+
+  background:
+    radial-gradient(
+      circle at 50% 0,
+      rgba(205, 84, 68, .12),
+      transparent 55%
+    ),
+    linear-gradient(
+      180deg,
+      #3f1b1b,
+      #1b0d0f
+    ) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 194, 174, .05),
+    0 5px 14px rgba(0,0,0,.25) !important;
+}
+
+
+/* Identité */
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-dashboard-identity > span,
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-dashboard-elo span {
+  color: #9f8d77 !important;
+}
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-dashboard-identity strong {
+  color: #eadfcd !important;
+
+  font-family: Georgia, "Times New Roman", serif !important;
+
+  text-shadow: 0 1px 0 #000 !important;
+}
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-dashboard-identity small {
+  color: #a99a86 !important;
+}
+
+
+/* ELO */
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-dashboard-elo {
+  border: 1px solid #554334 !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #242123,
+      #141416
+    ) !important;
+}
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-dashboard-elo strong {
+  color: #d1b98e !important;
+}
+
+
+/* Statut */
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-dashboard-status {
+  color: #aa9a85 !important;
+}
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-dashboard-status.ok {
+  color: #c6aa77 !important;
+}
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-dashboard-status.error {
+  color: #d36c5b !important;
+}
+
+
+/* Cartes statistiques */
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-stat {
+  border: 1px solid #41352c !important;
+  border-radius: 12px !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #1d1b1d,
+      #111113
+    ) !important;
+}
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-stat span {
+  color: #988974 !important;
+}
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-stat strong {
+  color: #ded2c0 !important;
+}
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-stat.win strong {
+  color: #d3bb8c !important;
+}
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-stat.draw strong {
+  color: #bca16f !important;
+}
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-stat.loss strong {
+  color: #d36b5b !important;
+}
+
+
+/* Historique */
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-history-section {
+  border: 1px solid #40342b !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #171618,
+      #0e0e10
+    ) !important;
+}
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-section-title {
+  color: #ded2c0 !important;
+}
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-section-title span {
+  color: #93846f !important;
+}
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-history-item {
+  border: 1px solid #332b25 !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #201e20,
+      #131315
+    ) !important;
+}
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-history-top strong {
+  color: #ddd1bf !important;
+}
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-history-top span,
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-history-meta,
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-history-empty {
+  color: #998a76 !important;
+}
+
+
+/* Résultats historique : suppression du vert / jaune arcade */
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"]
+.profile-history-item.win .profile-history-result {
+  background: #6f5a3a !important;
+}
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"]
+.profile-history-item.draw .profile-history-result {
+  background: #554632 !important;
+}
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"]
+.profile-history-item.loss .profile-history-result {
+  background: #762b27 !important;
+}
+
+
+/* Zone suppression compte */
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-delete-reveal {
+  border: 1px solid #784139 !important;
+
+  color: #d7a59a !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #351719,
+      #1b0d0f
+    ) !important;
+}
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-delete-confirm {
+  border: 1px solid #613a34 !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #281719,
+      #140d0f
+    ) !important;
+}
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-delete-confirm > strong {
+  color: #d59082 !important;
+}
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-delete-confirm > p,
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-delete-confirm label span {
+  color: #a68f83 !important;
+}
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-delete-confirm input {
+  border: 1px solid #514039 !important;
+
+  color: #dfd3c2 !important;
+
+  background: #101012 !important;
+}
+
+
+/* Boutons profil */
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-delete-actions button {
+  border: 1px solid #554236 !important;
+
+  color: #d8ccba !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #242123,
+      #151416
+    ) !important;
+}
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"]
+.profile-delete-actions .danger {
+  border-color: #8b4037 !important;
+
+  color: #f0ddd5 !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #702721,
+      #401315
+    ) !important;
+}
+
+
+/* Profil invité : retire le vert */
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-guest-action p {
+  color: #aa9a85 !important;
+}
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-guest-action button {
+  border: 1px solid #8a463b !important;
+
+  color: #f0ddd5 !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #6f2924,
+      #401416
+    ) !important;
+}
+
+
+/* Ancien panneau d'authentification Profil, au cas où il soit utilisé */
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .profile-card {
+  border: 1px solid #76583e !important;
+  border-radius: 22px !important;
+
+  background:
+    radial-gradient(
+      ellipse at 50% -12%,
+      rgba(128,39,33,.10),
+      transparent 42%
+    ),
+    linear-gradient(
+      180deg,
+      #171618,
+      #090a0b
+    ) !important;
+
+  box-shadow:
+    0 24px 56px rgba(0,0,0,.62),
+    inset 0 1px 0 rgba(235,211,172,.045) !important;
+}
+
+
+/* ---------------------------------------------------------
+   HOVER
+   --------------------------------------------------------- */
+
+@media (hover:hover) and (pointer:fine) {
+
   html[data-theme="dark-fantasy"]
-  .react-app-root[data-theme="dark-fantasy"] .team-elo-line,
+  .react-app-root[data-theme="dark-fantasy"]
+  .game-action-dialog-actions button:hover,
+
   html[data-theme="dark-fantasy"]
-  .react-app-root[data-theme="dark-fantasy"] .team-elo-line.player,
+  .react-app-root[data-theme="dark-fantasy"]
+  .profile-delete-actions button:hover,
+
   html[data-theme="dark-fantasy"]
-  .react-app-root[data-theme="dark-fantasy"] .team-elo-line.opponent,
-  html[data-theme="dark-fantasy"]
-  .react-app-root[data-theme="dark-fantasy"] .team-elo-line.unranked {
-    padding: 4px 8px !important;
-    font-size: .60rem !important;
+  .react-app-root[data-theme="dark-fantasy"]
+  .profile-guest-action button:hover {
+
+    filter: brightness(1.09) !important;
   }
 
   html[data-theme="dark-fantasy"]
-  .react-app-root[data-theme="dark-fantasy"] #advantageText {
-    padding: 4px 9px !important;
-    font-size: .61rem !important;
+  .react-app-root[data-theme="dark-fantasy"]
+  .game-action-dialog-close:hover,
+
+  html[data-theme="dark-fantasy"]
+  .react-app-root[data-theme="dark-fantasy"]
+  .profile-dashboard-close:hover {
+
+    border-color: #806047 !important;
+    background: #292527 !important;
   }
 }
 
-/* =========================================================
-   DARK FANTASY — STATUT AVANTAGE FIXÉ À DROITE
-   ========================================================= */
 
-html[data-theme="dark-fantasy"]
-.react-app-root[data-theme="dark-fantasy"] .sf-topline {
-  position: relative !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  min-height: 28px !important;
-}
+/* ---------------------------------------------------------
+   MOBILE
+   --------------------------------------------------------- */
 
-html[data-theme="dark-fantasy"]
-.react-app-root[data-theme="dark-fantasy"] #advantageText {
-  position: absolute !important;
-  top: 50% !important;
-  right: 0 !important;
-  left: auto !important;
+@media (max-width: 640px) {
 
-  transform: translateY(-50%) !important;
+  html[data-theme="dark-fantasy"]
+  .react-app-root[data-theme="dark-fantasy"] .game-action-dialog,
 
-  margin: 0 !important;
+  html[data-theme="dark-fantasy"]
+  .react-app-root[data-theme="dark-fantasy"] .profile-dashboard {
+    width: calc(100vw - 22px) !important;
+    border-radius: 18px !important;
+  }
 
-  width: max-content !important;
-  max-width: 48% !important;
+  html[data-theme="dark-fantasy"]
+  .react-app-root[data-theme="dark-fantasy"] .game-action-dialog {
+    padding: 24px 14px 16px !important;
+  }
 
-  text-align: right !important;
+  html[data-theme="dark-fantasy"]
+  .react-app-root[data-theme="dark-fantasy"] .game-action-dialog-close,
+
+  html[data-theme="dark-fantasy"]
+  .react-app-root[data-theme="dark-fantasy"] .profile-dashboard-close {
+    width: 48px !important;
+    height: 48px !important;
+    font-size: 1.1rem !important;
+  }
+
+  html[data-theme="dark-fantasy"]
+  .react-app-root[data-theme="dark-fantasy"] .game-action-dialog-icon {
+    width: 62px !important;
+    height: 62px !important;
+    border-radius: 15px !important;
+  }
+
+  html[data-theme="dark-fantasy"]
+  .react-app-root[data-theme="dark-fantasy"] .game-action-dialog-actions {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+
+  html[data-theme="dark-fantasy"]
+  .react-app-root[data-theme="dark-fantasy"]
+  .game-action-dialog-actions button {
+    min-height: 52px !important;
+    padding: 9px 8px !important;
+    font-size: .68rem !important;
+  }
+
+  html[data-theme="dark-fantasy"]
+  .react-app-root[data-theme="dark-fantasy"] .profile-dashboard {
+    padding: 14px !important;
+  }
+
+  html[data-theme="dark-fantasy"]
+  .react-app-root[data-theme="dark-fantasy"] .profile-dashboard-head {
+    grid-template-columns: 50px minmax(0,1fr) auto 48px !important;
+    gap: 8px !important;
+  }
+
+  html[data-theme="dark-fantasy"]
+  .react-app-root[data-theme="dark-fantasy"] .profile-dashboard-avatar {
+    width: 50px !important;
+    height: 50px !important;
+  }
 }
