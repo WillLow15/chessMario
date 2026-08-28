@@ -10226,3 +10226,103 @@ html[data-theme="dark-fantasy"]
     animation: none !important;
   }
 }
+
+/* =========================================================
+   DARK FANTASY — BADGE CLASSEMENT / ELO
+   Intégration visuelle uniquement.
+   ========================================================= */
+
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .team-elo-line {
+  width: max-content !important;
+  max-width: 100% !important;
+
+  margin-top: 7px !important;
+  padding: 5px 10px !important;
+
+  border: 1px solid #6b5138 !important;
+  border-radius: 7px !important;
+
+  color: #cdbb9d !important;
+
+  background:
+    radial-gradient(
+      circle at 50% 0,
+      rgba(159, 104, 61, .10),
+      transparent 62%
+    ),
+    linear-gradient(
+      180deg,
+      #211d1b 0%,
+      #111011 100%
+    ) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(242, 215, 174, .05),
+    0 3px 9px rgba(0, 0, 0, .24) !important;
+
+  font-family: "Outfit", "Nunito", sans-serif !important;
+  font-size: .66rem !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+
+  letter-spacing: .075em !important;
+  text-transform: uppercase !important;
+
+  opacity: 1 !important;
+}
+
+
+/* Classement du joueur : bronze ancien */
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .team-elo-line.player {
+  color: #d4bd94 !important;
+
+  border-color: #806044 !important;
+
+  background:
+    radial-gradient(
+      circle at 50% 0,
+      rgba(183, 122, 70, .13),
+      transparent 64%
+    ),
+    linear-gradient(
+      180deg,
+      #29211d 0%,
+      #151212 100%
+    ) !important;
+}
+
+
+/* Adversaire classé : acier / cendre */
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .team-elo-line.opponent {
+  color: #bcb4a8 !important;
+
+  border-color: #554d45 !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #222123 0%,
+      #111113 100%
+    ) !important;
+}
+
+
+/* Non classé : plus discret, mais toujours dans le thème */
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"] .team-elo-line.unranked {
+  color: #9d8b72 !important;
+
+  border-color: #4f4033 !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #1b1919 0%,
+      #0e0e0f 100%
+    ) !important;
+
+  opacity: .88 !important;
+}
