@@ -10405,3 +10405,36 @@ html[data-theme="dark-fantasy"]
     border-radius: 6px !important;
   }
 }
+
+/* =========================================================
+   DARK FANTASY — ÉTAT DE PARTIE À DROITE
+   Garde le nouveau thème, restaure uniquement sa position.
+   ========================================================= */
+
+@media (min-width: 761px) {
+  html[data-theme="dark-fantasy"]
+  .react-app-root[data-theme="dark-fantasy"]
+  .advantage-wrap.sf-wrap .sf-topline {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+
+  html[data-theme="dark-fantasy"]
+  .react-app-root[data-theme="dark-fantasy"]
+  .advantage-wrap.sf-wrap #advantageText {
+    margin-left: auto !important;
+    margin-right: 0 !important;
+    justify-self: end !important;
+    align-self: center !important;
+  }
+}
+
+/* DARK FANTASY — "3 jours" : même couleur que les autres cadences */
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"]
+.time-control-btn.correspondence strong {
+  color: #d4c7b2 !important;
+}
