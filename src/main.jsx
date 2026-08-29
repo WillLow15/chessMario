@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import App from './App.jsx';
 import './styles/app.css';
 import './styles/pinky-taylor.css';
+import './styles/pinky-taylor-vfx.css';
 
 const rootElement=document.getElementById('root');
 if(!rootElement)throw new Error('React root introuvable');

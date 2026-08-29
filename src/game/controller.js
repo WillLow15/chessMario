@@ -3243,9 +3243,77 @@ function playDarkFantasyCaptureRects(fromRect,toRect,color,type,attackerColor,ta
   setTimeout(()=>shell.remove(),760);
 }
 
+function playPinkyTaylorCaptureRects(fromRect,toRect,color,type,attackerColor,targetSquare){
+  if(!fromRect||!toRect)return;
+  const startX=fromRect.left+fromRect.width/2;
+  const startY=fromRect.top+fromRect.height/2;
+  const endX=toRect.left+toRect.width/2;
+  const endY=toRect.top+toRect.height/2;
+  const dx=endX-startX;
+  const dy=endY-startY;
+  const rot=(Math.hypot(dx,dy)*1.8+280)*(dx>=0?1:-1);
+  const side=attackerColor==='w'?'ivory':'ruby';
+
+  const heart=document.createElement('div');
+  heart.className='shell-shot pinky-heart-shot '+side;
+  heart.style.left=startX+'px';
+  heart.style.top=startY+'px';
+  heart.style.setProperty('--dx',dx+'px');
+  heart.style.setProperty('--dy',dy+'px');
+  heart.style.setProperty('--rot',rot+'deg');
+  const heartImg=document.createElement('img');
+  heartImg.src=attackerColor==='w'?SHELL_GREEN_SRC:SHELL_RED_SRC;
+  heartImg.alt=PROJECTILE_ALT;
+  heart.appendChild(heartImg);
+  document.body.appendChild(heart);
+
+  const glyphs=['♥','★','×','✦'];
+  for(let i=1;i<=10;i++){
+    setTimeout(()=>{
+      const t=i/10;
+      const trail=document.createElement('div');
+      trail.className='shell-trail pinky '+side;
+      trail.style.left=(startX+dx*t)+'px';
+      trail.style.top=(startY+dy*t)+'px';
+      document.body.appendChild(trail);
+      setTimeout(()=>trail.remove(),520);
+
+      if(i%2===0){
+        const glyph=document.createElement('div');
+        glyph.className='pinky-flight-glyph '+side;
+        glyph.textContent=glyphs[(i/2-1)%glyphs.length];
+        glyph.style.left=(startX+dx*t+(Math.random()*16-8))+'px';
+        glyph.style.top=(startY+dy*t+(Math.random()*16-8))+'px';
+        glyph.style.setProperty('--r',(-30+Math.random()*60)+'deg');
+        document.body.appendChild(glyph);
+        setTimeout(()=>glyph.remove(),620);
+      }
+    },i*38);
+  }
+
+  const boardShell=document.querySelector('.board-shell');
+  heart.classList.add('launch');
+  setTimeout(()=>{
+    const targetEl=document.querySelector(`[data-sq="${targetSquare}"]`);
+    if(targetEl){
+      targetEl.classList.add('capture-hit');
+      setTimeout(()=>targetEl.classList.remove('capture-hit'),520);
+    }
+    boardShell&&boardShell.classList.add('impact');
+    setTimeout(()=>boardShell&&boardShell.classList.remove('impact'),460);
+    spawnCaptureImpact(endX,endY,color,type,attackerColor);
+  },450);
+  setTimeout(()=>heart.remove(),700);
+}
+
 function playShellCaptureRects(fromRect,toRect,color,type,attackerColor,targetSquare){
-  if(currentCaptureThemeId()==='mario'){
+  const themeId=currentCaptureThemeId();
+  if(themeId==='mario'){
     playMarioCaptureRects(fromRect,toRect,color,type,attackerColor,targetSquare);
+    return;
+  }
+  if(themeId==='pinky-taylor'){
+    playPinkyTaylorCaptureRects(fromRect,toRect,color,type,attackerColor,targetSquare);
     return;
   }
   playDarkFantasyCaptureRects(fromRect,toRect,color,type,attackerColor,targetSquare);
@@ -3503,9 +3571,74 @@ function spawnDarkFantasyCaptureImpact(x,y,color,type,attackerColor){
   setTimeout(()=>overlay.remove(),1500);
 }
 
+function spawnPinkyTaylorCaptureImpact(x,y,color,type,attackerColor){
+  const side=attackerColor==='w'?'ivory':'ruby';
+  const overlay=document.createElement('div');
+  overlay.className='capture-overlay pinky-capture-overlay '+side;
+  overlay.style.left=x+'px';
+  overlay.style.top=(y-6)+'px';
+
+  const ink=document.createElement('div');
+  ink.className='pinky-ink-splat';
+  overlay.appendChild(ink);
+
+  for(let i=0;i<2;i++){
+    const ring=document.createElement('div');
+    ring.className='ringwave pinky-ring';
+    ring.style.animationDelay=(i*.07)+'s';
+    overlay.appendChild(ring);
+  }
+
+  const flash=document.createElement('div');
+  flash.className='flash pinky-flash';
+  overlay.appendChild(flash);
+
+  for(let i=0;i<2;i++){
+    const stroke=document.createElement('div');
+    stroke.className='pinky-stroke stroke-'+(i+1);
+    overlay.appendChild(stroke);
+  }
+
+  const victim=document.createElement('div');
+  victim.className='victim';
+  victim.appendChild(makePieceEl(color,type));
+  overlay.appendChild(victim);
+
+  const text=document.createElement('div');
+  text.className='powtext pinky-powtext';
+  text.textContent=attackerColor==='w'?'HEART HIT!':'RUBY POP!';
+  overlay.appendChild(text);
+
+  const burst=document.createElement('div');
+  burst.className='pinky-burst';
+  const glyphs=['♥','★','×','✦','●'];
+  for(let i=0;i<24;i++){
+    const particle=document.createElement('div');
+    particle.className='pinky-particle p'+(i%5)+' '+side;
+    particle.textContent=glyphs[i%glyphs.length];
+    particle.style.left=(102+Math.random()*36)+'px';
+    particle.style.top=(104+Math.random()*30)+'px';
+    particle.style.setProperty('--x',(-125+Math.random()*250)+'px');
+    particle.style.setProperty('--y',(-115+Math.random()*190)+'px');
+    particle.style.setProperty('--r',(-240+Math.random()*480)+'deg');
+    particle.style.setProperty('--s',(0.65+Math.random()*1.15).toFixed(2));
+    particle.style.animationDelay=(Math.random()*.12)+'s';
+    burst.appendChild(particle);
+  }
+  overlay.appendChild(burst);
+
+  document.body.appendChild(overlay);
+  setTimeout(()=>overlay.remove(),1400);
+}
+
 function spawnCaptureImpact(x,y,color,type,attackerColor){
-  if(currentCaptureThemeId()==='mario'){
+  const themeId=currentCaptureThemeId();
+  if(themeId==='mario'){
     spawnMarioCaptureImpact(x,y,color,type,attackerColor);
+    return;
+  }
+  if(themeId==='pinky-taylor'){
+    spawnPinkyTaylorCaptureImpact(x,y,color,type,attackerColor);
     return;
   }
   spawnDarkFantasyCaptureImpact(x,y,color,type,attackerColor);
