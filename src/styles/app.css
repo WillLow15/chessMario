@@ -10786,3 +10786,79 @@ html[data-theme="mario"]
     gap: 3px !important;
   }
 }
+
+/* =========================================================
+   MARIO — BOTTOM NAV HORS PARTIE
+   Deux boutons identiques sur une seule ligne : Jouer | Profil.
+   ========================================================= */
+
+html[data-theme="mario"]
+.react-app-root[data-theme="mario"]
+.bottom-app-nav:not(.game-active) {
+  width: min(680px, calc(100vw - 24px)) !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  grid-template-rows: 64px !important;
+  align-items: stretch !important;
+  gap: 8px !important;
+}
+
+html[data-theme="mario"]
+.react-app-root[data-theme="mario"]
+.bottom-app-nav:not(.game-active) > .game-actions,
+html[data-theme="mario"]
+.react-app-root[data-theme="mario"]
+.bottom-app-nav:not(.game-active) > .game-actions.hidden {
+  display: none !important;
+}
+
+html[data-theme="mario"]
+.react-app-root[data-theme="mario"]
+.bottom-app-nav:not(.game-active) > #bottomPlayBtn,
+html[data-theme="mario"]
+.react-app-root[data-theme="mario"]
+.bottom-app-nav:not(.game-active) > #bottomProfileBtn {
+  display: flex !important;
+  grid-row: 1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 64px !important;
+  min-height: 64px !important;
+  max-height: 64px !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+  align-self: stretch !important;
+}
+
+html[data-theme="mario"]
+.react-app-root[data-theme="mario"]
+.bottom-app-nav:not(.game-active) > #bottomPlayBtn {
+  grid-column: 1 !important;
+}
+
+html[data-theme="mario"]
+.react-app-root[data-theme="mario"]
+.bottom-app-nav:not(.game-active) > #bottomProfileBtn {
+  grid-column: 2 !important;
+}
+
+@media (max-width: 760px) {
+  html[data-theme="mario"]
+  .react-app-root[data-theme="mario"]
+  .bottom-app-nav:not(.game-active) {
+    width: calc(100% - 10px) !important;
+    grid-template-rows: 54px !important;
+    gap: 5px !important;
+  }
+
+  html[data-theme="mario"]
+  .react-app-root[data-theme="mario"]
+  .bottom-app-nav:not(.game-active) > #bottomPlayBtn,
+  html[data-theme="mario"]
+  .react-app-root[data-theme="mario"]
+  .bottom-app-nav:not(.game-active) > #bottomProfileBtn {
+    height: 54px !important;
+    min-height: 54px !important;
+    max-height: 54px !important;
+  }
+}
