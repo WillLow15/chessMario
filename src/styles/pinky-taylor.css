@@ -30,9 +30,9 @@ html[data-theme="pinky-taylor"] .react-app-root[data-theme="pinky-taylor"] {
 
 html[data-theme="pinky-taylor"] .world-bg {
   background:
-    repeating-linear-gradient(7deg, transparent 0 38px, rgba(11,11,13,.035) 39px 40px),
-    repeating-linear-gradient(93deg, transparent 0 57px, rgba(11,11,13,.028) 58px 59px),
-    linear-gradient(135deg, #f7f0e5, #e7e0d7) !important;
+    linear-gradient(rgba(247,240,229,.12), rgba(231,224,215,.18)),
+    url('/assets/pinky-taylor/theme-bg.webp') center top / cover no-repeat fixed,
+    #e7e0d7 !important;
 }
 
 html[data-theme="pinky-taylor"] .world-bg .parallax-back,
@@ -51,7 +51,7 @@ html[data-theme="pinky-taylor"] .world-bg::after {
 
 html[data-theme="pinky-taylor"] .world-bg::before {
   inset: 0;
-  opacity: .14;
+  opacity: .055;
   background:
     radial-gradient(circle at 8% 24%, var(--pt-ruby) 0 5px, transparent 6px),
     radial-gradient(circle at 91% 16%, var(--pt-blue) 0 7px, transparent 8px),
@@ -60,13 +60,7 @@ html[data-theme="pinky-taylor"] .world-bg::before {
 }
 
 html[data-theme="pinky-taylor"] .world-bg::after {
-  width: 340px;
-  height: 340px;
-  right: -105px;
-  top: 8vh;
-  border: 24px solid rgba(245,22,89,.12);
-  transform: rotate(18deg);
-  clip-path: polygon(50% 0,61% 35%,100% 35%,69% 57%,81% 100%,50% 73%,19% 100%,31% 57%,0 35%,39% 35%);
+  display: none;
 }
 
 html[data-theme="pinky-taylor"] .titlebar {
