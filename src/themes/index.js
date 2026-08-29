@@ -1,11 +1,13 @@
 import { marioTheme } from './mario.js';
 import { darkFantasyTheme } from './darkFantasy.js';
+import { pinkyTaylorTheme } from './pinkyTaylor.js';
 
 const THEME_STORAGE_KEY='chessThemeV1';
 
 export const themes=Object.freeze({
   mario:marioTheme,
-  'dark-fantasy':darkFantasyTheme
+  'dark-fantasy':darkFantasyTheme,
+  'pinky-taylor':pinkyTaylorTheme
 });
 
 export const themeChoices=Object.freeze([
@@ -20,6 +22,12 @@ export const themeChoices=Object.freeze([
     label:'Royaume des Ténèbres',
     description:'Gothique · cendres · dark fantasy',
     preview:'/assets/dark-fantasy/dark-emblem.svg'
+  }),
+  Object.freeze({
+    id:'pinky-taylor',
+    label:'Pinky Taylor',
+    description:'Punk naïf · rubis · ivoire',
+    preview:'/assets/pinky-taylor/pieces/ruby-king.webp'
   })
 ]);
 
