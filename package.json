@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "node scripts/prepare-fonts.mjs && vite",
     "build": "node scripts/prepare-fonts.mjs && vite build",
+    "test": "node --test tests/*.test.js",
     "preview": "vite preview",
     "push:patch": "node scripts/release-patch.mjs"
   },
