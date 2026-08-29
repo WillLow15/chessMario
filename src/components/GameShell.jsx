@@ -114,17 +114,6 @@ export function GameShell({ theme }) {
         ))}
       </div>
     </div>
-    <div className={"chess-clocks"} aria-label={"Chronos de la partie"}>
-      <div className={"chess-clock white-clock"} id={"clockCardWhite"}>
-        <span>BLANCS</span>
-        <strong id={"clockWhite"}>10:00</strong>
-      </div>
-      <div className={"clock-center"} id={"clockModeLabel"}>10 MIN</div>
-      <div className={"chess-clock black-clock"} id={"clockCardBlack"}>
-        <span>NOIRS</span>
-        <strong id={"clockBlack"}>10:00</strong>
-      </div>
-    </div>
     <div className={"advantage-wrap sf-wrap"}>
       <div className={"sf-topline"}>
         <span>{ui.lifeTitle || 'Barres de vie des camps'}</span>
@@ -206,6 +195,17 @@ export function GameShell({ theme }) {
         <div className={"pipe-left"}></div>
         <div className={"pipe-right"}></div>
         <div className={"board-area"}>
+          <div className={"chess-clocks"} aria-label={"Chronos de la partie"}>
+            <div className={"chess-clock white-clock"} id={"clockCardWhite"}>
+              <span>BLANCS</span>
+              <strong id={"clockWhite"}>10:00</strong>
+            </div>
+            <div className={"clock-center"} id={"clockModeLabel"}>10 MIN</div>
+            <div className={"chess-clock black-clock"} id={"clockCardBlack"}>
+              <span>NOIRS</span>
+              <strong id={"clockBlack"}>10:00</strong>
+            </div>
+          </div>
           <div className={"board-topbar"}>
             <div className={"turn-badge"} id={"turnBadge"}>Tour : Blancs</div>
           </div>

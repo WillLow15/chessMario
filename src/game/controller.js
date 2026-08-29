@@ -540,6 +540,7 @@ const ELO_STORAGE_KEY='marioChessPlayerEloV1';
 const ELO_START=1200;
 const ELO_K=32;
 const AI_ELO={easy:800,medium:1200,hard:1600};
+const AI_LEVEL_LABEL={easy:'FACILE',medium:'NORMAL',hard:'DIFFICILE'};
 
 function loadPlayerElo(){
   try{
@@ -681,7 +682,22 @@ function renderElo(){
     if(kind)el.classList.add(kind);
   }
 
+  const opponent=Number(currentOpponentElo());
+  const opponentText=gameMode==='ai'
+    ? ((AI_LEVEL_LABEL[aiLevel]||'NORMAL')+' · '+(opponent||ELO_START)+' ELO')
+    : (opponent?opponent+' ELO':'…');
+
   if(isGuest||(gameMode==='remote'&&remoteOpponentGuest)){
+    if(gameMode==='ai'){
+      if(playerCamp==='b'){
+        setTeamElo(whiteEl,opponentText,'opponent');
+        setTeamElo(blackEl,'NON CLASSÉ','unranked');
+      }else{
+        setTeamElo(whiteEl,'NON CLASSÉ','unranked');
+        setTeamElo(blackEl,opponentText,'opponent');
+      }
+      return;
+    }
     setTeamElo(whiteEl,'NON CLASSÉ','unranked');
     setTeamElo(blackEl,'NON CLASSÉ','unranked');
     return;
@@ -693,16 +709,13 @@ function renderElo(){
     return;
   }
 
-  const opponent=Number(currentOpponentElo());
-
   if(!playerCamp){
     setTeamElo(whiteEl,playerElo+' ELO','player');
-    setTeamElo(blackEl,opponent?opponent+' ELO':'…','opponent');
+    setTeamElo(blackEl,opponentText,'opponent');
     return;
   }
 
   const playerText=playerElo+' ELO';
-  const opponentText=opponent?opponent+' ELO':'…';
 
   if(playerCamp==='w'){
     setTeamElo(whiteEl,playerText,'player');
