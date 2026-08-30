@@ -11104,3 +11104,55 @@ html[data-theme="dark-fantasy"] body .react-app-root[data-theme="dark-fantasy"]
   background: linear-gradient(180deg,#7d2924,#471617) !important;
   box-shadow: 0 3px 0 #210a0b !important;
 }
+
+/* Sélecteur Connexion / Création — Royaume Mario. */
+html[data-theme="mario"] body .react-app-root[data-theme="mario"]
+.auth-tabs {
+  border: 3px solid #6f3918 !important;
+  border-radius: 15px !important;
+  background: linear-gradient(180deg,#fff4c7,#ffe198) !important;
+  box-shadow: 0 4px 0 rgba(92,47,19,.16) !important;
+}
+
+html[data-theme="mario"] body .react-app-root[data-theme="mario"]
+.auth-tab {
+  color: #5b310e !important;
+  border: 2px solid #b98218 !important;
+  background: linear-gradient(180deg,#ffe979,#efbd2b) !important;
+  box-shadow: 0 3px 0 rgba(129,84,8,.18) !important;
+}
+
+html[data-theme="mario"] body .react-app-root[data-theme="mario"]
+.auth-tab.active {
+  color: #fff !important;
+  border-color: #941f18 !important;
+  background: linear-gradient(180deg,#ef4b43,#c71d1b) !important;
+  box-shadow: 0 3px 0 rgba(107,22,14,.24) !important;
+}
+
+/* Sélecteur Connexion / Création — Royaume des Ténèbres. */
+html[data-theme="dark-fantasy"] body .react-app-root[data-theme="dark-fantasy"]
+.auth-tabs {
+  border: 1px solid #654a32 !important;
+  border-radius: 8px !important;
+  background: linear-gradient(180deg,#1b191b,#0b0b0d) !important;
+  box-shadow: 0 5px 0 #070708, inset 0 1px 0 rgba(236,211,169,.05) !important;
+}
+
+html[data-theme="dark-fantasy"] body .react-app-root[data-theme="dark-fantasy"]
+.auth-tab {
+  color: #cfc1ac !important;
+  border: 1px solid #594536 !important;
+  border-radius: 5px !important;
+  background: linear-gradient(180deg,#2a282a,#141416) !important;
+  box-shadow: 0 3px 0 #070708 !important;
+  font-family: "Outfit","Nunito",sans-serif !important;
+}
+
+html[data-theme="dark-fantasy"] body .react-app-root[data-theme="dark-fantasy"]
+.auth-tab.active {
+  color: #f1dfd6 !important;
+  border-color: #9a4938 !important;
+  background: linear-gradient(180deg,#7d2924,#471617) !important;
+  box-shadow: 0 3px 0 #210a0b, inset 0 1px 0 rgba(255,220,190,.08) !important;
+}

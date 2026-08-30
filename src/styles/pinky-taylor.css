@@ -1338,3 +1338,29 @@ html[data-theme="pinky-taylor"] body
   background: var(--pt-blue) !important;
   box-shadow: 2px 2px 0 var(--pt-ink) !important;
 }
+
+/* Sélecteur Connexion / Création — Pinky Taylor. */
+html[data-theme="pinky-taylor"] body
+.react-app-root[data-theme="pinky-taylor"] .auth-tabs {
+  border: 3px solid var(--pt-ink) !important;
+  border-radius: 4px 15px 6px 11px !important;
+  background: var(--pt-paper) !important;
+  box-shadow: 4px 4px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] body
+.react-app-root[data-theme="pinky-taylor"] .auth-tab {
+  color: var(--pt-ink) !important;
+  border: 3px solid var(--pt-ink) !important;
+  border-radius: 3px 11px 5px 9px !important;
+  background: var(--pt-blue) !important;
+  box-shadow: 2px 2px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] body
+.react-app-root[data-theme="pinky-taylor"] .auth-tab.active {
+  color: #fff !important;
+  border-color: var(--pt-ink) !important;
+  background: var(--pt-ruby) !important;
+  box-shadow: 3px 3px 0 var(--pt-ink) !important;
+}
