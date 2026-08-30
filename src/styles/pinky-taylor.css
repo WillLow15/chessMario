@@ -766,6 +766,147 @@ html[data-theme="pinky-taylor"] .profile-delete-actions .danger {
   background: var(--pt-ruby) !important;
 }
 
+/* Parties différées en cours — version Pinky Taylor */
+html[data-theme="pinky-taylor"] .ongoing-games-block {
+  position: relative;
+  color: var(--pt-ink) !important;
+  border-bottom: 4px solid var(--pt-ink) !important;
+  background: var(--pt-paper) !important;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-games-head {
+  min-height: 50px;
+  color: white !important;
+  border-bottom: 4px solid var(--pt-ink) !important;
+  background: var(--pt-ruby) !important;
+  text-shadow: 2px 2px 0 var(--pt-ink);
+}
+
+html[data-theme="pinky-taylor"] .ongoing-games-head strong::before {
+  content: "♥";
+  display: inline-block;
+  margin-right: 7px;
+  color: var(--pt-blue);
+  font-size: 1.05em;
+  -webkit-text-stroke: 2px var(--pt-ink);
+  transform: rotate(-8deg);
+}
+
+html[data-theme="pinky-taylor"] .ongoing-games-count {
+  min-width: 29px;
+  height: 29px;
+  color: var(--pt-ink) !important;
+  border: 3px solid var(--pt-ink) !important;
+  border-radius: 50% 43% 48% 46% !important;
+  background: var(--pt-blue) !important;
+  box-shadow: 2px 2px 0 var(--pt-ink) !important;
+  text-shadow: none;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-games-list {
+  gap: 11px !important;
+  padding: 11px !important;
+  background:
+    radial-gradient(circle at 12% 15%, rgba(245,22,89,.07) 0 2px, transparent 3px),
+    radial-gradient(circle at 86% 78%, rgba(80,189,225,.09) 0 3px, transparent 4px),
+    var(--pt-paper) !important;
+  scrollbar-color: var(--pt-ruby) var(--pt-paper);
+}
+
+html[data-theme="pinky-taylor"] .ongoing-game-card {
+  color: var(--pt-ink) !important;
+  border: 3px solid var(--pt-ink) !important;
+  border-radius: 4px 14px 6px 11px !important;
+  background: var(--pt-ivory) !important;
+  box-shadow: 4px 4px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-game-card.my-turn {
+  border-color: var(--pt-ink) !important;
+  background: var(--pt-blue) !important;
+  box-shadow: 4px 4px 0 var(--pt-ruby) !important;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-game-card.waiting {
+  border-style: dashed !important;
+  background: var(--pt-paper) !important;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-game-card:active {
+  transform: translate(2px, 2px) !important;
+  box-shadow: 2px 2px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-mini-board {
+  border: 3px solid var(--pt-ink) !important;
+  border-radius: 3px 10px 4px 8px !important;
+  background: var(--pt-paper) !important;
+  box-shadow: 2px 2px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-mini-square.light { background: var(--pt-paper) !important; }
+html[data-theme="pinky-taylor"] .ongoing-mini-square.dark { background: var(--pt-blue) !important; }
+
+html[data-theme="pinky-taylor"] .ongoing-player-row,
+html[data-theme="pinky-taylor"] .ongoing-deadline {
+  color: var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-player-row.me b::after {
+  color: var(--pt-ruby) !important;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-color-dot {
+  border: 2px solid var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-color-dot.white { background: var(--pt-ivory) !important; }
+html[data-theme="pinky-taylor"] .ongoing-color-dot.black { background: var(--pt-ruby) !important; }
+
+html[data-theme="pinky-taylor"] .ongoing-turn {
+  color: var(--pt-ink) !important;
+  border: 2px solid var(--pt-ink);
+  border-radius: 3px 10px 4px 8px !important;
+  background: var(--pt-paper) !important;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-turn.mine {
+  color: var(--pt-ink) !important;
+  background: var(--pt-lime) !important;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-games-empty,
+html[data-theme="pinky-taylor"] .ongoing-games-more {
+  color: var(--pt-ink) !important;
+  border: 2px solid var(--pt-ink) !important;
+  border-radius: 3px 11px 5px 9px !important;
+  background: var(--pt-ivory) !important;
+  box-shadow: 2px 2px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-games-empty.error {
+  color: var(--pt-ruby) !important;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-games-more {
+  color: white !important;
+  background: var(--pt-ruby) !important;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-games-list::-webkit-scrollbar {
+  width: 9px;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-games-list::-webkit-scrollbar-track {
+  background: var(--pt-paper);
+}
+
+html[data-theme="pinky-taylor"] .ongoing-games-list::-webkit-scrollbar-thumb {
+  border: 2px solid var(--pt-paper);
+  border-radius: 0;
+  background: var(--pt-ruby);
+}
+
 html[data-theme="pinky-taylor"] .game-loader {
   background:
     radial-gradient(circle at center, rgba(80,189,225,.30), transparent 35%),
