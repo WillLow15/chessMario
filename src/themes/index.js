@@ -21,7 +21,7 @@ export const themeChoices=Object.freeze([
     id:'dark-fantasy',
     label:'Royaume des Ténèbres',
     description:'Gothique · cendres · dark fantasy',
-    preview:'/assets/dark-fantasy/dark-emblem.svg'
+    preview:'/assets/dark-fantasy/pieces/black-king.webp'
   }),
   Object.freeze({
     id:'pinky-taylor',
