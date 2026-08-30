@@ -273,10 +273,24 @@ html[data-theme="pinky-taylor"] .sq.check {
 }
 
 html[data-theme="pinky-taylor"] .smooth-piece-move {
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
   overflow: visible !important;
-  filter:
-    drop-shadow(5px 6px 0 rgba(11,11,13,.30))
-    drop-shadow(0 0 10px rgba(80,189,225,.45)) !important;
+  filter: drop-shadow(2px 3px 0 rgba(11,11,13,.24)) !important;
+}
+
+html[data-theme="pinky-taylor"] .smooth-piece-move.white,
+html[data-theme="pinky-taylor"] .smooth-piece-move.black {
+  border: 0 !important;
+  background: transparent !important;
+}
+
+html[data-theme="pinky-taylor"] .smooth-piece-move img {
+  transform: scale(1.04);
+  filter: saturate(1.06) contrast(1.03) !important;
 }
 
 html[data-theme="pinky-taylor"] .smooth-piece-move::before,
