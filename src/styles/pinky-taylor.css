@@ -861,6 +861,26 @@ html[data-theme="pinky-taylor"] .game-loader-icon-wrap {
   }
 }
 
+/*
+ * Les filtres d'arrière-plan sont composés par tuiles dans Chromium et
+ * peuvent produire de fins raccords verticaux au-dessus de toute l'UI.
+ * Les surfaces Pinky Taylor étant opaques, le filtre n'apporte rien ici.
+ */
+html[data-theme="pinky-taylor"] .hud-card,
+html[data-theme="pinky-taylor"] .panel,
+html[data-theme="pinky-taylor"] .bottom-app-nav,
+html[data-theme="pinky-taylor"] .mode-overlay,
+html[data-theme="pinky-taylor"] .profile-overlay,
+html[data-theme="pinky-taylor"] .mate-overlay,
+html[data-theme="pinky-taylor"] .camp-overlay,
+html[data-theme="pinky-taylor"] .app-sheet-overlay,
+html[data-theme="pinky-taylor"] .profile-dashboard-overlay,
+html[data-theme="pinky-taylor"] .correspondence-overlay,
+html[data-theme="pinky-taylor"] .game-action-overlay {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html[data-theme="pinky-taylor"] *,
   html[data-theme="pinky-taylor"] *::before,
