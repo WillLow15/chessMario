@@ -10971,3 +10971,13 @@ html[data-theme] body .react-app-root[data-theme] :is(
     font-size: 23px !important;
   }
 }
+
+/* Dark Fantasy : centre le bloc chrono lorsqu'il est moins large que le damier. */
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"]
+.board-area > .chess-clocks {
+  width: min(760px, 100%) !important;
+  max-width: 100% !important;
+  margin: 0 auto 10px !important;
+  align-self: center !important;
+}
