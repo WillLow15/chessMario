@@ -463,6 +463,58 @@ html[data-theme="pinky-taylor"] .bottom-nav-btn.play {
   background: var(--pt-ruby) !important;
 }
 
+/* Hors partie : Jouer + Profil, alignés et de dimensions identiques. */
+html[data-theme="pinky-taylor"]
+.react-app-root[data-theme="pinky-taylor"]
+.bottom-app-nav:not(.game-active) {
+  width: min(680px, calc(100vw - 24px)) !important;
+  min-height: 0 !important;
+  padding: 8px !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  grid-template-rows: 60px !important;
+  align-items: stretch !important;
+  gap: 10px !important;
+}
+
+html[data-theme="pinky-taylor"]
+.react-app-root[data-theme="pinky-taylor"]
+.bottom-app-nav:not(.game-active) > .game-actions,
+html[data-theme="pinky-taylor"]
+.react-app-root[data-theme="pinky-taylor"]
+.bottom-app-nav:not(.game-active) > .game-actions.hidden {
+  display: none !important;
+}
+
+html[data-theme="pinky-taylor"]
+.react-app-root[data-theme="pinky-taylor"]
+.bottom-app-nav:not(.game-active) > #bottomPlayBtn,
+html[data-theme="pinky-taylor"]
+.react-app-root[data-theme="pinky-taylor"]
+.bottom-app-nav:not(.game-active) > #bottomProfileBtn {
+  display: flex !important;
+  grid-row: 1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 60px !important;
+  min-height: 60px !important;
+  max-height: 60px !important;
+  margin: 0 !important;
+}
+
+html[data-theme="pinky-taylor"]
+.react-app-root[data-theme="pinky-taylor"]
+.bottom-app-nav:not(.game-active) > #bottomPlayBtn {
+  grid-column: 1 !important;
+}
+
+html[data-theme="pinky-taylor"]
+.react-app-root[data-theme="pinky-taylor"]
+.bottom-app-nav:not(.game-active) > #bottomProfileBtn {
+  grid-column: 2 !important;
+  background: var(--pt-blue) !important;
+}
+
 /* Barre d'actions en cours de partie */
 html[data-theme="pinky-taylor"] .bottom-app-nav.game-active {
   padding: 8px !important;
@@ -966,6 +1018,28 @@ html[data-theme="pinky-taylor"] .game-loader-icon-wrap {
 
   html[data-theme="pinky-taylor"] .bottom-app-nav.game-active {
     padding: 6px !important;
+  }
+
+  html[data-theme="pinky-taylor"]
+  .react-app-root[data-theme="pinky-taylor"]
+  .bottom-app-nav:not(.game-active) {
+    width: calc(100% - 12px) !important;
+    padding: 6px !important;
+    grid-template-rows: 52px !important;
+    gap: 6px !important;
+  }
+
+  html[data-theme="pinky-taylor"]
+  .react-app-root[data-theme="pinky-taylor"]
+  .bottom-app-nav:not(.game-active) > #bottomPlayBtn,
+  html[data-theme="pinky-taylor"]
+  .react-app-root[data-theme="pinky-taylor"]
+  .bottom-app-nav:not(.game-active) > #bottomProfileBtn {
+    height: 52px !important;
+    min-height: 52px !important;
+    max-height: 52px !important;
+    border-width: 2px !important;
+    box-shadow: 2px 2px 0 var(--pt-ink) !important;
   }
 
   html[data-theme="pinky-taylor"] .bottom-app-nav.game-active .game-action-btn,
