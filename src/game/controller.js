@@ -886,6 +886,11 @@ function renderGameActions(){
   if(nav)nav.classList.toggle('game-active',active);
   if(play)play.classList.toggle('hidden',active);
 
+  const aiActive=active&&gameMode==='ai';
+  if(nav)nav.classList.toggle('ai-game-active',aiActive);
+  draw.hidden=aiActive;
+  draw.setAttribute('aria-hidden',aiActive?'true':'false');
+
   if(!active){
     setGameActionStatus('');
     return;
