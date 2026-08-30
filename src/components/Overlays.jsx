@@ -308,7 +308,6 @@ export function Overlays({ themeId, onThemeChange }) {
               <input id={"profileDeletePassword"} type={"password"} maxLength={"128"} autoComplete={"current-password"} placeholder={"Confirme avec ton mot de passe"} />
             </label>
             <div className={"profile-delete-actions"}>
-              <button id={"profileDeleteCancelBtn"} type={"button"}>Annuler</button>
               <button className={"danger"} id={"profileDeleteConfirmBtn"} type={"button"}>SUPPRIMER DÉFINITIVEMENT</button>
             </div>
           </div>

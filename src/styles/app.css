@@ -5003,6 +5003,13 @@ button.ongoing-games-empty,
   }
 }
 
+/* Le chrono suit toujours l'échiquier, quel que soit le thème. */
+.board-area > .chess-clocks {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 0 10px !important;
+}
+
 /* =========================================================
    LAYOUT <= 1260PX — ÉCHIQUIER EN PREMIER, ÉQUIPES EN DESSOUS
    ========================================================= */
@@ -10861,4 +10868,291 @@ html[data-theme="mario"]
     min-height: 54px !important;
     max-height: 54px !important;
   }
+}
+
+/* =========================================================
+   TOUS LES THÈMES — FERMETURES PARFAITEMENT RONDES
+   ========================================================= */
+html[data-theme] body .react-app-root[data-theme] :is(
+  .mate-close,
+  .app-sheet-close,
+  .profile-dashboard-close,
+  .game-action-dialog-close,
+  .correspondence-close
+) {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  min-height: 48px !important;
+  max-width: 48px !important;
+  max-height: 48px !important;
+  aspect-ratio: 1 / 1 !important;
+  flex: 0 0 48px !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  display: grid !important;
+  place-items: center !important;
+  overflow: hidden !important;
+  border-radius: 50% !important;
+  font-size: 0 !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  text-indent: 0 !important;
+}
+
+html[data-theme] body .react-app-root[data-theme] :is(
+  .mate-close,
+  .app-sheet-close,
+  .profile-dashboard-close,
+  .game-action-dialog-close,
+  .correspondence-close
+)::before {
+  content: "×" !important;
+  position: static !important;
+  inset: auto !important;
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: inherit !important;
+  border: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 25px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  transform: translateY(-1px) !important;
+  opacity: 1 !important;
+}
+
+html[data-theme] body .react-app-root[data-theme] :is(
+  .mate-close,
+  .app-sheet-close,
+  .profile-dashboard-close,
+  .game-action-dialog-close,
+  .correspondence-close
+)::after {
+  content: none !important;
+  display: none !important;
+}
+
+.profile-delete-actions {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+
+@media (max-width: 640px) {
+  html[data-theme] body .react-app-root[data-theme] :is(
+    .mate-close,
+    .app-sheet-close,
+    .profile-dashboard-close,
+    .game-action-dialog-close,
+    .correspondence-close
+  ) {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+    max-width: 44px !important;
+    max-height: 44px !important;
+    flex-basis: 44px !important;
+  }
+
+  html[data-theme] body .react-app-root[data-theme] :is(
+    .mate-close,
+    .app-sheet-close,
+    .profile-dashboard-close,
+    .game-action-dialog-close,
+    .correspondence-close
+  )::before {
+    font-size: 23px !important;
+  }
+}
+
+/* Dark Fantasy : centre le bloc chrono lorsqu'il est moins large que le damier. */
+html[data-theme="dark-fantasy"]
+.react-app-root[data-theme="dark-fantasy"]
+.board-area > .chess-clocks {
+  width: min(760px, 100%) !important;
+  max-width: 100% !important;
+  margin: 0 auto 10px !important;
+  align-self: center !important;
+}
+
+/* =========================================================
+   TOUS LES THÈMES — PARTIE CONTRE L'IA
+   Deux actions uniquement : Abandonner | Profil
+   ========================================================= */
+html[data-theme] body .react-app-root[data-theme]
+.bottom-app-nav.game-active.ai-game-active {
+  width: min(680px, calc(100vw - 24px)) !important;
+  max-width: 680px !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  grid-template-rows: minmax(48px, auto) !important;
+  align-items: stretch !important;
+  gap: 8px !important;
+}
+
+html[data-theme] body .react-app-root[data-theme]
+.bottom-app-nav.game-active.ai-game-active > #bottomPlayBtn,
+html[data-theme] body .react-app-root[data-theme]
+.bottom-app-nav.game-active.ai-game-active .game-action-btn.draw {
+  display: none !important;
+}
+
+html[data-theme] body .react-app-root[data-theme]
+.bottom-app-nav.game-active.ai-game-active > .game-actions {
+  position: static !important;
+  display: contents !important;
+  width: auto !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html[data-theme] body .react-app-root[data-theme]
+.bottom-app-nav.game-active.ai-game-active .game-action-btn.resign {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+html[data-theme] body .react-app-root[data-theme]
+.bottom-app-nav.game-active.ai-game-active > #bottomProfileBtn {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+html[data-theme] body .react-app-root[data-theme]
+.bottom-app-nav.game-active.ai-game-active .game-action-status {
+  position: absolute !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: calc(100% + 8px) !important;
+  transform: translateX(-50%) !important;
+}
+
+@media (max-width: 760px) {
+  html[data-theme] body .react-app-root[data-theme]
+  .bottom-app-nav.game-active.ai-game-active {
+    width: calc(100vw - 12px) !important;
+    gap: 5px !important;
+  }
+}
+
+/* =========================================================
+   IDENTITÉ DU JOUEUR — HABILLAGE PROPRE À CHAQUE UNIVERS
+   ========================================================= */
+html[data-theme="mario"] body .react-app-root[data-theme="mario"]
+.db-profile-badge {
+  color: #713611 !important;
+  border: 3px solid #9dc9a5 !important;
+  background: linear-gradient(180deg,#f4fff0,#e5f7df) !important;
+  box-shadow: 0 4px 0 rgba(40,111,55,.14) !important;
+}
+
+html[data-theme="mario"] body .react-app-root[data-theme="mario"]
+.db-profile-badge > span {
+  color: #713611 !important;
+}
+
+html[data-theme="mario"] body .react-app-root[data-theme="mario"]
+.db-profile-badge strong {
+  color: #24703a !important;
+}
+
+html[data-theme="mario"] body .react-app-root[data-theme="mario"]
+.db-profile-badge button {
+  color: #fff8dc !important;
+  background: linear-gradient(180deg,#d43b31,#9f201b) !important;
+  box-shadow: 0 3px 0 rgba(105,18,14,.20) !important;
+}
+
+html[data-theme="dark-fantasy"] body .react-app-root[data-theme="dark-fantasy"]
+.db-profile-badge {
+  color: #d6cab7 !important;
+  border: 1px solid #654a32 !important;
+  border-radius: 7px !important;
+  background: linear-gradient(180deg,#1d1b1d,#0d0d0f) !important;
+  box-shadow: 0 5px 0 #070708, inset 0 1px 0 rgba(236,211,169,.05) !important;
+}
+
+html[data-theme="dark-fantasy"] body .react-app-root[data-theme="dark-fantasy"]
+.db-profile-badge > span {
+  color: #ded2bf !important;
+  font-family: Georgia,"Times New Roman",serif !important;
+}
+
+html[data-theme="dark-fantasy"] body .react-app-root[data-theme="dark-fantasy"]
+.db-profile-badge strong {
+  color: #c94a3a !important;
+  letter-spacing: .04em !important;
+}
+
+html[data-theme="dark-fantasy"] body .react-app-root[data-theme="dark-fantasy"]
+.db-profile-badge button {
+  color: #eee4d1 !important;
+  border: 1px solid #9a4938 !important;
+  border-radius: 5px !important;
+  background: linear-gradient(180deg,#7d2924,#471617) !important;
+  box-shadow: 0 3px 0 #210a0b !important;
+}
+
+/* Sélecteur Connexion / Création — Royaume Mario. */
+html[data-theme="mario"] body .react-app-root[data-theme="mario"]
+.auth-tabs {
+  border: 3px solid #6f3918 !important;
+  border-radius: 15px !important;
+  background: linear-gradient(180deg,#fff4c7,#ffe198) !important;
+  box-shadow: 0 4px 0 rgba(92,47,19,.16) !important;
+}
+
+html[data-theme="mario"] body .react-app-root[data-theme="mario"]
+.auth-tab {
+  color: #5b310e !important;
+  border: 2px solid #b98218 !important;
+  background: linear-gradient(180deg,#ffe979,#efbd2b) !important;
+  box-shadow: 0 3px 0 rgba(129,84,8,.18) !important;
+}
+
+html[data-theme="mario"] body .react-app-root[data-theme="mario"]
+.auth-tab.active {
+  color: #fff !important;
+  border-color: #941f18 !important;
+  background: linear-gradient(180deg,#ef4b43,#c71d1b) !important;
+  box-shadow: 0 3px 0 rgba(107,22,14,.24) !important;
+}
+
+/* Sélecteur Connexion / Création — Royaume des Ténèbres. */
+html[data-theme="dark-fantasy"] body .react-app-root[data-theme="dark-fantasy"]
+.auth-tabs {
+  border: 1px solid #654a32 !important;
+  border-radius: 8px !important;
+  background: linear-gradient(180deg,#1b191b,#0b0b0d) !important;
+  box-shadow: 0 5px 0 #070708, inset 0 1px 0 rgba(236,211,169,.05) !important;
+}
+
+html[data-theme="dark-fantasy"] body .react-app-root[data-theme="dark-fantasy"]
+.auth-tab {
+  color: #cfc1ac !important;
+  border: 1px solid #594536 !important;
+  border-radius: 5px !important;
+  background: linear-gradient(180deg,#2a282a,#141416) !important;
+  box-shadow: 0 3px 0 #070708 !important;
+  font-family: "Outfit","Nunito",sans-serif !important;
+}
+
+html[data-theme="dark-fantasy"] body .react-app-root[data-theme="dark-fantasy"]
+.auth-tab.active {
+  color: #f1dfd6 !important;
+  border-color: #9a4938 !important;
+  background: linear-gradient(180deg,#7d2924,#471617) !important;
+  box-shadow: 0 3px 0 #210a0b, inset 0 1px 0 rgba(255,220,190,.08) !important;
 }

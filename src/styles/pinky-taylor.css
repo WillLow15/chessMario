@@ -1,0 +1,1366 @@
+/* =========================================================
+   PINKY TAYLOR — RUBY RIOT
+   Le thème est intégralement limité à data-theme="pinky-taylor".
+   ========================================================= */
+
+html[data-theme="pinky-taylor"] {
+  --pt-ink: #0b0b0d;
+  --pt-ruby: #f51659;
+  --pt-ruby-dark: #a70d3d;
+  --pt-ivory: #ffe0a8;
+  --pt-paper: #fff8e8;
+  --pt-blue: #50bde1;
+  --pt-blue-dark: #167c9f;
+  --pt-lime: #b7ec43;
+  --pt-shadow: 7px 7px 0 var(--pt-ink);
+}
+
+html[data-theme="pinky-taylor"] body {
+  color: var(--pt-ink) !important;
+  background:
+    radial-gradient(circle at 15% 15%, rgba(245,22,89,.10), transparent 30%),
+    radial-gradient(circle at 88% 72%, rgba(80,189,225,.13), transparent 34%),
+    #efe9df !important;
+}
+
+html[data-theme="pinky-taylor"] .react-app-root[data-theme="pinky-taylor"] {
+  color: var(--pt-ink);
+  font-family: "Outfit", "Nunito", sans-serif;
+}
+
+html[data-theme="pinky-taylor"] .world-bg {
+  background:
+    linear-gradient(rgba(247,240,229,.12), rgba(231,224,215,.18)),
+    url('/assets/pinky-taylor/theme-bg.webp') center top / cover no-repeat fixed,
+    #e7e0d7 !important;
+}
+
+html[data-theme="pinky-taylor"] .world-bg .parallax-back,
+html[data-theme="pinky-taylor"] .world-bg .parallax-mid,
+html[data-theme="pinky-taylor"] .world-bg .parallax-front,
+html[data-theme="pinky-taylor"] .world-bg .world-vignette {
+  display: none !important;
+}
+
+html[data-theme="pinky-taylor"] .world-bg::before,
+html[data-theme="pinky-taylor"] .world-bg::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+html[data-theme="pinky-taylor"] .world-bg::before {
+  inset: 0;
+  opacity: .055;
+  background:
+    radial-gradient(circle at 8% 24%, var(--pt-ruby) 0 5px, transparent 6px),
+    radial-gradient(circle at 91% 16%, var(--pt-blue) 0 7px, transparent 8px),
+    radial-gradient(circle at 78% 82%, var(--pt-ruby) 0 4px, transparent 5px),
+    repeating-radial-gradient(circle at 20% 70%, transparent 0 17px, var(--pt-ink) 18px 19px, transparent 20px 33px);
+}
+
+html[data-theme="pinky-taylor"] .world-bg::after {
+  display: none;
+}
+
+html[data-theme="pinky-taylor"] .titlebar {
+  padding-top: 13px !important;
+}
+
+html[data-theme="pinky-taylor"] .logo {
+  position: relative;
+  color: var(--pt-ink) !important;
+  padding: 10px 22px !important;
+  border: 5px solid var(--pt-ink) !important;
+  border-radius: 3px 18px 6px 14px !important;
+  background: var(--pt-paper) !important;
+  box-shadow: var(--pt-shadow) !important;
+  font-weight: 1000 !important;
+  letter-spacing: .025em !important;
+  transform: rotate(-1deg);
+}
+
+html[data-theme="pinky-taylor"] .logo::after {
+  content: "♥";
+  position: absolute;
+  right: -18px;
+  top: -18px;
+  color: var(--pt-blue);
+  font-size: 1.4rem;
+  -webkit-text-stroke: 3px var(--pt-ink);
+  transform: rotate(13deg);
+}
+
+html[data-theme="pinky-taylor"] .logo .pinky-title-ruby { color: var(--pt-ruby) !important; }
+html[data-theme="pinky-taylor"] .logo .pinky-title-ink { color: var(--pt-ink) !important; }
+html[data-theme="pinky-taylor"] .logo .pinky-title-blue { color: var(--pt-blue) !important; }
+
+html[data-theme="pinky-taylor"] .panel,
+html[data-theme="pinky-taylor"] .advantage-wrap.sf-wrap,
+html[data-theme="pinky-taylor"] .mode-card,
+html[data-theme="pinky-taylor"] .app-sheet,
+html[data-theme="pinky-taylor"] .profile-card,
+html[data-theme="pinky-taylor"] .camp-card {
+  color: var(--pt-ink) !important;
+  border: 4px solid var(--pt-ink) !important;
+  border-radius: 5px 19px 7px 15px !important;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(245,22,89,.07) 0 2px, transparent 3px),
+    radial-gradient(circle at 82% 68%, rgba(11,11,13,.08) 0 1px, transparent 2px),
+    var(--pt-paper) !important;
+  box-shadow: var(--pt-shadow) !important;
+}
+
+html[data-theme="pinky-taylor"] .panel .panel-head {
+  padding: 11px 14px !important;
+  color: white !important;
+  border-bottom: 4px solid var(--pt-ink) !important;
+  background: var(--pt-ruby) !important;
+  font-weight: 1000 !important;
+  letter-spacing: .08em !important;
+  text-shadow: 2px 2px 0 var(--pt-ink);
+}
+
+html[data-theme="pinky-taylor"] .wrap > .panel:first-child .panel-head {
+  color: var(--pt-ink) !important;
+  background: var(--pt-ivory) !important;
+  text-shadow: none;
+}
+
+html[data-theme="pinky-taylor"] .panel .section {
+  border-top: 2px dashed rgba(11,11,13,.25) !important;
+}
+
+html[data-theme="pinky-taylor"] .avatar {
+  border: 3px solid var(--pt-ink) !important;
+  border-radius: 50% 45% 48% 44% !important;
+  background: var(--pt-blue) !important;
+  box-shadow: 4px 4px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .team-elo-line,
+html[data-theme="pinky-taylor"] .turn-badge,
+html[data-theme="pinky-taylor"] .hint-chip,
+html[data-theme="pinky-taylor"] .move-row,
+html[data-theme="pinky-taylor"] .cap {
+  color: var(--pt-ink) !important;
+  border-color: var(--pt-ink) !important;
+  background: var(--pt-ivory) !important;
+  border-radius: 4px 11px 5px 9px !important;
+}
+
+html[data-theme="pinky-taylor"] .board-shell {
+  padding-top: 23px !important;
+  border: 6px solid var(--pt-ink) !important;
+  border-radius: 7px 24px 9px 18px !important;
+  background:
+    linear-gradient(90deg, rgba(245,22,89,.92), rgba(245,22,89,.92)) top / 100% 18px no-repeat,
+    repeating-linear-gradient(45deg, #d6d0c8 0 13px, #e9e3da 13px 26px) !important;
+  box-shadow: 9px 9px 0 var(--pt-ink), 15px 18px 32px rgba(11,11,13,.18) !important;
+}
+
+html[data-theme="pinky-taylor"] .board-shell::before {
+  height: 18px !important;
+  background: repeating-linear-gradient(90deg, var(--pt-ruby) 0 34px, var(--pt-ink) 34px 38px) !important;
+}
+
+html[data-theme="pinky-taylor"] .pipe-left,
+html[data-theme="pinky-taylor"] .pipe-right {
+  display: none !important;
+}
+
+html[data-theme="pinky-taylor"] .board-topbar {
+  padding: 7px 10px !important;
+  border: 3px solid var(--pt-ink) !important;
+  border-radius: 4px 13px 5px 10px !important;
+  background: var(--pt-paper) !important;
+  box-shadow: 4px 4px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .board {
+  border: 7px solid var(--pt-ink) !important;
+  border-radius: 3px !important;
+  background: var(--pt-ink) !important;
+  box-shadow: 6px 6px 0 var(--pt-ruby-dark) !important;
+}
+
+html[data-theme="pinky-taylor"] .sq.light {
+  background:
+    radial-gradient(circle at 78% 18%, rgba(11,11,13,.10) 0 1px, transparent 2px),
+    var(--pt-ivory) !important;
+}
+
+html[data-theme="pinky-taylor"] .sq.dark {
+  background:
+    radial-gradient(circle at 24% 72%, rgba(11,11,13,.13) 0 1px, transparent 2px),
+    var(--pt-blue) !important;
+}
+
+html[data-theme="pinky-taylor"] .sq.selected {
+  box-shadow: inset 0 0 0 6px var(--pt-ruby) !important;
+}
+
+html[data-theme="pinky-taylor"] .sq.last {
+  box-shadow: inset 0 0 0 999px rgba(183,236,67,.30) !important;
+}
+
+html[data-theme="pinky-taylor"] .sq.check {
+  box-shadow: inset 0 0 0 999px rgba(245,22,89,.42), inset 0 0 0 6px var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .piece,
+html[data-theme="pinky-taylor"] .piece.white,
+html[data-theme="pinky-taylor"] .piece.black {
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  filter: drop-shadow(2px 3px 0 rgba(11,11,13,.24)) !important;
+  overflow: visible !important;
+}
+
+html[data-theme="pinky-taylor"] .piece-img {
+  transform: scale(1.04);
+  filter: saturate(1.06) contrast(1.03);
+}
+
+html[data-theme="pinky-taylor"] .cap .piece-img {
+  transform: scale(1.03);
+}
+
+html[data-theme="pinky-taylor"] .chess-clocks {
+  gap: 8px !important;
+}
+
+html[data-theme="pinky-taylor"] .chess-clock {
+  color: var(--pt-ink) !important;
+  border: 3px solid var(--pt-ink) !important;
+  border-radius: 4px 13px 5px 10px !important;
+  box-shadow: 4px 4px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .chess-clock.white-clock { background: var(--pt-ivory) !important; }
+html[data-theme="pinky-taylor"] .chess-clock.black-clock { background: var(--pt-ruby) !important; }
+html[data-theme="pinky-taylor"] .chess-clock strong { color: var(--pt-ink) !important; }
+html[data-theme="pinky-taylor"] .chess-clock.black-clock span { color: white !important; text-shadow: 1px 1px var(--pt-ink); }
+
+html[data-theme="pinky-taylor"] .clock-center {
+  color: var(--pt-ink) !important;
+  border: 3px solid var(--pt-ink) !important;
+  border-radius: 50% 43% 48% 46% !important;
+  background: var(--pt-blue) !important;
+  box-shadow: 3px 3px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .advantage-wrap.sf-wrap {
+  margin-top: 10px !important;
+}
+
+html[data-theme="pinky-taylor"] .sf-life {
+  border-color: var(--pt-ink) !important;
+  background: #d1cbc4 !important;
+}
+
+html[data-theme="pinky-taylor"] .white-fill { background: var(--pt-ivory) !important; }
+html[data-theme="pinky-taylor"] .black-fill { background: var(--pt-ruby) !important; }
+html[data-theme="pinky-taylor"] .vs-badge { background: var(--pt-blue) !important; border-color: var(--pt-ink) !important; }
+
+html[data-theme="pinky-taylor"] .btn-main,
+html[data-theme="pinky-taylor"] .remote-main-btn,
+html[data-theme="pinky-taylor"] .game-action-btn.resign {
+  color: white !important;
+  border: 3px solid var(--pt-ink) !important;
+  background: var(--pt-ruby) !important;
+  box-shadow: 4px 4px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .btn-yellow,
+html[data-theme="pinky-taylor"] .game-action-btn.draw {
+  color: var(--pt-ink) !important;
+  border: 3px solid var(--pt-ink) !important;
+  background: var(--pt-ivory) !important;
+  box-shadow: 4px 4px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .mode-overlay,
+html[data-theme="pinky-taylor"] .app-sheet-overlay,
+html[data-theme="pinky-taylor"] .profile-overlay,
+html[data-theme="pinky-taylor"] .profile-dashboard-overlay,
+html[data-theme="pinky-taylor"] .game-action-overlay,
+html[data-theme="pinky-taylor"] .camp-overlay {
+  background: rgba(11,11,13,.72) !important;
+  backdrop-filter: blur(4px) grayscale(.2);
+}
+
+html[data-theme="pinky-taylor"] .mode-title,
+html[data-theme="pinky-taylor"] .app-sheet-title,
+html[data-theme="pinky-taylor"] .camp-title {
+  color: var(--pt-ruby) !important;
+  text-shadow: 2px 2px 0 var(--pt-ink) !important;
+  letter-spacing: .035em !important;
+}
+
+/* Choix du camp — carte dédiée Pinky Taylor */
+html[data-theme="pinky-taylor"] .camp-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  width: min(92vw, 660px) !important;
+  padding: clamp(24px, 4vw, 38px) !important;
+  transform: rotate(-.35deg);
+}
+
+html[data-theme="pinky-taylor"] .camp-card::before,
+html[data-theme="pinky-taylor"] .camp-card::after {
+  position: absolute;
+  z-index: -1;
+  color: var(--pt-ruby);
+  font-size: clamp(3.4rem, 9vw, 6.8rem);
+  font-weight: 1000;
+  line-height: 1;
+  opacity: .09;
+  pointer-events: none;
+}
+
+html[data-theme="pinky-taylor"] .camp-card::before {
+  content: "♥";
+  top: -18px;
+  left: 18px;
+  transform: rotate(-14deg);
+}
+
+html[data-theme="pinky-taylor"] .camp-card::after {
+  content: "✦";
+  right: 20px;
+  bottom: -16px;
+  color: var(--pt-blue);
+  transform: rotate(12deg);
+}
+
+html[data-theme="pinky-taylor"] .camp-title {
+  margin-bottom: 8px !important;
+  font-size: clamp(2rem, 5vw, 3rem) !important;
+  font-weight: 1000 !important;
+}
+
+html[data-theme="pinky-taylor"] .camp-sub {
+  margin-bottom: 24px !important;
+  color: var(--pt-ink) !important;
+  font-weight: 800 !important;
+  opacity: .78 !important;
+}
+
+html[data-theme="pinky-taylor"] .camp-actions {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 16px !important;
+}
+
+html[data-theme="pinky-taylor"] .camp-btn {
+  min-height: 72px;
+  padding: 15px 12px !important;
+  color: var(--pt-ink) !important;
+  border: 4px solid var(--pt-ink) !important;
+  border-radius: 5px 17px 7px 13px !important;
+  font-size: 1.05rem !important;
+  font-weight: 1000 !important;
+  box-shadow: 5px 5px 0 var(--pt-ink) !important;
+  text-shadow: none !important;
+  transition: transform .14s ease, filter .14s ease, box-shadow .14s ease !important;
+}
+
+html[data-theme="pinky-taylor"] .camp-btn::before {
+  display: inline-block;
+  margin-right: 8px;
+  font-size: 1.15em;
+}
+
+html[data-theme="pinky-taylor"] .camp-btn.white {
+  background: var(--pt-ivory) !important;
+}
+
+html[data-theme="pinky-taylor"] .camp-btn.white::before { content: "♥"; color: var(--pt-ruby); }
+
+html[data-theme="pinky-taylor"] .camp-btn.black {
+  color: white !important;
+  background: var(--pt-ink) !important;
+  box-shadow: 5px 5px 0 var(--pt-ruby) !important;
+}
+
+html[data-theme="pinky-taylor"] .camp-btn.black::before { content: "★"; color: var(--pt-blue); }
+
+html[data-theme="pinky-taylor"] .camp-btn.random {
+  background: var(--pt-blue) !important;
+}
+
+html[data-theme="pinky-taylor"] .camp-btn.random::before { content: "×"; color: var(--pt-ruby); }
+
+html[data-theme="pinky-taylor"] .camp-btn:hover {
+  filter: brightness(1.04) !important;
+  transform: translate(-2px, -2px) rotate(-1deg);
+  box-shadow: 7px 7px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .camp-btn.black:hover {
+  box-shadow: 7px 7px 0 var(--pt-ruby) !important;
+}
+
+html[data-theme="pinky-taylor"] .camp-btn:active {
+  transform: translate(3px, 3px) !important;
+  box-shadow: 2px 2px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .camp-btn:focus-visible {
+  outline: 4px solid var(--pt-ruby) !important;
+  outline-offset: 4px;
+}
+
+html[data-theme="pinky-taylor"] .mode-choice,
+html[data-theme="pinky-taylor"] .level-btn,
+html[data-theme="pinky-taylor"] .time-control-btn,
+html[data-theme="pinky-taylor"] .theme-picker-btn {
+  color: var(--pt-ink) !important;
+  border: 3px solid var(--pt-ink) !important;
+  border-radius: 4px 13px 5px 10px !important;
+  background: var(--pt-ivory) !important;
+  box-shadow: 4px 4px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .mode-choice.ai,
+html[data-theme="pinky-taylor"] .level-btn.hard,
+html[data-theme="pinky-taylor"] .theme-picker-btn.active,
+html[data-theme="pinky-taylor"] .time-control-btn.active {
+  color: white !important;
+  background: var(--pt-ruby) !important;
+}
+
+html[data-theme="pinky-taylor"] .mode-choice.remote,
+html[data-theme="pinky-taylor"] .level-btn.medium {
+  color: var(--pt-ink) !important;
+  background: var(--pt-blue) !important;
+}
+
+html[data-theme="pinky-taylor"] .bottom-app-nav,
+html[data-theme="pinky-taylor"] .bottom-app-nav.game-active {
+  border: 4px solid var(--pt-ink) !important;
+  border-radius: 5px 18px 7px 14px !important;
+  background: var(--pt-paper) !important;
+  box-shadow: 6px 6px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .bottom-nav-btn {
+  color: var(--pt-ink) !important;
+  border: 3px solid var(--pt-ink) !important;
+  border-radius: 4px 12px 5px 9px !important;
+  background: var(--pt-ivory) !important;
+  box-shadow: 3px 3px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .bottom-nav-btn.play {
+  color: white !important;
+  background: var(--pt-ruby) !important;
+}
+
+/* Hors partie : Jouer + Profil, alignés et de dimensions identiques. */
+html[data-theme="pinky-taylor"]
+.react-app-root[data-theme="pinky-taylor"]
+.bottom-app-nav:not(.game-active) {
+  width: min(680px, calc(100vw - 24px)) !important;
+  min-height: 0 !important;
+  padding: 8px !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  grid-template-rows: 60px !important;
+  align-items: stretch !important;
+  gap: 10px !important;
+}
+
+html[data-theme="pinky-taylor"]
+.react-app-root[data-theme="pinky-taylor"]
+.bottom-app-nav:not(.game-active) > .game-actions,
+html[data-theme="pinky-taylor"]
+.react-app-root[data-theme="pinky-taylor"]
+.bottom-app-nav:not(.game-active) > .game-actions.hidden {
+  display: none !important;
+}
+
+html[data-theme="pinky-taylor"]
+.react-app-root[data-theme="pinky-taylor"]
+.bottom-app-nav:not(.game-active) > #bottomPlayBtn,
+html[data-theme="pinky-taylor"]
+.react-app-root[data-theme="pinky-taylor"]
+.bottom-app-nav:not(.game-active) > #bottomProfileBtn {
+  display: flex !important;
+  grid-row: 1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 60px !important;
+  min-height: 60px !important;
+  max-height: 60px !important;
+  margin: 0 !important;
+}
+
+html[data-theme="pinky-taylor"]
+.react-app-root[data-theme="pinky-taylor"]
+.bottom-app-nav:not(.game-active) > #bottomPlayBtn {
+  grid-column: 1 !important;
+}
+
+html[data-theme="pinky-taylor"]
+.react-app-root[data-theme="pinky-taylor"]
+.bottom-app-nav:not(.game-active) > #bottomProfileBtn {
+  grid-column: 2 !important;
+  background: var(--pt-blue) !important;
+}
+
+/* Barre d'actions en cours de partie */
+html[data-theme="pinky-taylor"] .bottom-app-nav.game-active {
+  padding: 8px !important;
+  border-color: var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .bottom-app-nav.game-active .game-action-btn,
+html[data-theme="pinky-taylor"] .bottom-app-nav.game-active #bottomProfileBtn {
+  min-height: 52px !important;
+  color: var(--pt-ink) !important;
+  border: 3px solid var(--pt-ink) !important;
+  border-radius: 4px 14px 6px 11px !important;
+  box-shadow: 3px 3px 0 var(--pt-ink) !important;
+  font-weight: 1000 !important;
+}
+
+html[data-theme="pinky-taylor"] .bottom-app-nav.game-active .game-action-btn.draw {
+  color: var(--pt-ink) !important;
+  background: var(--pt-blue) !important;
+}
+
+html[data-theme="pinky-taylor"] .bottom-app-nav.game-active .game-action-btn.resign {
+  color: white !important;
+  background: var(--pt-ruby) !important;
+}
+
+html[data-theme="pinky-taylor"] .bottom-app-nav.game-active #bottomProfileBtn {
+  background: var(--pt-ivory) !important;
+}
+
+html[data-theme="pinky-taylor"] .bottom-app-nav.game-active .game-action-icon,
+html[data-theme="pinky-taylor"] .bottom-app-nav.game-active .bottom-nav-icon {
+  color: var(--pt-ink) !important;
+  border: 2px solid var(--pt-ink);
+  border-radius: 50% 43% 48% 46% !important;
+  background: var(--pt-paper) !important;
+}
+
+html[data-theme="pinky-taylor"] .bottom-app-nav.game-active .game-action-btn:active,
+html[data-theme="pinky-taylor"] .bottom-app-nav.game-active #bottomProfileBtn:active {
+  transform: translate(2px, 2px) !important;
+  box-shadow: 1px 1px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .bottom-app-nav.game-active .game-action-status {
+  color: var(--pt-ink) !important;
+  border: 3px solid var(--pt-ink) !important;
+  background: var(--pt-paper) !important;
+  box-shadow: 3px 3px 0 var(--pt-ink) !important;
+}
+
+/* Dialogue Nulle / Abandon — version Pinky Taylor */
+html[data-theme="pinky-taylor"] .game-action-dialog {
+  position: relative;
+  overflow: hidden;
+  color: var(--pt-ink) !important;
+  border: 5px solid var(--pt-ink) !important;
+  border-radius: 6px 23px 9px 17px !important;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(245,22,89,.09) 0 3px, transparent 4px),
+    radial-gradient(circle at 88% 72%, rgba(80,189,225,.11) 0 4px, transparent 5px),
+    var(--pt-paper) !important;
+  box-shadow: 8px 8px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .game-action-dialog::before {
+  content: "♥  ×  ✦";
+  position: absolute;
+  left: 18px;
+  bottom: 10px;
+  color: var(--pt-ruby);
+  font-size: 1rem;
+  font-weight: 1000;
+  opacity: .14;
+  pointer-events: none;
+}
+
+html[data-theme="pinky-taylor"] .game-action-dialog-close,
+html[data-theme="pinky-taylor"] .profile-dashboard-close {
+  color: white !important;
+  border: 3px solid var(--pt-ink) !important;
+  background: var(--pt-ruby) !important;
+  box-shadow: 3px 3px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .game-action-dialog-icon {
+  color: var(--pt-ink) !important;
+  border: 4px solid var(--pt-ink) !important;
+  border-radius: 50% 42% 48% 44% !important;
+  background: var(--pt-blue) !important;
+  box-shadow: 4px 4px 0 var(--pt-ink) !important;
+  transform: rotate(-4deg);
+}
+
+html[data-theme="pinky-taylor"] .game-action-dialog-title {
+  color: var(--pt-ruby) !important;
+  font-size: 1.2rem !important;
+  font-weight: 1000 !important;
+  text-shadow: 2px 2px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .game-action-dialog-text {
+  color: var(--pt-ink) !important;
+  font-weight: 800 !important;
+}
+
+html[data-theme="pinky-taylor"] .game-action-dialog-actions button {
+  min-height: 46px !important;
+  color: var(--pt-ink) !important;
+  border: 3px solid var(--pt-ink) !important;
+  border-radius: 4px 13px 6px 10px !important;
+  background: var(--pt-ivory) !important;
+  box-shadow: 3px 3px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .game-action-dialog-actions .primary {
+  color: white !important;
+  background: var(--pt-ruby) !important;
+}
+
+html[data-theme="pinky-taylor"] .game-action-dialog-actions .primary.danger {
+  color: white !important;
+  background: var(--pt-ink) !important;
+  box-shadow: 3px 3px 0 var(--pt-ruby) !important;
+}
+
+html[data-theme="pinky-taylor"] .game-action-dialog-actions button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--pt-ink) !important;
+}
+
+/* Tableau de profil — version Pinky Taylor */
+html[data-theme="pinky-taylor"] .profile-dashboard {
+  position: relative;
+  color: var(--pt-ink) !important;
+  border: 5px solid var(--pt-ink) !important;
+  border-radius: 7px 25px 10px 18px !important;
+  background:
+    radial-gradient(circle at 8% 12%, rgba(245,22,89,.08) 0 3px, transparent 4px),
+    radial-gradient(circle at 92% 84%, rgba(80,189,225,.10) 0 4px, transparent 5px),
+    var(--pt-paper) !important;
+  box-shadow: 9px 9px 0 var(--pt-ink), 18px 22px 42px rgba(11,11,13,.28) !important;
+}
+
+html[data-theme="pinky-taylor"] .profile-dashboard::before {
+  content: "♥";
+  position: absolute;
+  right: 76px;
+  top: 22px;
+  color: var(--pt-blue);
+  font-size: 1.15rem;
+  font-weight: 1000;
+  -webkit-text-stroke: 2px var(--pt-ink);
+  transform: rotate(12deg);
+  pointer-events: none;
+}
+
+html[data-theme="pinky-taylor"] .profile-dashboard-avatar {
+  color: white !important;
+  border: 4px solid var(--pt-ink) !important;
+  border-radius: 50% 43% 48% 44% !important;
+  background: var(--pt-ruby) !important;
+  box-shadow: 4px 4px 0 var(--pt-ink) !important;
+  transform: rotate(-3deg);
+}
+
+html[data-theme="pinky-taylor"] .profile-dashboard-identity > span,
+html[data-theme="pinky-taylor"] .profile-dashboard-elo span,
+html[data-theme="pinky-taylor"] .profile-dashboard-identity small {
+  color: var(--pt-ink) !important;
+  font-weight: 900 !important;
+}
+
+html[data-theme="pinky-taylor"] .profile-dashboard-identity strong {
+  color: var(--pt-ruby) !important;
+  font-weight: 1000 !important;
+  text-shadow: 1px 1px 0 var(--pt-ink);
+}
+
+html[data-theme="pinky-taylor"] .profile-dashboard-elo {
+  border: 3px solid var(--pt-ink) !important;
+  border-radius: 4px 13px 6px 10px !important;
+  background: var(--pt-ivory) !important;
+  box-shadow: 3px 3px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .profile-dashboard-elo strong {
+  color: var(--pt-ruby) !important;
+}
+
+html[data-theme="pinky-taylor"] .profile-dashboard-status,
+html[data-theme="pinky-taylor"] .profile-guest-action p {
+  color: var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .profile-stats-grid {
+  gap: 9px !important;
+}
+
+html[data-theme="pinky-taylor"] .profile-stat {
+  border: 3px solid var(--pt-ink) !important;
+  border-radius: 4px 13px 6px 10px !important;
+  background: var(--pt-ivory) !important;
+  box-shadow: 3px 3px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .profile-stat span,
+html[data-theme="pinky-taylor"] .profile-stat strong {
+  color: var(--pt-ink) !important;
+  font-weight: 1000 !important;
+}
+
+html[data-theme="pinky-taylor"] .profile-stat.win { background: var(--pt-blue) !important; }
+html[data-theme="pinky-taylor"] .profile-stat.draw { background: var(--pt-ivory) !important; }
+html[data-theme="pinky-taylor"] .profile-stat.loss { background: #ffb2c7 !important; }
+html[data-theme="pinky-taylor"] .profile-stat.rate { background: var(--pt-lime) !important; }
+
+html[data-theme="pinky-taylor"] .profile-history-section {
+  border: 3px dashed var(--pt-ink) !important;
+  border-radius: 5px 17px 7px 13px !important;
+  background: rgba(80,189,225,.12) !important;
+}
+
+html[data-theme="pinky-taylor"] .profile-section-title,
+html[data-theme="pinky-taylor"] .profile-section-title span,
+html[data-theme="pinky-taylor"] .profile-history-empty,
+html[data-theme="pinky-taylor"] .profile-history-top strong,
+html[data-theme="pinky-taylor"] .profile-history-top span,
+html[data-theme="pinky-taylor"] .profile-history-meta {
+  color: var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .profile-history-item {
+  color: var(--pt-ink) !important;
+  border: 2px solid var(--pt-ink);
+  border-radius: 3px 11px 5px 9px !important;
+  background: var(--pt-paper) !important;
+}
+
+html[data-theme="pinky-taylor"] .profile-history-result {
+  color: var(--pt-ink) !important;
+  border: 2px solid var(--pt-ink);
+  border-radius: 50% 43% 48% 46% !important;
+  background: var(--pt-blue) !important;
+}
+
+html[data-theme="pinky-taylor"] .profile-history-item.win .profile-history-result { background: var(--pt-lime) !important; }
+html[data-theme="pinky-taylor"] .profile-history-item.loss .profile-history-result { color: white !important; background: var(--pt-ruby) !important; }
+html[data-theme="pinky-taylor"] .profile-history-item.draw .profile-history-result { background: var(--pt-ivory) !important; }
+
+html[data-theme="pinky-taylor"] .profile-guest-action button,
+html[data-theme="pinky-taylor"] .profile-delete-reveal,
+html[data-theme="pinky-taylor"] .profile-delete-actions button {
+  min-height: 44px !important;
+  color: var(--pt-ink) !important;
+  border: 3px solid var(--pt-ink) !important;
+  border-radius: 4px 13px 6px 10px !important;
+  background: var(--pt-ivory) !important;
+  box-shadow: 3px 3px 0 var(--pt-ink) !important;
+  font-weight: 1000 !important;
+}
+
+html[data-theme="pinky-taylor"] .profile-guest-action button {
+  color: white !important;
+  background: var(--pt-ruby) !important;
+}
+
+html[data-theme="pinky-taylor"] .profile-delete-reveal {
+  color: var(--pt-ruby) !important;
+  background: var(--pt-paper) !important;
+}
+
+html[data-theme="pinky-taylor"] .profile-delete-confirm {
+  color: var(--pt-ink) !important;
+  border: 3px solid var(--pt-ruby) !important;
+  border-radius: 5px 15px 7px 11px !important;
+  background: rgba(245,22,89,.09) !important;
+}
+
+html[data-theme="pinky-taylor"] .profile-delete-confirm > strong,
+html[data-theme="pinky-taylor"] .profile-delete-confirm > p,
+html[data-theme="pinky-taylor"] .profile-delete-confirm label span {
+  color: var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .profile-delete-confirm input {
+  color: var(--pt-ink) !important;
+  border: 3px solid var(--pt-ink) !important;
+  border-radius: 3px 11px 5px 9px !important;
+  background: var(--pt-paper) !important;
+  box-shadow: 2px 2px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .profile-delete-confirm input:focus {
+  outline: 3px solid var(--pt-blue) !important;
+  outline-offset: 2px;
+}
+
+html[data-theme="pinky-taylor"] .profile-delete-actions .danger {
+  color: white !important;
+  background: var(--pt-ruby) !important;
+}
+
+/* Connexion et création de profil — version Pinky Taylor */
+html[data-theme="pinky-taylor"] .profile-card.auth-card {
+  position: relative;
+  isolation: isolate;
+  overflow: auto;
+  width: min(94vw, 520px) !important;
+  padding: 28px 24px 24px !important;
+  color: var(--pt-ink) !important;
+  border: 5px solid var(--pt-ink) !important;
+  border-radius: 7px 24px 9px 18px !important;
+  background:
+    radial-gradient(circle at 11% 17%, rgba(245,22,89,.09) 0 3px, transparent 4px),
+    radial-gradient(circle at 88% 73%, rgba(80,189,225,.11) 0 3px, transparent 4px),
+    var(--pt-paper) !important;
+  box-shadow: 9px 9px 0 var(--pt-ink), 18px 22px 42px rgba(11,11,13,.28) !important;
+}
+
+html[data-theme="pinky-taylor"] .profile-card.auth-card::before,
+html[data-theme="pinky-taylor"] .profile-card.auth-card::after {
+  position: absolute;
+  z-index: -1;
+  font-weight: 1000;
+  line-height: 1;
+  opacity: .10;
+  pointer-events: none;
+}
+
+html[data-theme="pinky-taylor"] .profile-card.auth-card::before {
+  content: "♥";
+  left: 18px;
+  top: 18px;
+  color: var(--pt-ruby);
+  font-size: 4.8rem;
+  transform: rotate(-12deg);
+}
+
+html[data-theme="pinky-taylor"] .profile-card.auth-card::after {
+  content: "✦";
+  right: 18px;
+  bottom: 14px;
+  color: var(--pt-blue);
+  font-size: 4.2rem;
+  transform: rotate(10deg);
+}
+
+html[data-theme="pinky-taylor"] .profile-icon {
+  color: var(--pt-ivory) !important;
+  border: 4px solid var(--pt-ink) !important;
+  border-radius: 50% 43% 48% 44% !important;
+  background: var(--pt-ruby) !important;
+  box-shadow: 4px 4px 0 var(--pt-ink) !important;
+  transform: rotate(-3deg);
+}
+
+html[data-theme="pinky-taylor"] .profile-title {
+  color: var(--pt-ruby) !important;
+  font-weight: 1000 !important;
+  text-shadow: 2px 2px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .profile-sub {
+  color: var(--pt-ink) !important;
+  font-weight: 800 !important;
+  opacity: .78;
+}
+
+html[data-theme="pinky-taylor"] .auth-tabs {
+  gap: 8px !important;
+  padding: 6px !important;
+  border: 3px solid var(--pt-ink) !important;
+  border-radius: 4px 15px 6px 11px !important;
+  background: var(--pt-ivory) !important;
+  box-shadow: 3px 3px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .auth-tab {
+  min-height: 48px !important;
+  color: var(--pt-ink) !important;
+  border: 3px solid transparent !important;
+  border-radius: 3px 11px 5px 9px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  font-weight: 1000 !important;
+}
+
+html[data-theme="pinky-taylor"] .auth-tab.active {
+  color: white !important;
+  border-color: var(--pt-ink) !important;
+  background: var(--pt-ruby) !important;
+  box-shadow: 3px 3px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .auth-tab:not(.active):hover {
+  color: var(--pt-ink) !important;
+  background: var(--pt-blue) !important;
+}
+
+html[data-theme="pinky-taylor"] .profile-field span {
+  margin-left: 2px !important;
+  color: var(--pt-ink) !important;
+  font-weight: 1000 !important;
+}
+
+html[data-theme="pinky-taylor"] :is(
+  #loginProfileInput,
+  #loginPasswordInput,
+  #registerNameInput,
+  #registerPasswordInput,
+  #registerPasswordConfirmInput
+) {
+  min-height: 54px !important;
+  color: var(--pt-ink) !important;
+  border: 4px solid var(--pt-ink) !important;
+  border-radius: 4px 14px 6px 11px !important;
+  background: var(--pt-paper) !important;
+  box-shadow: 3px 3px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] :is(
+  #loginProfileInput,
+  #loginPasswordInput,
+  #registerNameInput,
+  #registerPasswordInput,
+  #registerPasswordConfirmInput
+)::placeholder {
+  color: rgba(11,11,13,.48) !important;
+  opacity: 1;
+}
+
+html[data-theme="pinky-taylor"] :is(
+  #loginProfileInput,
+  #loginPasswordInput,
+  #registerNameInput,
+  #registerPasswordInput,
+  #registerPasswordConfirmInput
+):focus {
+  border-color: var(--pt-ruby) !important;
+  outline: 3px solid var(--pt-blue) !important;
+  outline-offset: 2px;
+  box-shadow: 3px 3px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .profile-save,
+html[data-theme="pinky-taylor"] .guest-login-btn {
+  min-height: 52px !important;
+  color: white !important;
+  border: 4px solid var(--pt-ink) !important;
+  border-radius: 4px 14px 6px 11px !important;
+  background: var(--pt-ruby) !important;
+  box-shadow: 4px 4px 0 var(--pt-ink) !important;
+  font-weight: 1000 !important;
+}
+
+html[data-theme="pinky-taylor"] .guest-login-btn {
+  color: var(--pt-ink) !important;
+  background: var(--pt-blue) !important;
+}
+
+html[data-theme="pinky-taylor"] .profile-save:not(:disabled):hover,
+html[data-theme="pinky-taylor"] .guest-login-btn:hover {
+  filter: brightness(1.04);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .profile-save:not(:disabled):active,
+html[data-theme="pinky-taylor"] .guest-login-btn:active {
+  transform: translate(2px, 2px) !important;
+  box-shadow: 2px 2px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .auth-or {
+  color: var(--pt-ink) !important;
+  font-weight: 1000 !important;
+}
+
+html[data-theme="pinky-taylor"] .auth-or::before {
+  height: 3px !important;
+  background: var(--pt-ruby) !important;
+}
+
+html[data-theme="pinky-taylor"] .auth-or::after {
+  height: 3px !important;
+  background: var(--pt-blue) !important;
+}
+
+html[data-theme="pinky-taylor"] .guest-login-note,
+html[data-theme="pinky-taylor"] .profile-status,
+html[data-theme="pinky-taylor"] .profile-name-check {
+  color: var(--pt-ink) !important;
+  font-weight: 800 !important;
+}
+
+html[data-theme="pinky-taylor"] .profile-status.error,
+html[data-theme="pinky-taylor"] .profile-name-check.error {
+  color: var(--pt-ruby) !important;
+}
+
+html[data-theme="pinky-taylor"] .profile-status.ok,
+html[data-theme="pinky-taylor"] .profile-name-check.ok {
+  color: var(--pt-blue-dark) !important;
+}
+
+/* Parties différées en cours — version Pinky Taylor */
+html[data-theme="pinky-taylor"] .ongoing-games-block {
+  position: relative;
+  color: var(--pt-ink) !important;
+  border-bottom: 4px solid var(--pt-ink) !important;
+  background: var(--pt-paper) !important;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-games-head {
+  min-height: 50px;
+  color: white !important;
+  border-bottom: 4px solid var(--pt-ink) !important;
+  background: var(--pt-ruby) !important;
+  text-shadow: 2px 2px 0 var(--pt-ink);
+}
+
+html[data-theme="pinky-taylor"] .ongoing-games-head strong::before {
+  content: "♥";
+  display: inline-block;
+  margin-right: 7px;
+  color: var(--pt-blue);
+  font-size: 1.05em;
+  -webkit-text-stroke: 2px var(--pt-ink);
+  transform: rotate(-8deg);
+}
+
+html[data-theme="pinky-taylor"] .ongoing-games-count {
+  min-width: 29px;
+  height: 29px;
+  color: var(--pt-ink) !important;
+  border: 3px solid var(--pt-ink) !important;
+  border-radius: 50% 43% 48% 46% !important;
+  background: var(--pt-blue) !important;
+  box-shadow: 2px 2px 0 var(--pt-ink) !important;
+  text-shadow: none;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-games-list {
+  gap: 11px !important;
+  padding: 11px !important;
+  background:
+    radial-gradient(circle at 12% 15%, rgba(245,22,89,.07) 0 2px, transparent 3px),
+    radial-gradient(circle at 86% 78%, rgba(80,189,225,.09) 0 3px, transparent 4px),
+    var(--pt-paper) !important;
+  scrollbar-color: var(--pt-ruby) var(--pt-paper);
+}
+
+html[data-theme="pinky-taylor"] .ongoing-game-card {
+  color: var(--pt-ink) !important;
+  border: 3px solid var(--pt-ink) !important;
+  border-radius: 4px 14px 6px 11px !important;
+  background: var(--pt-ivory) !important;
+  box-shadow: 4px 4px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-game-card.my-turn {
+  border-color: var(--pt-ink) !important;
+  background: var(--pt-blue) !important;
+  box-shadow: 4px 4px 0 var(--pt-ruby) !important;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-game-card.waiting {
+  border-style: dashed !important;
+  background: var(--pt-paper) !important;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-game-card:active {
+  transform: translate(2px, 2px) !important;
+  box-shadow: 2px 2px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-mini-board {
+  border: 3px solid var(--pt-ink) !important;
+  border-radius: 3px 10px 4px 8px !important;
+  background: var(--pt-paper) !important;
+  box-shadow: 2px 2px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-mini-square.light { background: var(--pt-paper) !important; }
+html[data-theme="pinky-taylor"] .ongoing-mini-square.dark { background: var(--pt-blue) !important; }
+
+html[data-theme="pinky-taylor"] .ongoing-player-row,
+html[data-theme="pinky-taylor"] .ongoing-deadline {
+  color: var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-player-row.me b::after {
+  color: var(--pt-ruby) !important;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-color-dot {
+  border: 2px solid var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-color-dot.white { background: var(--pt-ivory) !important; }
+html[data-theme="pinky-taylor"] .ongoing-color-dot.black { background: var(--pt-ruby) !important; }
+
+html[data-theme="pinky-taylor"] .ongoing-turn {
+  color: var(--pt-ink) !important;
+  border: 2px solid var(--pt-ink);
+  border-radius: 3px 10px 4px 8px !important;
+  background: var(--pt-paper) !important;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-turn.mine {
+  color: var(--pt-ink) !important;
+  background: var(--pt-lime) !important;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-games-empty,
+html[data-theme="pinky-taylor"] .ongoing-games-more {
+  color: var(--pt-ink) !important;
+  border: 2px solid var(--pt-ink) !important;
+  border-radius: 3px 11px 5px 9px !important;
+  background: var(--pt-ivory) !important;
+  box-shadow: 2px 2px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-games-empty.error {
+  color: var(--pt-ruby) !important;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-games-more {
+  color: white !important;
+  background: var(--pt-ruby) !important;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-games-list::-webkit-scrollbar {
+  width: 9px;
+}
+
+html[data-theme="pinky-taylor"] .ongoing-games-list::-webkit-scrollbar-track {
+  background: var(--pt-paper);
+}
+
+html[data-theme="pinky-taylor"] .ongoing-games-list::-webkit-scrollbar-thumb {
+  border: 2px solid var(--pt-paper);
+  border-radius: 0;
+  background: var(--pt-ruby);
+}
+
+html[data-theme="pinky-taylor"] .game-loader {
+  background:
+    radial-gradient(circle at center, rgba(80,189,225,.30), transparent 35%),
+    var(--pt-paper) !important;
+}
+
+html[data-theme="pinky-taylor"] .game-loader-card {
+  color: var(--pt-ink) !important;
+  border: 5px solid var(--pt-ink) !important;
+  border-radius: 5px 20px 8px 15px !important;
+  background: var(--pt-ivory) !important;
+  box-shadow: 8px 8px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .game-loader-progress {
+  background: var(--pt-ruby) !important;
+}
+
+html[data-theme="pinky-taylor"] .game-loader-icon-wrap {
+  border-color: var(--pt-ink) !important;
+  background: var(--pt-blue) !important;
+}
+
+@media (max-width: 760px) {
+  html[data-theme="pinky-taylor"] .logo {
+    padding: 8px 15px !important;
+    border-width: 4px !important;
+  }
+
+  html[data-theme="pinky-taylor"] .board-shell {
+    border-width: 4px !important;
+    box-shadow: 5px 5px 0 var(--pt-ink) !important;
+  }
+
+  html[data-theme="pinky-taylor"] .board {
+    border-width: 5px !important;
+    box-shadow: 3px 3px 0 var(--pt-ruby-dark) !important;
+  }
+
+  html[data-theme="pinky-taylor"] .piece-img {
+    transform: scale(1);
+  }
+
+  html[data-theme="pinky-taylor"] .camp-card {
+    padding: 24px 18px 22px !important;
+    transform: none;
+  }
+
+  html[data-theme="pinky-taylor"] .camp-actions {
+    grid-template-columns: 1fr !important;
+    gap: 13px !important;
+  }
+
+  html[data-theme="pinky-taylor"] .camp-btn {
+    min-height: 60px;
+  }
+
+  html[data-theme="pinky-taylor"] .bottom-app-nav.game-active {
+    padding: 6px !important;
+  }
+
+  html[data-theme="pinky-taylor"]
+  .react-app-root[data-theme="pinky-taylor"]
+  .bottom-app-nav:not(.game-active) {
+    width: calc(100% - 12px) !important;
+    padding: 6px !important;
+    grid-template-rows: 52px !important;
+    gap: 6px !important;
+  }
+
+  html[data-theme="pinky-taylor"]
+  .react-app-root[data-theme="pinky-taylor"]
+  .bottom-app-nav:not(.game-active) > #bottomPlayBtn,
+  html[data-theme="pinky-taylor"]
+  .react-app-root[data-theme="pinky-taylor"]
+  .bottom-app-nav:not(.game-active) > #bottomProfileBtn {
+    height: 52px !important;
+    min-height: 52px !important;
+    max-height: 52px !important;
+    border-width: 2px !important;
+    box-shadow: 2px 2px 0 var(--pt-ink) !important;
+  }
+
+  html[data-theme="pinky-taylor"] .bottom-app-nav.game-active .game-action-btn,
+  html[data-theme="pinky-taylor"] .bottom-app-nav.game-active #bottomProfileBtn {
+    min-height: 47px !important;
+    border-width: 2px !important;
+    box-shadow: 2px 2px 0 var(--pt-ink) !important;
+  }
+
+  html[data-theme="pinky-taylor"] .game-action-dialog {
+    border-width: 4px !important;
+    box-shadow: 5px 5px 0 var(--pt-ink) !important;
+  }
+
+  html[data-theme="pinky-taylor"] .profile-dashboard {
+    border-width: 4px !important;
+    box-shadow: 5px 5px 0 var(--pt-ink) !important;
+  }
+
+  html[data-theme="pinky-taylor"] .profile-dashboard::before {
+    display: none;
+  }
+
+  html[data-theme="pinky-taylor"] .profile-stat {
+    border-width: 2px !important;
+    box-shadow: 2px 2px 0 var(--pt-ink) !important;
+  }
+}
+
+@media (max-width: 430px) {
+  html[data-theme="pinky-taylor"] .game-action-dialog-actions,
+  html[data-theme="pinky-taylor"] .profile-delete-actions {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/*
+ * Les filtres d'arrière-plan sont composés par tuiles dans Chromium et
+ * peuvent produire de fins raccords verticaux au-dessus de toute l'UI.
+ * Les surfaces Pinky Taylor étant opaques, le filtre n'apporte rien ici.
+ */
+html[data-theme="pinky-taylor"] .hud-card,
+html[data-theme="pinky-taylor"] .panel,
+html[data-theme="pinky-taylor"] .bottom-app-nav,
+html[data-theme="pinky-taylor"] .mode-overlay,
+html[data-theme="pinky-taylor"] .profile-overlay,
+html[data-theme="pinky-taylor"] .mate-overlay,
+html[data-theme="pinky-taylor"] .camp-overlay,
+html[data-theme="pinky-taylor"] .app-sheet-overlay,
+html[data-theme="pinky-taylor"] .profile-dashboard-overlay,
+html[data-theme="pinky-taylor"] .correspondence-overlay,
+html[data-theme="pinky-taylor"] .game-action-overlay {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="pinky-taylor"] *,
+  html[data-theme="pinky-taylor"] *::before,
+  html[data-theme="pinky-taylor"] *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* Identité du joueur dans le choix du mode de jeu. */
+html[data-theme="pinky-taylor"] body
+.react-app-root[data-theme="pinky-taylor"] .db-profile-badge {
+  color: var(--pt-ink) !important;
+  padding: 7px 8px 7px 12px !important;
+  border: 3px solid var(--pt-ink) !important;
+  border-radius: 4px 14px 6px 11px !important;
+  background: var(--pt-paper) !important;
+  box-shadow: 4px 4px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] body
+.react-app-root[data-theme="pinky-taylor"] .db-profile-badge > span {
+  color: var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] body
+.react-app-root[data-theme="pinky-taylor"] .db-profile-badge strong {
+  color: var(--pt-ruby) !important;
+}
+
+html[data-theme="pinky-taylor"] body
+.react-app-root[data-theme="pinky-taylor"] .db-profile-badge button {
+  min-height: 32px !important;
+  color: var(--pt-ink) !important;
+  border: 2px solid var(--pt-ink) !important;
+  border-radius: 3px 10px 4px 8px !important;
+  background: var(--pt-blue) !important;
+  box-shadow: 2px 2px 0 var(--pt-ink) !important;
+}
+
+/* Sélecteur Connexion / Création — Pinky Taylor. */
+html[data-theme="pinky-taylor"] body
+.react-app-root[data-theme="pinky-taylor"] .auth-tabs {
+  border: 3px solid var(--pt-ink) !important;
+  border-radius: 4px 15px 6px 11px !important;
+  background: var(--pt-paper) !important;
+  box-shadow: 4px 4px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] body
+.react-app-root[data-theme="pinky-taylor"] .auth-tab {
+  color: var(--pt-ink) !important;
+  border: 3px solid var(--pt-ink) !important;
+  border-radius: 3px 11px 5px 9px !important;
+  background: var(--pt-blue) !important;
+  box-shadow: 2px 2px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] body
+.react-app-root[data-theme="pinky-taylor"] .auth-tab.active {
+  color: #fff !important;
+  border-color: var(--pt-ink) !important;
+  background: var(--pt-ruby) !important;
+  box-shadow: 3px 3px 0 var(--pt-ink) !important;
+}
