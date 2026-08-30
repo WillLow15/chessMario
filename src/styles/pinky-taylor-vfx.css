@@ -333,24 +333,31 @@ html[data-theme="pinky-taylor"] .mate-overlay {
     rgba(11,11,13,.78) !important;
 }
 
-html[data-theme="pinky-taylor"] .mate-overlay.show::before,
-html[data-theme="pinky-taylor"] .mate-overlay.show::after {
+html[data-theme="pinky-taylor"] .mate-overlay.show .mate-panel::before,
+html[data-theme="pinky-taylor"] .mate-overlay.show .mate-panel::after {
   content: "♥  ★  ×  ✦  ♥  ×  ★  ♥  ✦  ×";
   position: absolute;
-  left: -10%;
-  width: 120%;
+  left: 50%;
+  width: min(88vw, 780px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
   color: #f51659;
   font-size: clamp(1.2rem,3vw,2.4rem);
   font-weight: 1000;
   word-spacing: 2vw;
   -webkit-text-stroke: 2px #0b0b0d;
   text-shadow: 3px 3px 0 #0b0b0d;
+  transform: translateX(-50%);
   animation: pt-confetti-strip 2.2s linear infinite;
 }
 
-html[data-theme="pinky-taylor"] .mate-overlay.show::before { top: 7%; }
-html[data-theme="pinky-taylor"] .mate-overlay.show::after {
-  bottom: 8%;
+html[data-theme="pinky-taylor"] .mate-overlay.show .mate-panel::before { top: -34px; }
+html[data-theme="pinky-taylor"] .mate-overlay.show .mate-panel::after {
+  bottom: -34px;
   color: #50bde1;
   animation-direction: reverse;
 }
@@ -513,8 +520,8 @@ html[data-theme="pinky-taylor"] .mate-close {
 }
 
 @keyframes pt-confetti-strip {
-  from { transform: translateX(-5%) rotate(-2deg); }
-  to { transform: translateX(5%) rotate(2deg); }
+  from { transform: translateX(calc(-50% - 14px)) rotate(-2deg); }
+  to { transform: translateX(calc(-50% + 14px)) rotate(2deg); }
 }
 
 @keyframes pt-winner-bop {
@@ -531,6 +538,16 @@ html[data-theme="pinky-taylor"] .mate-close {
     width: 62px !important;
     height: 62px !important;
   }
+
+  html[data-theme="pinky-taylor"] .mate-overlay.show .mate-panel::before,
+  html[data-theme="pinky-taylor"] .mate-overlay.show .mate-panel::after {
+    width: 96vw;
+    font-size: 1.05rem;
+    word-spacing: 1.5vw;
+  }
+
+  html[data-theme="pinky-taylor"] .mate-overlay.show .mate-panel::before { top: -24px; }
+  html[data-theme="pinky-taylor"] .mate-overlay.show .mate-panel::after { bottom: -24px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -544,8 +561,8 @@ html[data-theme="pinky-taylor"] .mate-close {
   html[data-theme="pinky-taylor"] .pinky-flash,
   html[data-theme="pinky-taylor"] .pinky-stroke,
   html[data-theme="pinky-taylor"] .pinky-particle,
-  html[data-theme="pinky-taylor"] .mate-overlay.show::before,
-  html[data-theme="pinky-taylor"] .mate-overlay.show::after {
+  html[data-theme="pinky-taylor"] .mate-overlay.show .mate-panel::before,
+  html[data-theme="pinky-taylor"] .mate-overlay.show .mate-panel::after {
     animation-duration: .01ms !important;
     animation-iteration-count: 1 !important;
   }
