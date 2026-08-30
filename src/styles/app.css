@@ -11046,3 +11046,61 @@ html[data-theme] body .react-app-root[data-theme]
     gap: 5px !important;
   }
 }
+
+/* =========================================================
+   IDENTITÉ DU JOUEUR — HABILLAGE PROPRE À CHAQUE UNIVERS
+   ========================================================= */
+html[data-theme="mario"] body .react-app-root[data-theme="mario"]
+.db-profile-badge {
+  color: #713611 !important;
+  border: 3px solid #9dc9a5 !important;
+  background: linear-gradient(180deg,#f4fff0,#e5f7df) !important;
+  box-shadow: 0 4px 0 rgba(40,111,55,.14) !important;
+}
+
+html[data-theme="mario"] body .react-app-root[data-theme="mario"]
+.db-profile-badge > span {
+  color: #713611 !important;
+}
+
+html[data-theme="mario"] body .react-app-root[data-theme="mario"]
+.db-profile-badge strong {
+  color: #24703a !important;
+}
+
+html[data-theme="mario"] body .react-app-root[data-theme="mario"]
+.db-profile-badge button {
+  color: #fff8dc !important;
+  background: linear-gradient(180deg,#d43b31,#9f201b) !important;
+  box-shadow: 0 3px 0 rgba(105,18,14,.20) !important;
+}
+
+html[data-theme="dark-fantasy"] body .react-app-root[data-theme="dark-fantasy"]
+.db-profile-badge {
+  color: #d6cab7 !important;
+  border: 1px solid #654a32 !important;
+  border-radius: 7px !important;
+  background: linear-gradient(180deg,#1d1b1d,#0d0d0f) !important;
+  box-shadow: 0 5px 0 #070708, inset 0 1px 0 rgba(236,211,169,.05) !important;
+}
+
+html[data-theme="dark-fantasy"] body .react-app-root[data-theme="dark-fantasy"]
+.db-profile-badge > span {
+  color: #ded2bf !important;
+  font-family: Georgia,"Times New Roman",serif !important;
+}
+
+html[data-theme="dark-fantasy"] body .react-app-root[data-theme="dark-fantasy"]
+.db-profile-badge strong {
+  color: #c94a3a !important;
+  letter-spacing: .04em !important;
+}
+
+html[data-theme="dark-fantasy"] body .react-app-root[data-theme="dark-fantasy"]
+.db-profile-badge button {
+  color: #eee4d1 !important;
+  border: 1px solid #9a4938 !important;
+  border-radius: 5px !important;
+  background: linear-gradient(180deg,#7d2924,#471617) !important;
+  box-shadow: 0 3px 0 #210a0b !important;
+}
