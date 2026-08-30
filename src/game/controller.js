@@ -1611,12 +1611,6 @@ function revealDeleteAccount(){
   $('profileDeleteConfirm')?.classList.remove('hidden');
   setTimeout(()=>$('profileDeletePassword')?.focus(),80);
 }
-function cancelDeleteAccount(){
-  $('profileDeleteConfirm')?.classList.add('hidden');
-  const pwd=$('profileDeletePassword');
-  if(pwd)pwd.value='';
-  setProfileDashboardStatus('');
-}
 async function deleteCurrentAccount(){
   if(isGuest||!authToken)return;
   const password=String($('profileDeletePassword')?.value||'');
@@ -3704,7 +3698,6 @@ async function boot(){
     $('profileDashboardCloseBtn').addEventListener('click',closeProfileDashboard);
     $('profileDashboardLoginBtn').addEventListener('click',()=>{closeProfileDashboard();showProfileOverlay('', 'login');});
     $('profileDeleteRevealBtn').addEventListener('click',revealDeleteAccount);
-    $('profileDeleteCancelBtn').addEventListener('click',cancelDeleteAccount);
     $('profileDeleteConfirmBtn').addEventListener('click',deleteCurrentAccount);
     $('profileDeletePassword').addEventListener('keydown',e=>{if(e.key==='Enter')deleteCurrentAccount();});
     $('playMenuOverlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closePlayMenu();});
