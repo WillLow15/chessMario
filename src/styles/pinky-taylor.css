@@ -222,7 +222,7 @@ html[data-theme="pinky-taylor"] .piece.black {
 }
 
 html[data-theme="pinky-taylor"] .piece-img {
-  transform: scale(1.13);
+  transform: scale(1.04);
   filter: saturate(1.06) contrast(1.03);
 }
 
@@ -1202,7 +1202,7 @@ html[data-theme="pinky-taylor"] .game-loader-icon-wrap {
   }
 
   html[data-theme="pinky-taylor"] .piece-img {
-    transform: scale(1.08);
+    transform: scale(1);
   }
 
   html[data-theme="pinky-taylor"] .camp-card {
