@@ -300,6 +300,121 @@ html[data-theme="pinky-taylor"] .camp-title {
   letter-spacing: .035em !important;
 }
 
+/* Choix du camp — carte dédiée Pinky Taylor */
+html[data-theme="pinky-taylor"] .camp-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  width: min(92vw, 660px) !important;
+  padding: clamp(24px, 4vw, 38px) !important;
+  transform: rotate(-.35deg);
+}
+
+html[data-theme="pinky-taylor"] .camp-card::before,
+html[data-theme="pinky-taylor"] .camp-card::after {
+  position: absolute;
+  z-index: -1;
+  color: var(--pt-ruby);
+  font-size: clamp(3.4rem, 9vw, 6.8rem);
+  font-weight: 1000;
+  line-height: 1;
+  opacity: .09;
+  pointer-events: none;
+}
+
+html[data-theme="pinky-taylor"] .camp-card::before {
+  content: "♥";
+  top: -18px;
+  left: 18px;
+  transform: rotate(-14deg);
+}
+
+html[data-theme="pinky-taylor"] .camp-card::after {
+  content: "✦";
+  right: 20px;
+  bottom: -16px;
+  color: var(--pt-blue);
+  transform: rotate(12deg);
+}
+
+html[data-theme="pinky-taylor"] .camp-title {
+  margin-bottom: 8px !important;
+  font-size: clamp(2rem, 5vw, 3rem) !important;
+  font-weight: 1000 !important;
+}
+
+html[data-theme="pinky-taylor"] .camp-sub {
+  margin-bottom: 24px !important;
+  color: var(--pt-ink) !important;
+  font-weight: 800 !important;
+  opacity: .78 !important;
+}
+
+html[data-theme="pinky-taylor"] .camp-actions {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 16px !important;
+}
+
+html[data-theme="pinky-taylor"] .camp-btn {
+  min-height: 72px;
+  padding: 15px 12px !important;
+  color: var(--pt-ink) !important;
+  border: 4px solid var(--pt-ink) !important;
+  border-radius: 5px 17px 7px 13px !important;
+  font-size: 1.05rem !important;
+  font-weight: 1000 !important;
+  box-shadow: 5px 5px 0 var(--pt-ink) !important;
+  text-shadow: none !important;
+  transition: transform .14s ease, filter .14s ease, box-shadow .14s ease !important;
+}
+
+html[data-theme="pinky-taylor"] .camp-btn::before {
+  display: inline-block;
+  margin-right: 8px;
+  font-size: 1.15em;
+}
+
+html[data-theme="pinky-taylor"] .camp-btn.white {
+  background: var(--pt-ivory) !important;
+}
+
+html[data-theme="pinky-taylor"] .camp-btn.white::before { content: "♥"; color: var(--pt-ruby); }
+
+html[data-theme="pinky-taylor"] .camp-btn.black {
+  color: white !important;
+  background: var(--pt-ink) !important;
+  box-shadow: 5px 5px 0 var(--pt-ruby) !important;
+}
+
+html[data-theme="pinky-taylor"] .camp-btn.black::before { content: "★"; color: var(--pt-blue); }
+
+html[data-theme="pinky-taylor"] .camp-btn.random {
+  background: var(--pt-blue) !important;
+}
+
+html[data-theme="pinky-taylor"] .camp-btn.random::before { content: "×"; color: var(--pt-ruby); }
+
+html[data-theme="pinky-taylor"] .camp-btn:hover {
+  filter: brightness(1.04) !important;
+  transform: translate(-2px, -2px) rotate(-1deg);
+  box-shadow: 7px 7px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .camp-btn.black:hover {
+  box-shadow: 7px 7px 0 var(--pt-ruby) !important;
+}
+
+html[data-theme="pinky-taylor"] .camp-btn:active {
+  transform: translate(3px, 3px) !important;
+  box-shadow: 2px 2px 0 var(--pt-ink) !important;
+}
+
+html[data-theme="pinky-taylor"] .camp-btn:focus-visible {
+  outline: 4px solid var(--pt-ruby) !important;
+  outline-offset: 4px;
+}
+
 html[data-theme="pinky-taylor"] .mode-choice,
 html[data-theme="pinky-taylor"] .level-btn,
 html[data-theme="pinky-taylor"] .time-control-btn,
@@ -387,6 +502,20 @@ html[data-theme="pinky-taylor"] .game-loader-icon-wrap {
 
   html[data-theme="pinky-taylor"] .piece-img {
     transform: scale(1.08);
+  }
+
+  html[data-theme="pinky-taylor"] .camp-card {
+    padding: 24px 18px 22px !important;
+    transform: none;
+  }
+
+  html[data-theme="pinky-taylor"] .camp-actions {
+    grid-template-columns: 1fr !important;
+    gap: 13px !important;
+  }
+
+  html[data-theme="pinky-taylor"] .camp-btn {
+    min-height: 60px;
   }
 }
 
