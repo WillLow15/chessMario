@@ -10873,7 +10873,7 @@ html[data-theme="mario"]
 /* =========================================================
    TOUS LES THÈMES — FERMETURES PARFAITEMENT RONDES
    ========================================================= */
-html body .react-app-root[data-theme] :is(
+html[data-theme] body .react-app-root[data-theme] :is(
   .mate-close,
   .app-sheet-close,
   .profile-dashboard-close,
@@ -10902,7 +10902,7 @@ html body .react-app-root[data-theme] :is(
   text-indent: 0 !important;
 }
 
-html body .react-app-root[data-theme] :is(
+html[data-theme] body .react-app-root[data-theme] :is(
   .mate-close,
   .app-sheet-close,
   .profile-dashboard-close,
@@ -10929,7 +10929,7 @@ html body .react-app-root[data-theme] :is(
   opacity: 1 !important;
 }
 
-html body .react-app-root[data-theme] :is(
+html[data-theme] body .react-app-root[data-theme] :is(
   .mate-close,
   .app-sheet-close,
   .profile-dashboard-close,
@@ -10945,7 +10945,7 @@ html body .react-app-root[data-theme] :is(
 }
 
 @media (max-width: 640px) {
-  html body .react-app-root[data-theme] :is(
+  html[data-theme] body .react-app-root[data-theme] :is(
     .mate-close,
     .app-sheet-close,
     .profile-dashboard-close,
@@ -10961,7 +10961,7 @@ html body .react-app-root[data-theme] :is(
     flex-basis: 44px !important;
   }
 
-  html body .react-app-root[data-theme] :is(
+  html[data-theme] body .react-app-root[data-theme] :is(
     .mate-close,
     .app-sheet-close,
     .profile-dashboard-close,
