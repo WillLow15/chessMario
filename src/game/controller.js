@@ -147,6 +147,8 @@ let remoteReady=false;
 let remoteIsHost=false;
 let remoteRoomCode='';
 let remoteReconnectTimer=null;
+let remoteHandshakeTimer=null;
+let remoteConnectAttempts=0;
 let remoteReconnectInProgress=false;
 let remoteCreatingRoom=false;
 let remoteConnectionGeneration=0;
@@ -1874,11 +1876,16 @@ function destroyRemote({clearSession=true}={}){
   remoteDrawOfferByMe=false;
   remoteDrawOfferIncoming=false;
   remoteReconnectInProgress=false;
+  remoteConnectAttempts=0;
   remoteLastConnectedAt=0;
 
   if(remoteReconnectTimer){
     clearTimeout(remoteReconnectTimer);
     remoteReconnectTimer=null;
+  }
+  if(remoteHandshakeTimer){
+    clearTimeout(remoteHandshakeTimer);
+    remoteHandshakeTimer=null;
   }
 
   try{if(oldConn)oldConn.close();}catch(e){}
@@ -1947,6 +1954,37 @@ function safelyCloseRemoteConnection(){
   peerConn=null;
   if(old){try{old.close();}catch(e){}}
 }
+function clearRemoteHandshakeTimer(){
+  if(!remoteHandshakeTimer)return;
+  clearTimeout(remoteHandshakeTimer);
+  remoteHandshakeTimer=null;
+}
+function armRemoteHandshakeTimer(conn,generation,{waitingForInit=false}={}){
+  clearRemoteHandshakeTimer();
+  remoteHandshakeTimer=setTimeout(()=>{
+    remoteHandshakeTimer=null;
+    if(
+      generation!==remoteConnectionGeneration ||
+      peerConn!==conn ||
+      gameMode!=='remote' ||
+      remoteReady
+    )return;
+
+    // PeerJS peut conserver une DataConnection qui n'ouvrira jamais après
+    // un "peer-unavailable". La fermer force la tentative suivante à créer
+    // une négociation WebRTC neuve au lieu de rester bloquée sur ce fantôme.
+    if(peerConn===conn)peerConn=null;
+    try{conn.close();}catch(e){}
+    saveRemoteSession({active:false});
+    setRemoteStatus(
+      waitingForInit
+        ? 'La salle répond, synchronisation de la partie…'
+        : 'Ton ami n’est pas encore prêt. Nouvelle tentative…',
+      'wait'
+    );
+    scheduleRemoteReconnect(180);
+  },waitingForInit?5000:9000);
+}
 function attachPeerErrors(p,generation,{newRoom=false}={}){
   const isCurrent=()=>generation===remoteConnectionGeneration&&p===peer&&gameMode==='remote';
 
@@ -2003,8 +2041,20 @@ function attachPeerErrors(p,generation,{newRoom=false}={}){
 }
 function connectGuestToHost(p,code,generation=remoteConnectionGeneration){
   if(generation!==remoteConnectionGeneration||p!==peer||!peerIsUsable(p)||!p.open)return null;
-  const conn=p.connect(remoteHostPeerId(code),{reliable:true,serialization:'json'});
+  safelyCloseRemoteConnection();
+  remoteReady=false;
+  remoteConnectAttempts++;
+  setRemoteStatus(
+    'Connexion au code '+code+(remoteConnectAttempts>1?' · tentative '+remoteConnectAttempts:'')+'…',
+    'wait'
+  );
+  const conn=p.connect(remoteHostPeerId(code),{
+    reliable:true,
+    serialization:'json',
+    metadata:{game:'chess-mario',room:code,protocol:2}
+  });
   setupRemoteConnection(conn,false,generation);
+  armRemoteHandshakeTimer(conn,generation);
   return conn;
 }
 function waitForPeerOpen(p,generation,timeoutMs=90000){
@@ -2082,6 +2132,7 @@ async function createHostPeerForCode(code,{force=false,newRoom=false,waitForOpen
       peer.reconnect();
       remoteIsHost=true;
       remoteRoomCode=code;
+      $('accessCodeBox').classList.add('hidden');
       setRemoteStatus('Récupération de la salle '+code+'…','wait');
       saveRemoteSession({role:'host',code,active:false});
       return peer;
@@ -2095,8 +2146,8 @@ async function createHostPeerForCode(code,{force=false,newRoom=false,waitForOpen
     remoteIsHost=true;
     remoteRoomCode=code;
     $('accessCode').textContent=code;
-    $('accessCodeBox').classList.remove('hidden');
-    setRemoteStatus('Salle '+code+' créée. Connexion au serveur en cours…','wait');
+    $('accessCodeBox').classList.add('hidden');
+    setRemoteStatus('Enregistrement de la salle sur le serveur…','wait');
     saveRemoteSession({role:'host',code,active:false});
     return peer;
   }
@@ -2238,8 +2289,9 @@ async function restoreRemoteSessionOnBoot(){
   restoreRemoteSnapshot(session);
   remoteReady=false;
   $('accessCode').textContent=session.code;
-  if(session.role==='host')$('accessCodeBox').classList.remove('hidden');
-  else $('accessCodeBox').classList.add('hidden');
+  // Le code redevient partageable uniquement lorsque le PeerServer a
+  // confirmé que la salle restaurée est de nouveau enregistrée.
+  $('accessCodeBox').classList.add('hidden');
   showModeOverlay('remote');
   setRemoteStatus(session.role==='host'?'Restauration de ta salle '+session.code+'…':'Reconnexion à la salle '+session.code+'…','wait');
   await resumeRemoteConnection();
@@ -2273,12 +2325,14 @@ function setupRemoteConnection(conn,isHost,generation=remoteConnectionGeneration
 
   conn.on('open',()=>{
     if(generation!==remoteConnectionGeneration||peerConn!==conn)return;
-    remoteReady=true;
     remoteReconnectInProgress=false;
     remoteRoomCode=remoteRoomCode||cleanCode(readRemoteSession()?.code);
-    saveRemoteSession({active:true,role:isHost?'host':'guest'});
     remoteLastConnectedAt=Date.now();
     if(isHost){
+      remoteReady=true;
+      saveRemoteSession({active:true,role:'host'});
+      clearRemoteHandshakeTimer();
+      remoteConnectAttempts=0;
       playerCamp='w';
       flipped=false;
       sendRemoteInit(conn);
@@ -2286,6 +2340,13 @@ function setupRemoteConnection(conn,isHost,generation=remoteConnectionGeneration
       if(!clockStarted&&chess.history().length===0)resetClock();
       renderAll();
       saveRemoteSession({active:true});
+    }else{
+      // Redemande explicitement l'état initial. Cela couvre le cas où le
+      // message envoyé par l'hôte pendant l'ouverture a été perdu/retardé.
+      remoteReady=false;
+      saveRemoteSession({active:false,role:'guest'});
+      try{conn.send({type:'sync_request'});}catch(e){}
+      armRemoteHandshakeTimer(conn,generation,{waitingForInit:true});
     }
   });
 
@@ -2309,6 +2370,8 @@ function setupRemoteConnection(conn,isHost,generation=remoteConnectionGeneration
       return;
     }
     if(data.type==='init'&&!isHost){
+      clearRemoteHandshakeTimer();
+      remoteConnectAttempts=0;
       chess.load(data.fen);
       playerCamp=data.guestCamp||'b';
       flipped=playerCamp==='b';
@@ -2405,6 +2468,7 @@ function setupRemoteConnection(conn,isHost,generation=remoteConnectionGeneration
     if(generation!==remoteConnectionGeneration||peerConn!==conn)return;
     console.warn('DataConnection distante:',err);
     if(gameMode==='remote'&&remoteRoomCode){
+      clearRemoteHandshakeTimer();
       remoteReady=false;
       saveRemoteSession({active:false});
       setRemoteStatus('Connexion interrompue. Reconnexion automatique…','wait');
@@ -2416,6 +2480,7 @@ function setupRemoteConnection(conn,isHost,generation=remoteConnectionGeneration
     if(generation!==remoteConnectionGeneration||peerConn!==conn)return;
     if(peerConn===conn)peerConn=null;
     if(gameMode==='remote'&&remoteRoomCode){
+      clearRemoteHandshakeTimer();
       remoteReady=false;
       saveRemoteSession({active:false});
       setRemoteStatus("Connexion avec l'ami interrompue. Reconnexion automatique…",'wait');
@@ -2443,13 +2508,13 @@ async function createRemoteRoom(){
     remoteRoomCode=code;
     remoteIsHost=true;
 
-    // Le code est utilisable/partageable immédiatement. On ne bloque plus
-    // toute l'interface en attendant le websocket du PeerServer public.
+    // Le code n'est affiché qu'après l'événement "open" : avant cela il
+    // n'existe pas encore côté PeerServer et un ami ne peut pas le rejoindre.
     $('accessCode').textContent=code;
-    $('accessCodeBox').classList.remove('hidden');
+    $('accessCodeBox').classList.add('hidden');
     saveRemoteSession({role:'host',code,active:false});
 
-    setRemoteStatus('Code '+code+' créé. Connexion au serveur de jeu…','wait');
+    setRemoteStatus('Enregistrement de la salle sur le serveur…','wait');
 
     // IMPORTANT v76 : ne jamais attendre peer.open avec un timeout bloquant.
     // Le PeerServer Cloud peut répondre lentement. Le callback "open" de
@@ -2470,28 +2535,18 @@ async function createRemoteRoom(){
         !peer.destroyed &&
         !peer.open
       ){
-        setRemoteStatus(
-          'Le code '+code+' est prêt à être partagé. Connexion au serveur toujours en cours…',
-          'wait'
-        );
+        setRemoteStatus('Le serveur met du temps à répondre. La création continue automatiquement…','wait');
       }
     },8000);
 
   }catch(err){
     console.error(err);
 
-    // On ne détruit plus automatiquement une salle déjà créée à cause
-    // d'un simple délai réseau.
-    if(remoteRoomCode&&$('accessCode')){
-      $('accessCode').textContent=remoteRoomCode;
-      $('accessCodeBox').classList.remove('hidden');
-    }
-
     if(err&&err.type==='browser-incompatible'){
       setRemoteStatus('Ce navigateur ne permet pas la connexion pair-à-pair.','error');
     }else{
       setRemoteStatus(
-        'Le code est conservé. La connexion au serveur sera retentée automatiquement.',
+        'La création de la salle sera retentée automatiquement.',
         'wait'
       );
       scheduleRemoteReconnect(1500);
